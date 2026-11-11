@@ -1,0 +1,4 @@
+aiogram>=3.10,<4
+aiosqlite
+reportlab
+pillow

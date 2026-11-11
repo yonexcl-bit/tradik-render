@@ -1,0 +1,2915 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SupGift</title>
+    <link rel="icon" href="/logo.png?v=6">
+    <link rel="apple-touch-icon" href="/logo.png?v=6">
+    <script src="/telegram-web-app.js"></script>
+    <meta property="og:type" content="website">
+<meta property="og:site_name" content="SupGift">
+<meta property="og:title" content="SupGift">
+<meta property="og:description" content="Обменивай Telegram-подарки и NFT, продавай за TON, USDT и RUB. Открывай сделку и подтверждай обмен прямо в Telegram.">
+<meta property="og:image" content="https://trade-botik.new.tg/trade.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="511">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trade-botik.new.tg/trade.jpg">
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+/* ==========================================================================
+   SupGift — Design System
+   Monochrome canvas · one violet accent · grouped surfaces · quiet motion
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    /* Canvas */
+    --bg:        #050A15;
+    --bg-lift:   #0A0F1D;
+
+    /* Surfaces */
+    --surface:   #0B1220;
+    --surface-2: #0F1828;
+    --surface-3: #142033;
+    --fill:      rgba(120,190,255,.055);
+
+    /* Hairlines */
+    --line:      rgba(120,190,255,.10);
+    --line-2:    rgba(145,205,255,.18);
+
+    /* Ink */
+    --t1: #F4F9FF;
+    --t2: #A3B6CE;
+    --t3: #7C90A8;
+
+    /* Accent — the only saturated colour in the product */
+    --acc:      #00A3FF;
+    --acc-ink:  #ffffff;
+    --acc-08:   rgba(0,163,255,.10);
+    --acc-16:   rgba(0,163,255,.16);
+    --acc-28:   rgba(0,163,255,.28);
+    --acc-40:   rgba(0,163,255,.40);
+    --acc-grad: linear-gradient(135deg, #00A3FF 0%, #0089E8 55%, #0072CC 100%);
+    --acc-glow: 0 8px 26px -6px rgba(0,163,255,.62);
+
+    /* Glass */
+    --glass-1: linear-gradient(180deg, rgba(120,190,255,.055), rgba(140,200,255,.02));
+    --glass-2: linear-gradient(180deg, rgba(140,200,255,.10), rgba(140,200,255,.035));
+    --edge:    inset 0 1px 0 rgba(120,190,255,.10);
+    --edge-2:  inset 0 1px 0 rgba(145,205,255,.18);
+
+    /* Chrome (header / tab bar) */
+    --chrome:   rgba(6,14,38,.76);
+    --chrome-2: rgba(10,22,52,.82);
+    --grain:    .03;
+
+    /* Semantic */
+    --ok:      #32d74b;  --ok-14:  rgba(50,215,75,.14);
+    --warn:    #ffd60a;  --warn-14:rgba(255,214,10,.13);
+    --bad:     #ff453a;  --bad-14: rgba(255,69,58,.13);
+
+    /* Currency tints */
+    --ton: #009eea;  --ton-14:  rgba(0,158,234,.14);
+    --usdt:#2fb98c;  --usdt-14: rgba(47,185,140,.14);
+    --rub: #e0745a;  --rub-14:  rgba(224,116,90,.14);
+
+    /* Radii */
+    --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 26px; --r-2xl: 32px;
+
+    /* Elevation */
+    --e1: 0 1px 2px rgba(0,0,0,.30);
+    --e2: 0 2px 6px rgba(0,0,0,.26), 0 10px 26px rgba(0,0,0,.32);
+    --e3: 0 10px 24px rgba(0,0,0,.42), 0 30px 70px rgba(0,0,0,.50);
+
+    /* Motion */
+    --sp:     cubic-bezier(.32,.72,0,1);
+    --sp-pop: cubic-bezier(.34,1.36,.64,1);
+
+    --nav-h: 70px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { height: 100%; }
+body { min-height: 100%; }
+body {
+    margin: 0;
+    padding: 0 16px calc(var(--nav-h) + 56px + env(safe-area-inset-bottom));
+    background: var(--bg);
+    color: var(--t1);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Manrope', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.45;
+    letter-spacing: -.011em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+body.light { color-scheme: light; }
+
+button, input, textarea { font-family: inherit; letter-spacing: inherit; }
+button { border: none; background: none; color: inherit; cursor: pointer; }
+input, textarea { color: var(--t1); }
+::selection { background: var(--acc-40); color: #fff; }
+::-webkit-scrollbar { width: 0; height: 0; }
+
+.num, .amt { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+
+/* ---------- Ambient light ---------------------------------------------- */
+.aurora {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
+    background: radial-gradient(130% 70% at 50% -10%, #0A1730 0%, #050C1A 42%, var(--bg) 78%);
+}
+.aurora .blob {
+    position: absolute; border-radius: 50%; filter: blur(64px);
+    mix-blend-mode: screen; will-change: transform; opacity: .9;
+}
+.blob1 {
+    width: 560px; height: 560px; top: -260px; left: -140px;
+    background: radial-gradient(circle, rgba(0,163,255,.40), rgba(0,163,255,0) 66%);
+    animation: drift1 21s ease-in-out infinite alternate;
+}
+.blob2 {
+    width: 520px; height: 520px; top: -220px; right: -160px;
+    background: radial-gradient(circle, rgba(0,196,255,.26), rgba(0,196,255,0) 66%);
+    animation: drift2 27s ease-in-out infinite alternate;
+}
+.blob3 {
+    width: 600px; height: 600px; bottom: -320px; left: 8%;
+    background: radial-gradient(circle, rgba(0,122,214,.30), rgba(0,122,214,0) 66%);
+    animation: drift3 33s ease-in-out infinite alternate;
+}
+@keyframes drift1 { to { transform: translate(90px, 70px) scale(1.18); } }
+@keyframes drift2 { to { transform: translate(-80px, 60px) scale(1.12); } }
+@keyframes drift3 { to { transform: translate(60px, -70px) scale(1.14); } }
+
+/* ---------- Mini-app loading splash ------------------------------------ */
+#app-loader {
+    position: fixed; inset: 0; z-index: 999; display: flex;
+    align-items: center; justify-content: center;
+    background: radial-gradient(130% 70% at 50% -10%, #0A1730 0%, #050C1A 52%, var(--bg) 80%);
+    transition: opacity .45s ease, visibility .45s ease;
+    -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    pointer-events: none;
+}
+#app-loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+.loader-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.loader-ring {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,.12);
+    border-top-color: #00a3ff; border-right-color: #6d28d9;
+    animation: loaderSpin 1s linear infinite;
+}
+@keyframes loaderSpin { to { transform: rotate(360deg); } }
+.loader-bar {
+    width: 120px; height: 4px; border-radius: 999px; overflow: hidden;
+    background: rgba(255,255,255,.10);
+}
+.loader-bar span {
+    display: block; height: 100%; width: 40%; border-radius: 999px;
+    background: linear-gradient(90deg, #00a3ff, #6d28d9);
+    animation: loaderBar 1.2s ease-in-out infinite;
+}
+@keyframes loaderBar { 0% { transform: translateX(-110%); } 100% { transform: translateX(280%); } }
+
+/* vignette + film grain — the tactility layer */
+.aurora::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(125% 85% at 50% 0%, transparent 52%, rgba(0,0,0,.62) 100%);
+}
+body::after {
+    content: ''; position: fixed; inset: 0; z-index: 500; pointer-events: none; opacity: var(--grain);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px;
+}
+
+/* ---------- Header ---------------------------------------------------- */
+header {
+    position: sticky; top: 0; z-index: 40;
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 -16px; padding: calc(10px + env(safe-area-inset-top)) 16px 12px;
+    background: var(--chrome);
+    -webkit-backdrop-filter: saturate(180%) blur(22px);
+    backdrop-filter: saturate(180%) blur(22px);
+}
+header::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-2) 15%, var(--line-2) 85%, transparent);
+}
+.avatar.brand {
+    width: 42px; height: 42px; border-radius: 14px; flex-shrink: 0;
+    overflow: hidden; padding: 0; background: #fff; border: 1px solid rgba(150,215,255,.25);
+    box-shadow: 0 8px 22px -8px rgba(0,163,255,.75), 0 0 0 1px rgba(255,255,255,.05);
+    animation: brandBreath 4s ease-in-out infinite;
+}
+@keyframes brandBreath { 0%,100% { box-shadow: 0 8px 22px -8px rgba(0,163,255,.45), 0 0 0 1px rgba(255,255,255,.05); } 50% { box-shadow: 0 8px 28px -6px rgba(0,163,255,.85), 0 0 0 1px rgba(255,255,255,.12); } }
+.avatar.brand img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 13px; }
+.greet { flex: 1; min-width: 0; }
+.greet .hi { display: flex; align-items: baseline; gap: 6px; }
+.brand-name {
+    font-size: 20px; font-weight: 750; letter-spacing: -.028em; color: var(--t1);
+    background: linear-gradient(180deg, #ffffff 0%, #cfe4ff 72%, #9cc4ff 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.greet .sub { font-size: 12.5px; color: var(--t3); margin-top: 1px; letter-spacing: 0; }
+.icon-btn {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    color: var(--t1); display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--edge);
+    transition: transform .2s var(--sp), background .2s, border-color .2s;
+}
+.icon-btn:active { transform: scale(.88); }
+.icon-btn.spinning svg { animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Section headers ------------------------------------------- */
+.sec-title {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin: 28px 2px 12px;
+}
+.sec-title h3 {
+    display: flex; align-items: center; gap: 8px; margin: 0;
+    font-size: 16.5px; font-weight: 650; letter-spacing: -.022em; color: var(--t1);
+}
+.sec-title h3 svg { color: var(--acc); flex-shrink: 0; opacity: .92; }
+.chip {
+    font-size: 12px; font-weight: 600; color: var(--t2); letter-spacing: 0;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+    box-shadow: var(--edge);
+}
+
+/* ---------- Pages ------------------------------------------------------ */
+.tab-page { display: none; }
+.tab-page.active { display: block; animation: pageIn .36s var(--sp); }
+@keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Trade cards ------------------------------------------------ */
+.trade-card {
+    position: relative;
+    display: flex; gap: 13px; align-items: center;
+    background: var(--glass-1), var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 13px; margin-bottom: 10px;
+    box-shadow: var(--edge), var(--e2);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+    transition: transform .22s var(--sp), border-color .22s, background .22s;
+}
+.trade-card::before {
+    content: ''; position: absolute; top: 0; left: 14%; right: 14%; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+}
+.trade-card:active { transform: scale(.985); }
+.trade-card:hover { transform: translateY(-2px); border-color: var(--acc-40); }
+.trade-card .mini-orb {
+    width: 54px; height: 54px; border-radius: var(--r-md); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line-2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 4px 12px -4px rgba(0,0,0,.5);
+    font-size: 26px;
+}
+.trade-card .mini-orb img { width: 100%; height: 100%; object-fit: cover; }
+.trade-card .info { flex: 1; min-width: 0; }
+.trade-card .name { font-weight: 650; font-size: 15px; letter-spacing: -.015em; }
+.trade-card .sub {
+    color: var(--t3); font-size: 12.5px; margin-top: 3px; letter-spacing: 0;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.trade-card .sub .tg-av { width: 18px; height: 18px; border-radius: 50%; }
+.trade-card .actions { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.trade-card .actions .btn {
+    background: var(--acc-grad); color: var(--acc-ink); border-color: transparent;
+    box-shadow: 0 6px 18px -7px rgba(0,163,255,.8), var(--edge-2);
+    margin-top: 0; padding: 9px 16px; font-size: 13.5px; border-radius: 999px; width: auto;
+}
+.trade-card .actions .btn:active { transform: scale(.95); }
+.trade-card .actions .btn-ghost {
+    background: var(--glass-2), var(--surface-2); color: var(--t2);
+    border: 1px solid var(--line); box-shadow: var(--edge);
+}
+
+/* offline feed — visually secondary, shown as flat cards */
+.trade-card.showcase {
+    background: var(--glass-1), var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    box-shadow: var(--edge), var(--e1);
+    padding: 13px; margin-bottom: 12px; opacity: .92;
+}
+.trade-card.showcase:last-child { margin-bottom: 0; }
+.trade-card.showcase .mini-orb { width: 44px; height: 44px; border-radius: var(--r-sm); }
+.trade-card.showcase .name { font-size: 14px; font-weight: 600; }
+.feed-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin: 18px 2px 4px; color: var(--t3); font-size: 11px;
+    font-weight: 650; letter-spacing: .1em; text-transform: uppercase;
+}
+.feed-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
+
+/* ---------- Pills ------------------------------------------------------ */
+.pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0;
+    padding: 4px 9px; border-radius: 999px;
+    background: var(--fill); color: var(--t2); border: 1px solid var(--line);
+    white-space: nowrap;
+}
+.pill.live { color: var(--ok); background: var(--ok-14); border-color: transparent; }
+.pill .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.pill.live .dot {
+    background: radial-gradient(circle at 35% 30%, #b6ffcd, var(--ok) 62%);
+    box-shadow: 0 0 9px rgba(50,215,75,.85);
+    animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+.pill.st-completed { color: var(--ok); background: var(--ok-14); border-color: transparent; }
+.pill.st-offer_made { color: var(--acc); background: var(--acc-16); border-color: transparent; }
+.pill.st-waiting { color: var(--t2); background: var(--surface-2); border-color: var(--line); }
+.pill.st-pending, .pill.st-connected { color: var(--warn); background: var(--warn-14); border-color: transparent; }
+.pill.st-cancelled, .pill.st-declined { color: var(--bad); background: var(--bad-14); border-color: transparent; }
+/* "live" wins over the status palette — a connected offer stays green, not gold */
+.pill.st-connected.live, .pill.st-pending.live, .pill.st-waiting.live { color: var(--ok); background: var(--ok-14); border-color: transparent; }
+
+.ask-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 600; color: var(--t2);
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    padding: 4px 10px 4px 8px; border-radius: 999px; white-space: nowrap;
+    box-shadow: var(--edge);
+}
+.ask-chip svg { flex-shrink: 0; }
+.ask-chip.t-ton { color: var(--ton); }
+.ask-chip.t-usdt { color: var(--usdt); }
+.ask-chip.t-rub { color: var(--rub); }
+.ask-chip.t-gift { color: #7FD4FF; }
+
+/* ---------- Buttons ---------------------------------------------------- */
+.btn {
+    position: relative; overflow: hidden; width: 100%;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 15px 18px; border-radius: var(--r-md);
+    font-size: 15.5px; font-weight: 620; letter-spacing: -.012em;
+    background: var(--surface-2); color: var(--t1);
+    border: 1px solid var(--line);
+    transition: transform .18s var(--sp), opacity .18s, background .2s, border-color .2s;
+}
+.btn:active { transform: scale(.975); opacity: .82; }
+.btn svg { flex-shrink: 0; }
+.btn.small { width: auto; padding: 9px 14px; font-size: 13.5px; border-radius: var(--r-sm); }
+.btn-grad {
+    background: var(--acc-grad); color: var(--acc-ink); border-color: transparent;
+    box-shadow: var(--acc-glow), var(--edge-2);
+}
+.btn-green {
+    background: linear-gradient(135deg, #46e06a, #24b843); color: #05270f; border-color: transparent;
+    box-shadow: 0 8px 24px -8px rgba(50,215,75,.6), var(--edge-2);
+}
+.btn-danger { background: var(--bad-14); color: var(--bad); border-color: transparent; }
+.btn-ghost { background: var(--surface-2); color: var(--t1); }
+.btn-ghost:active { background: var(--surface-3); }
+body.light .btn-danger { background: var(--bad-14); }
+
+/* ---------- Profile ---------------------------------------------------- */
+.profile-card {
+    position: relative;
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px; margin-top: 14px;
+    background: var(--glass-1), var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl); box-shadow: var(--edge), var(--e2);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+    overflow: hidden;
+}
+.profile-card::before {
+    content: ''; position: absolute; top: -60px; right: -40px; width: 190px; height: 190px;
+    border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(0,163,255,.20), rgba(0,163,255,0) 70%);
+    filter: blur(14px);
+}
+.pf-avatar {
+    width: 62px; height: 62px; border-radius: 21px; flex-shrink: 0; overflow: hidden;
+    padding: 2px; background: var(--acc-grad); border: 0;
+    box-shadow: 0 8px 22px -8px rgba(0,163,255,.7), var(--edge-2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 700; color: #fff;
+}
+.pf-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 19px; }
+.pf-main { min-width: 0; flex: 1; position: relative; }
+.pf-name { font-size: 19px; font-weight: 700; letter-spacing: -.024em; }
+.pf-username { font-size: 13.5px; color: var(--t2); margin-top: 1px; }
+.pf-id {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 7px;
+    font-size: 12px; font-weight: 600; color: var(--t3);
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    padding: 4px 9px; border-radius: 999px; transition: color .2s, background .2s, border-color .2s;
+}
+.pf-id:active { color: var(--acc); background: var(--acc-08); border-color: var(--acc-28); }
+.pf-id svg { opacity: .7; }
+.pf-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+
+/* ---------- Public profile view ---------------------------------------- */
+.pv-overlay {
+    position: fixed; inset: 0; z-index: 70;
+    display: none; align-items: center; justify-content: center;
+    padding: calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+    background: rgba(4,10,26,.62);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    backdrop-filter: blur(10px) saturate(140%);
+}
+.pv-overlay.open { display: flex; animation: ovIn .28s var(--sp); }
+.pv-card {
+    position: relative; width: 100%; max-width: 420px; overflow: hidden;
+    background: var(--glass-2), var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-2xl);
+    padding: 16px 16px 18px;
+    box-shadow: var(--edge), 0 34px 80px -24px rgba(0,0,0,.72), var(--e2);
+    animation: pvIn .34s var(--sp);
+}
+@keyframes pvIn { from { transform: translateY(20px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+.pv-top { display: flex; align-items: center; gap: 10px; }
+.pv-back {
+    width: 36px; height: 36px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line); color: var(--t2);
+    transition: transform .16s var(--sp), background .2s;
+}
+.pv-back:active { transform: scale(.93); background: var(--acc-08); }
+.pv-top-title { font-size: 13px; font-weight: 700; color: var(--t3); letter-spacing: .05em; text-transform: uppercase; }
+.pv-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 16px 0 2px; }
+.pv-avatar { width: 84px; height: 84px; border-radius: 28px; font-size: 30px; }
+.pv-name { margin-top: 13px; font-size: 21px; font-weight: 800; letter-spacing: -.025em; color: var(--t1); }
+.pv-username {
+    margin-top: 3px; font-size: 14px; font-weight: 700; color: var(--acc);
+    padding: 2px 6px; border-radius: 8px; transition: background .2s;
+}
+.pv-username:active { background: var(--acc-08); }
+.pv-id { margin-top: 9px; }
+.pv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.pv-stat {
+    position: relative; padding: 14px 12px 13px; text-align: center;
+    background: var(--glass-2), var(--surface-2);
+    border: 1px solid var(--line); border-radius: var(--r-lg);
+    box-shadow: var(--edge);
+}
+.pv-stat-ico {
+    width: 30px; height: 30px; margin: 0 auto 8px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--acc-08); color: var(--acc); border: 1px solid var(--acc-16);
+}
+.pv-stat-num { font-size: 25px; font-weight: 800; letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: var(--t1); }
+.pv-stat-lbl { margin-top: 3px; font-size: 11.5px; font-weight: 600; color: var(--t3); line-height: 1.3; }
+.pv-cta { width: 100%; margin-top: 16px; }
+
+/* ---------- Balance ---------------------------------------------------- */
+.balance-hero { margin-top: 12px; }
+.balance-grid {
+    position: relative;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    background: var(--glass-1), var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--edge), var(--e2);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+}
+.balance-grid::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: conic-gradient(from 210deg at 50% 0%, rgba(0,163,255,.55), rgba(255,255,255,.05) 30%, rgba(0,163,255,.30) 55%, rgba(255,255,255,.04) 78%, rgba(0,163,255,.55));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+}
+.balance-item {
+    position: relative; overflow: hidden;
+    padding: 15px 10px 14px; text-align: center;
+    border-right: 1px solid var(--line);
+}
+.balance-item:last-child { border-right: 0; }
+.balance-item::before {
+    content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+}
+.coin {
+    width: 36px; height: 36px; border-radius: 12px; margin: 0 auto 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 750; letter-spacing: -.02em;
+    box-shadow: var(--edge), inset 0 -6px 14px -8px rgba(0,0,0,.6);
+}
+.coin-rub  { background: linear-gradient(150deg, rgba(224,116,90,.26), rgba(224,116,90,.10)); color: #f0917a; }
+.coin-usdt { background: linear-gradient(150deg, rgba(47,185,140,.26), rgba(47,185,140,.10)); color: #4fd3a5; }
+.coin-ton  { background: linear-gradient(150deg, rgba(0,158,234,.26), rgba(0,158,234,.10)); color: #35b4f5; }
+.balance-item .amt {
+    font-size: 17px; font-weight: 700; letter-spacing: -.028em;
+    font-variant-numeric: tabular-nums; line-height: 1.15;
+    background: linear-gradient(180deg, #ffffff, rgba(255,255,255,.74));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.balance-item small { display: block; font-size: 10.5px; font-weight: 600; color: var(--t3); margin-top: 2px; letter-spacing: .06em; }
+.hero-actions { display: flex; gap: 9px; margin-top: 10px; }
+.hero-actions .btn { flex: 1; }
+
+/* ---------- Grouped list (profile menu) -------------------------------- */
+.menu-list {
+    position: relative;
+    margin-top: 12px; background: var(--glass-1), var(--surface);
+    border: 1px solid var(--line); border-radius: var(--r-xl);
+    overflow: hidden; box-shadow: var(--edge), var(--e2);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+}
+.menu-row {
+    position: relative; overflow: hidden; width: 100%;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; text-align: left;
+    border-bottom: 1px solid var(--line);
+    transition: background .18s;
+}
+.menu-row:last-child { border-bottom: 0; }
+.menu-row:active { background: var(--fill); }
+.menu-ico {
+    width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    box-shadow: var(--edge);
+}
+.menu-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.menu-txt > span { font-size: 15.5px; font-weight: 550; letter-spacing: -.012em; }
+.menu-txt small { font-size: 12px; color: var(--t3); font-weight: 400; }
+.menu-val { font-size: 14.5px; color: var(--t3); white-space: nowrap; }
+.menu-chev { color: var(--t3); font-size: 20px; line-height: 1; margin-left: -2px; font-weight: 300; }
+
+/* ---------- Tab bar ---------------------------------------------------- */
+nav {
+    position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom));
+    z-index: 50; display: flex; align-items: stretch; gap: 2px;
+    padding: 6px; border-radius: 24px;
+    background: var(--chrome-2);
+    border: 1px solid var(--line-2);
+    -webkit-backdrop-filter: saturate(180%) blur(26px);
+    backdrop-filter: saturate(180%) blur(26px);
+    box-shadow: var(--e3);
+}
+.nav-ind { display: none; }
+nav button {
+    position: relative; overflow: hidden; flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 7px 2px 6px; border-radius: 18px;
+    color: var(--t3); font-size: 9.5px; font-weight: 650;
+    letter-spacing: .04em; text-transform: uppercase;
+    transition: color .22s var(--sp), transform .22s var(--sp);
+}
+nav button:active { transform: scale(.94); }
+nav button .nav-icon {
+    width: 42px; height: 28px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .26s var(--sp), color .26s;
+}
+nav button.active { color: var(--acc); }
+nav button.active .nav-icon {
+    background: var(--acc-grad); color: #fff;
+    box-shadow: 0 6px 18px -6px rgba(0,163,255,.85), var(--edge-2);
+    animation: navPop .42s var(--sp-pop);
+}
+@keyframes navPop { 0% { transform: scale(.86); } 60% { transform: scale(1.06); } 100% { transform: scale(1); } }
+nav button .nav-icon::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(115deg, transparent 32%, rgba(255,255,255,.28) 48%, transparent 62%);
+    background-size: 260% 100%; background-position: 150% 0; opacity: 0;
+}
+nav button.active .nav-icon::after { opacity: 1; animation: sheen 3.4s var(--sp) infinite; }
+@keyframes sheen { 0% { background-position: 150% 0; } 55%, 100% { background-position: -60% 0; } }
+.t2.active {
+    background: var(--acc-grad); color: #fff;
+    box-shadow: 0 4px 14px -5px rgba(0,163,255,.7), var(--edge);
+}
+body.light nav button { color: #56678A; }
+body.light nav button.active { color: var(--acc); }
+
+/* ---------- Segmented control ------------------------------------------ */
+.t2 {
+    background: none; border: none; color: var(--t3);
+    font-weight: 650; font-size: 13.5px; padding: 8px 12px;
+    border-radius: var(--r-sm); cursor: pointer; margin: 0; width: auto;
+    transition: color .2s, background .2s;
+}
+.t2.active { background: var(--acc); color: #fff; }
+
+/* ---------- Gift cards ------------------------------------------------- */
+.gifts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.gift-card {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: var(--glass-1), var(--surface); border: 1px solid var(--line);
+    padding: 16px 8px 13px; border-radius: var(--r-lg); text-align: center;
+    box-shadow: var(--edge), var(--e1);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    backdrop-filter: blur(12px) saturate(150%);
+    transition: transform .22s var(--sp), border-color .22s, background .22s, box-shadow .22s;
+}
+.gift-card:active { transform: scale(.96); }
+.gift-card.selected {
+    border-color: transparent;
+    background: var(--acc-08), var(--surface);
+    box-shadow: 0 0 0 1.5px var(--acc), 0 10px 30px -10px rgba(0,163,255,.7), var(--edge);
+}
+.gift-card .check {
+    position: absolute; top: 8px; right: 8px; width: 22px; height: 22px;
+    border-radius: 50%; background: var(--acc-grad); display: none;
+    align-items: center; justify-content: center; color: #fff; font-weight: 800;
+    box-shadow: 0 3px 10px -2px rgba(0,163,255,.9);
+}
+.gift-card.selected .check { display: flex; animation: pop .28s var(--sp-pop); }
+.gift-card .orb {
+    width: 72px; height: 72px; border-radius: 22px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    background: var(--surface-2); border: 1px solid var(--line); font-size: 34px;
+    transition: transform .34s var(--sp-pop);
+}
+.gift-card:active .orb { transform: scale(1.07); }
+.gift-card.selected .orb { transform: scale(1.03); }
+.gift-card .orb-img { width: 88%; height: 88%; object-fit: contain; }
+.gift-card .name { font-weight: 620; font-size: 12.5px; margin-top: 9px; letter-spacing: -.01em; line-height: 1.25; }
+.gift-card .small { font-size: 11px; color: var(--t3); margin-top: 2px; }
+@keyframes pop { 0% { transform: scale(0); } 60% { transform: scale(1.22); } 100% { transform: scale(1); } }
+
+/* ---------- Exchange card ---------------------------------------------- */
+.ex-card { margin-top: 13px; padding-top: 13px; border-top: 1px solid var(--line); }
+.ex-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+.ex-side { text-align: center; min-width: 0; }
+.ex-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--t3); margin-bottom: 7px;
+}
+.ex-side .avatar { margin: 0 auto 6px; }
+.ex-name {
+    font-size: 12.5px; font-weight: 600; color: var(--t1);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ex-item {
+    display: inline-flex; align-items: center; gap: 5px; justify-content: center;
+    margin-top: 7px; padding: 4px 10px; border-radius: 999px;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    font-size: 12px; font-weight: 600; color: var(--t2);
+    max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    box-shadow: var(--edge);
+}
+.ex-arrow {
+    color: var(--t3); display: flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--surface-2); border: 1px solid var(--line);
+}
+
+/* ---------- Sheets & overlays ------------------------------------------- */
+[id$="-overlay"] {
+    position: fixed; inset: 0; z-index: 60;
+    display: none; align-items: flex-end; justify-content: center;
+    background: rgba(4,10,26,.62);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    backdrop-filter: blur(8px) saturate(140%);
+}
+[id$="-overlay"].open { display: flex; animation: ovIn .3s var(--sp); }
+.overlay-fade-out { animation: ovFade .24s ease-in forwards; }
+@keyframes ovIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ovFade { to { opacity: 0; } }
+
+.wallet-sheet {
+    position: relative;
+    width: 100%; max-width: 520px;
+    background: linear-gradient(180deg, rgba(30,30,36,.96), rgba(13,13,16,.98));
+    border: 1px solid var(--line-2); border-bottom: 0;
+    border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+    padding: 10px 18px calc(24px + env(safe-area-inset-bottom));
+    max-height: 88vh; overflow-y: auto;
+    box-shadow: 0 -20px 60px -10px rgba(0,0,0,.8), var(--edge-2);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+    animation: sheetIn .42s var(--sp);
+}
+.wallet-sheet::before {
+    content: ''; position: absolute; top: 0; left: 14%; right: 14%; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+}
+@keyframes sheetIn { from { transform: translateY(100%); } to { transform: none; } }
+.sheet-close-anim { animation: sheetDown .3s cubic-bezier(.5,-.2,.8,.4) forwards; }
+@keyframes sheetDown { to { transform: translateY(100%); opacity: .3; } }
+.sheet-handle {
+    display: block; width: 38px; height: 5px; border-radius: 999px;
+    background: var(--line-2); margin: 0 auto 16px; flex-shrink: 0;
+}
+#ticket-overlay .wallet-sheet {
+    height: min(86vh, 640px); max-height: 86vh; overflow: hidden;
+    display: flex; flex-direction: column;
+}
+#ticket-thread { flex: 1; min-height: 0; overflow-y: auto; }
+.ws-head { display: flex; align-items: center; gap: 13px; }
+.ws-coin {
+    width: 42px; height: 42px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    font-size: 18px; font-weight: 750; color: var(--t1);
+    box-shadow: var(--edge);
+}
+.ws-title { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+.ws-sub { font-size: 13px; color: var(--t3); margin-top: 1px; }
+.ws-close {
+    margin-left: auto; width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    background: var(--surface-2); border: 1px solid var(--line); color: var(--t2);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s var(--sp), color .2s;
+}
+.ws-close:active { transform: scale(.88); color: var(--t1); }
+
+/* ---------- Inputs ------------------------------------------------------ */
+input[type="text"], input[type="number"], textarea {
+    width: 100%; margin-top: 12px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 14px 15px;
+    font-size: 16px; color: var(--t1); outline: none; resize: none;
+    transition: border-color .22s, background .22s, box-shadow .22s;
+}
+input::placeholder, textarea::placeholder { color: var(--t3); }
+input:focus, textarea:focus {
+    border-color: var(--acc-40); background: var(--surface-3);
+    box-shadow: 0 0 0 3.5px var(--acc-16);
+}
+body.light input, body.light textarea { background: var(--surface-2); border-color: rgba(0,0,0,.06); }
+body.light input:focus, body.light textarea:focus { background: #fff; }
+
+.addr-box {
+    position: relative; overflow: hidden; margin-top: 12px; cursor: pointer;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 12px 13px;
+    transition: border-color .25s, transform .2s var(--sp);
+}
+.addr-box:active { transform: scale(.985); }
+.addr-label { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.addr-label > span:first-child { font-size: 11.5px; font-weight: 600; color: var(--t3); letter-spacing: .01em; }
+.addr-hint { font-size: 11px; color: var(--acc); }
+.addr-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.addr-text {
+    flex: 1; min-width: 0; font-size: 13.5px; font-weight: 600;
+    word-break: break-all; color: var(--t1); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.addr-copy {
+    width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+    background: var(--surface-3); border: 1px solid var(--line); color: var(--t2);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s var(--sp), color .2s, border-color .2s;
+}
+.addr-box.copied { border-color: rgba(50,215,75,.45); }
+.addr-box.copied .addr-hint, .addr-box.copied .addr-text, .addr-box.copied .addr-copy { color: var(--ok); }
+.addr-box.copied .addr-copy { border-color: rgba(50,215,75,.45); transform: scale(1.06); }
+
+.bank-hint {
+    display: flex; align-items: center; gap: 9px; margin-top: 12px;
+    padding: 12px 13px; border-radius: var(--r-md);
+    background: var(--acc-08); border: 1px solid var(--acc-16);
+    color: var(--t2); font-size: 12.5px; line-height: 1.45;
+}
+.bank-hint svg { flex-shrink: 0; color: var(--acc); }
+
+.link-box {
+    display: flex; align-items: flex-start; gap: 9px;
+    margin-top: 13px; padding: 12px 13px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: var(--r-md); font-size: 12.5px; word-break: break-all; color: var(--t2);
+}
+.link-box svg { flex-shrink: 0; margin-top: 2px; color: var(--t3); }
+
+.quick-amounts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.quick-amounts button {
+    position: relative; overflow: hidden;
+    flex: 1 1 auto; min-width: 74px; padding: 10px 12px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    border-radius: var(--r-sm); color: var(--t2);
+    font-size: 13.5px; font-weight: 600; font-variant-numeric: tabular-nums;
+    transition: transform .2s var(--sp), color .2s, border-color .2s;
+}
+.quick-amounts button:active { transform: scale(.95); color: var(--acc); border-color: var(--acc-28); }
+
+/* ---------- Support / chat --------------------------------------------- */
+.chat-list { display: flex; flex-direction: column; gap: 9px; }
+.chat-item {
+    position: relative; overflow: hidden; width: 100%; text-align: left;
+    background: var(--glass-1), var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: 13px; box-shadow: var(--edge), var(--e1);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    backdrop-filter: blur(12px) saturate(150%);
+    transition: transform .2s var(--sp), border-color .2s;
+}
+.chat-item:active { transform: scale(.985); }
+.ticket-row { width: 100%; text-align: left; cursor: pointer; font-family: inherit; color: inherit; }
+.chat-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+.chat-subject { font-size: 14.5px; font-weight: 650; letter-spacing: -.01em; }
+.chat-time { font-size: 11.5px; color: var(--t3); white-space: nowrap; }
+.ticket-preview {
+    font-size: 13px; color: var(--t2); line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ticket-preview.mine { color: var(--t1); }
+.ticket-foot { display: flex; align-items: center; gap: 9px; margin-top: 9px; }
+.ticket-count { font-size: 11.5px; color: var(--t3); }
+
+.chat-bubble {
+    max-width: 82%; padding: 10px 13px; border-radius: 18px;
+    font-size: 14px; line-height: 1.45; word-wrap: break-word;
+}
+.chat-bubble.me {
+    margin-left: auto; background: var(--acc); color: #fff;
+    border-bottom-right-radius: 6px;
+}
+.chat-bubble.admin, .chat-bubble:not(.me) {
+    margin-right: auto; background: var(--surface-2);
+    border: 1px solid var(--line); border-bottom-left-radius: 6px;
+}
+.ticket-msg-time { font-size: 10.5px; color: var(--t3); margin-top: 4px; text-align: right; }
+.ticket-compose {
+    display: flex; align-items: flex-end; gap: 9px; margin-top: 14px;
+    padding: 7px 7px 7px 13px; border-radius: var(--r-lg);
+    background: var(--surface-2); border: 1px solid var(--line);
+}
+.ticket-compose textarea { margin: 0; padding: 8px 0; background: none; border: 0; box-shadow: none; min-height: 24px; }
+.ticket-compose textarea:focus { box-shadow: none; background: none; }
+.ticket-send {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: var(--acc); color: #fff; display: flex; align-items: center; justify-content: center;
+    transition: transform .2s var(--sp), opacity .2s;
+}
+.ticket-send:active { transform: scale(.9); }
+
+/* ---------- Empty states ------------------------------------------------ */
+.empty {
+    text-align: center; padding: 48px 20px;
+    color: var(--t3); font-size: 14px; line-height: 1.6;
+}
+.empty .big {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 92px; height: 92px; border-radius: 32px; margin-bottom: 18px;
+    background: radial-gradient(circle at 35% 28%, rgba(0,163,255,.26), rgba(255,255,255,.02) 70%);
+    border: 1px solid var(--line-2); color: var(--acc);
+    box-shadow: 0 16px 40px -16px rgba(0,163,255,.55), var(--edge);
+    animation: floaty 4.6s ease-in-out infinite;
+}
+.empty b { color: var(--acc); font-weight: 650; }
+.empty .big svg { width: 46px; height: 46px; stroke-width: 1.5; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-7px) rotate(2deg); } }
+
+/* ---------- Toast ------------------------------------------------------- */
+#toast {
+    position: fixed; left: 16px; right: 16px; top: calc(12px + env(safe-area-inset-top));
+    z-index: 200; display: flex; align-items: center; gap: 10px;
+    padding: 13px 15px; border-radius: var(--r-lg);
+    background: linear-gradient(180deg, rgba(12,26,58,.94), rgba(9,20,46,.96));
+    border: 1px solid var(--line-2);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    backdrop-filter: blur(26px) saturate(180%);
+    box-shadow: 0 16px 46px -12px rgba(0,0,0,.8), var(--edge-2);
+    font-size: 14px; font-weight: 550; color: var(--t1);
+    transform: translateY(-140%); opacity: 0;
+    transition: transform .42s var(--sp), opacity .3s;
+    pointer-events: none; overflow: hidden;
+}
+#toast svg { flex-shrink: 0; filter: drop-shadow(0 0 8px currentColor); }
+#toast.show { transform: none; opacity: 1; }
+.toast-progress {
+    position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+    background: var(--acc-grad); transform-origin: left; transform: scaleX(0);
+    opacity: .9;
+}
+#toast.show .toast-progress { animation: toastBar 2.6s linear forwards; }
+@keyframes toastBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* ---------- Confetti ---------------------------------------------------- */
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 300; }
+.confetti-piece { position: absolute; width: 8px; height: 12px; border-radius: 2px; opacity: 0; }
+
+/* ---------- Skeletons --------------------------------------------------- */
+.sk {
+    background: linear-gradient(100deg, var(--surface) 30%, var(--surface-3) 50%, var(--surface) 70%);
+    background-size: 220% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer { 0% { background-position: 120% 0; } 100% { background-position: -60% 0; } }
+.sk-row {
+    display: flex; gap: 13px; align-items: center; padding: 13px; margin-bottom: 10px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+}
+.sk-orb { width: 54px; height: 54px; border-radius: var(--r-md); flex-shrink: 0; }
+.sk-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.sk-l1 { height: 12px; width: 55%; border-radius: 6px; }
+.sk-l2 { height: 10px; width: 35%; border-radius: 5px; }
+
+/* ---------- Entry animation --------------------------------------------- */
+.enter { animation: enterUp .5s var(--sp) both; }
+@keyframes enterUp { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: none; } }
+.gifts-grid .gift-card.enter:nth-child(1) { animation-delay: 0ms; }
+.gifts-grid .gift-card.enter:nth-child(2) { animation-delay: 55ms; }
+.gifts-grid .gift-card.enter:nth-child(3) { animation-delay: 110ms; }
+.gifts-grid .gift-card.enter:nth-child(4) { animation-delay: 165ms; }
+.gifts-grid .gift-card.enter:nth-child(5) { animation-delay: 220ms; }
+.gifts-grid .gift-card.enter:nth-child(6) { animation-delay: 275ms; }
+.gifts-grid .gift-card.enter:nth-child(7) { animation-delay: 330ms; }
+.gifts-grid .gift-card.enter:nth-child(8) { animation-delay: 385ms; }
+.stagger > * { animation: enterUp .5s var(--sp) both; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 55ms; }
+.stagger > *:nth-child(3) { animation-delay: 110ms; }
+.stagger > *:nth-child(4) { animation-delay: 165ms; }
+.stagger > *:nth-child(5) { animation-delay: 220ms; }
+.stagger > *:nth-child(6) { animation-delay: 275ms; }
+
+/* ---------- Ripple ------------------------------------------------------ */
+.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.18); transform: scale(0); animation: ripple .6s ease-out; pointer-events: none; }
+@keyframes ripple { to { transform: scale(2.6); opacity: 0; } }
+
+/* ---------- Avatars ----------------------------------------------------- */
+.avatar { display: inline-flex; align-items: center; justify-content: center; overflow: hidden; background: var(--surface-3); color: var(--t2); font-weight: 700; flex-shrink: 0; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar.mini { width: 18px; height: 18px; border-radius: 50%; font-size: 9px; }
+.avatar.ex { width: 42px; height: 42px; border-radius: 15px; font-size: 15px; border: 1px solid var(--line); }
+.tg-av {
+    width: 38px; height: 38px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface-3); color: var(--t2); font-weight: 700; font-size: 14px;
+}
+.tg-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tg-av.ex { width: 42px; height: 42px; border-radius: 15px; font-size: 15px; border: 1px solid var(--line); }
+.tg-av.mini { width: 18px; height: 18px; font-size: 9px; }
+.ex-side .tg-av { margin: 0 auto 6px; }
+.mini-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.who { display: block; font-size: 10.5px; font-weight: 700; color: var(--acc); margin-bottom: 4px; letter-spacing: .04em; text-transform: uppercase; }
+.emoji { font-size: 42px; line-height: 1.1; display: inline-block; }
+
+/* ---------- Rarity orbs -------------------------------------------------- */
+.orb-nft    { background: rgba(100,210,255,.08); }
+.orb-legend { background: rgba(255,214,10,.08); }
+.orb-rare   { background: var(--acc-16); }
+.orb-common { background: var(--surface-2); }
+.orb-img { width: 88%; height: 88%; object-fit: contain; display: block; }
+
+/* ---------- Micro-states ------------------------------------------------- */
+.amt.bump { animation: numBump .5s var(--sp-pop); }
+@keyframes numBump { 0% { transform: scale(1); } 45% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.icon-btn.spin svg { animation: spin .6s ease; }
+.cf { position: absolute; width: 9px; height: 14px; border-radius: 3px; top: -20px; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: .7; } }
+body.is-hidden *, body.is-hidden *::before, body.is-hidden *::after { animation-play-state: paused !important; }
+
+/* ---------- Light theme --------------------------------------------------
+   Rebuilt from scratch: iOS system palette, flat white surfaces, no dark
+   vignette, no dark-mode glass tricks carried over.
+   -------------------------------------------------------------------------- */
+body.light {
+    color-scheme: light;
+
+    --bg:        #EFF4FB;
+    --bg-lift:   #ffffff;
+
+    --surface:   #ffffff;
+    --surface-2: #F3F7FD;
+    --surface-3: #E9F0FA;
+    --fill:      rgba(0,0,0,.035);
+
+    --line:      rgba(0,0,0,.065);
+    --line-2:    rgba(0,0,0,.11);
+
+    --t1: #000000;
+    --t2: #3c3c43;
+    --t3: #71717a;
+
+    --acc:      #0072CC;
+    --acc-ink:  #ffffff;
+    --acc-08:   rgba(0,114,204,.09);
+    --acc-16:   rgba(0,114,204,.14);
+    --acc-28:   rgba(0,114,204,.24);
+    --acc-40:   rgba(0,114,204,.38);
+    --acc-grad: linear-gradient(135deg, #0072CC 0%, #0089E8 55%, #0060B0 100%);
+    --acc-glow: 0 8px 22px -9px rgba(0,114,204,.45);
+
+    --glass-1: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.74));
+    --glass-2: linear-gradient(180deg, #ffffff, #F3F8FF);
+    --edge:    inset 0 1px 0 rgba(255,255,255,.9);
+    --edge-2:  inset 0 1px 0 rgba(255,255,255,1);
+
+    --chrome:   rgba(250,250,252,.80);
+    --chrome-2: rgba(255,255,255,.88);
+    --grain:    .012;
+
+    --ok:   #0d7a26;  --ok-14:   rgba(13,122,38,.12);
+    --warn: #8a6200;  --warn-14: rgba(138,98,0,.13);
+    --bad:  #c0271c;  --bad-14:  rgba(192,39,28,.11);
+
+    --ton: #00689b;  --ton-14:  rgba(0,104,155,.12);
+    --usdt:#0c6e54; --usdt-14: rgba(12,110,84,.12);
+    --rub: #a8442e;  --rub-14:  rgba(168,68,46,.12);
+
+    --e1: 0 1px 2px rgba(6,18,40,.05);
+    --e2: 0 1px 2px rgba(6,18,40,.05), 0 12px 28px -18px rgba(6,18,40,.28);
+    --e3: 0 8px 26px -10px rgba(6,18,40,.20), 0 28px 60px -24px rgba(6,18,40,.26);
+}
+
+/* ambient light — soft daylight wash instead of neon blobs */
+body.light .aurora {
+    background: radial-gradient(130% 70% at 50% -10%, #ffffff 0%, #F6FAFF 42%, #EFF4FB 82%);
+}
+body.light .aurora .blob { mix-blend-mode: multiply; opacity: .30; filter: blur(80px); }
+body.light .blob1 { background: radial-gradient(circle, rgba(0,163,255,.26), rgba(0,163,255,0) 66%); }
+body.light .blob2 { background: radial-gradient(circle, rgba(0,163,255,.17), rgba(0,163,255,0) 66%); }
+body.light .blob3 { background: radial-gradient(circle, rgba(0,196,255,.10), rgba(0,196,255,0) 66%); }
+body.light .aurora::after {
+    background: radial-gradient(125% 85% at 50% 0%, transparent 58%, rgba(214,226,244,.75) 100%);
+}
+
+/* surfaces — flat white cards, iOS hairline + soft shadow */
+body.light .trade-card, body.light .profile-card, body.light .balance-grid,
+body.light .menu-list, body.light .gift-card, body.light .chat-item {
+    background: #fff; border-color: rgba(0,0,0,.055);
+    box-shadow: 0 1px 2px rgba(6,18,40,.05), 0 12px 28px -20px rgba(6,18,40,.30);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+body.light .mini-orb, body.light .orb, body.light .ws-coin, body.light .menu-ico,
+body.light .ex-item, body.light .ex-arrow, body.light .ask-chip, body.light .chip,
+body.light .quick-amounts button, body.light .addr-copy {
+    background: var(--surface-2); border-color: rgba(0,0,0,.05);
+    box-shadow: none;
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+body.light .icon-btn {
+    background: #fff; border-color: rgba(0,0,0,.06);
+    box-shadow: 0 1px 2px rgba(6,18,40,.05);
+}
+body.light .profile-card::before { background: radial-gradient(circle, rgba(0,114,204,.10), rgba(0,114,204,0) 70%); }
+body.light .balance-grid::before {
+    background: conic-gradient(from 210deg at 50% 0%, rgba(0,114,204,.50), rgba(0,0,0,.05) 30%, rgba(0,114,204,.24) 55%, rgba(0,0,0,.04) 78%, rgba(0,114,204,.50));
+}
+body.light .trade-card::before, body.light .balance-item::before { display: none; }
+body.light .avatar.brand, body.light .pf-avatar {
+    box-shadow: 0 6px 18px -8px rgba(0,114,204,.55), inset 0 1px 0 rgba(255,255,255,.5);
+    border-color: rgba(10,30,70,.08);
+}
+body.light .empty .big {
+    background: radial-gradient(circle at 35% 28%, rgba(0,114,204,.16), rgba(255,255,255,.9) 72%);
+    border-color: rgba(0,0,0,.06);
+    box-shadow: 0 12px 30px -18px rgba(0,114,204,.45);
+}
+
+/* ink */
+body.light .t1 { color: #000; }
+body.light .ask-chip.t-ton { color: var(--ton); }
+body.light .ask-chip.t-usdt { color: var(--usdt); }
+body.light .ask-chip.t-rub { color: var(--rub); }
+body.light .ask-chip.t-gift { color: #1257CE; }
+body.light .coin-rub  { color: #a8442e; background: linear-gradient(150deg, rgba(184,85,58,.18), rgba(184,85,58,.06)); }
+body.light .coin-usdt { color: #0c6e54; background: linear-gradient(150deg, rgba(47,185,140,.18), rgba(47,185,140,.06)); }
+body.light .coin-ton  { color: #00689b; background: linear-gradient(150deg, rgba(0,158,234,.18), rgba(0,158,234,.06)); }
+body.light .balance-item .amt {
+    background: linear-gradient(180deg, #0a0a0b, rgba(10,10,11,.68));
+    -webkit-background-clip: text; background-clip: text;
+}
+body.light .brand-name {
+    background: linear-gradient(180deg, #0a0a0b, rgba(10,10,11,.70));
+    -webkit-background-clip: text; background-clip: text;
+}
+body.light .menu-row:active { background: rgba(0,0,0,.035); }
+body.light .gift-card.selected {
+    background: #fff;
+    box-shadow: 0 0 0 1.5px var(--acc), 0 10px 26px -16px rgba(0,114,204,.55);
+}
+body.light .trade-card .actions .btn-grad { box-shadow: 0 6px 16px -8px rgba(0,114,204,.55), inset 0 1px 0 rgba(255,255,255,.35); }
+
+/* chrome */
+body.light header { background: var(--chrome); }
+body.light nav { background: var(--chrome-2); box-shadow: 0 8px 26px -10px rgba(6,18,40,.22), 0 0 0 1px rgba(0,0,0,.04); }
+body.light nav button { color: #56678A; }
+body.light nav button.active { color: var(--acc); }
+body.light nav button.active .nav-icon { box-shadow: 0 5px 14px -7px rgba(0,114,204,.65), inset 0 1px 0 rgba(255,255,255,.35); }
+body.light .t2.active { color: #fff; }
+body.light .btn { background: #fff; border-color: rgba(0,0,0,.06); box-shadow: 0 1px 2px rgba(6,18,40,.05); }
+body.light .btn-ghost { background: var(--surface-2); }
+body.light .btn-green {
+    background: linear-gradient(135deg, #35cf5c, #17a835); color: #fff;
+    box-shadow: 0 8px 20px -10px rgba(22,168,52,.55), inset 0 1px 0 rgba(255,255,255,.3);
+}
+body.light .btn-grad {
+    background: var(--acc-grad); color: #fff;
+    border-color: transparent;
+    box-shadow: 0 10px 26px -12px rgba(0,114,204,.55), inset 0 1px 0 rgba(255,255,255,.3);
+}
+body.light input, body.light textarea { background: var(--surface-2); border-color: rgba(0,0,0,.06); }
+body.light input:focus, body.light textarea:focus { background: #fff; }
+body.light .wallet-sheet {
+    background: linear-gradient(180deg, #ffffff, #F5F9FF);
+    border-color: rgba(0,0,0,.07);
+    box-shadow: 0 -18px 50px -16px rgba(6,18,40,.24);
+}
+body.light .wallet-sheet::before { background: linear-gradient(90deg, transparent, rgba(0,0,0,.10), transparent); }
+body.light #toast {
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 14px 36px -14px rgba(6,18,40,.26), 0 0 0 1px rgba(0,0,0,.05);
+}
+body.light .sk { background: linear-gradient(100deg, #ececf0 30%, #f6f6f8 50%, #ececf0 70%); background-size: 220% 100%; }
+body.light .bank-hint { background: var(--acc-08); }
+body.light .pill.live { background: var(--ok-14); color: var(--ok); }
+body.light .pill.live .dot { box-shadow: 0 0 6px rgba(22,168,52,.45); }
+body.light .offer-box, body.light .info-box, body.light .link-box { background: var(--surface-2); }
+body.light .feed-divider::after { background: linear-gradient(90deg, var(--line-2), transparent); }
+
+/* ---------- Accessibility ------------------------------------------------ */
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* ================= Theme v2: obsidian + neon ================= */
+:root {
+  --bg:#050A15; --bg-lift:#0A0F1D;
+  --surface:#0B1220; --surface-2:#0F1828; --surface-3:#142033;
+  --fill:rgba(120,190,255,.055);
+  --line:rgba(120,190,255,.10); --line-2:rgba(140,205,255,.18);
+  --t1:#F4F9FF; --t2:#A3B6CE; --t3:#7C90A8;
+  --acc:#00A3FF;
+  --acc-08:rgba(0,163,255,.10); --acc-16:rgba(0,163,255,.16);
+  --acc-28:rgba(0,163,255,.28); --acc-40:rgba(0,163,255,.40);
+  --acc-grad:linear-gradient(135deg,#00A3FF 0%,#0089E8 55%,#0072CC 100%);
+  --acc-glow:0 8px 30px -6px rgba(0,163,255,.70);
+  --glass-1:linear-gradient(180deg,rgba(120,190,255,.07),rgba(130,200,255,.02));
+  --glass-2:linear-gradient(180deg,rgba(140,205,255,.11),rgba(140,205,255,.04));
+  --edge:inset 0 1px 0 rgba(150,215,255,.12);
+  --edge-2:inset 0 1px 0 rgba(165,225,255,.22);
+  --chrome:rgba(5,10,21,.72); --chrome-2:rgba(8,14,27,.84);
+  --grain:.035;
+}
+.aurora {
+  background:
+    radial-gradient(120% 62% at 50% -14%, #0A1730 0%, #050C1A 46%, var(--bg) 80%),
+    var(--bg);
+}
+.aurora::before {
+  content:''; position:absolute; inset:-35%; pointer-events:none;
+  background:
+    repeating-linear-gradient(74deg,
+      rgba(0,163,255,0) 0 46px,
+      rgba(0,163,255,.085) 56px 62px,
+      rgba(190,235,255,.05) 74px 78px,
+      rgba(0,163,255,0) 96px 150px),
+    repeating-linear-gradient(-58deg,
+      rgba(0,120,214,0) 0 90px,
+      rgba(0,140,235,.055) 110px 118px,
+      rgba(0,163,255,0) 140px 210px);
+  filter:blur(22px) saturate(160%);
+  opacity:.75; transform:rotate(-6deg) scale(1.15);
+  -webkit-mask-image:radial-gradient(115% 78% at 50% 8%, #000 0%, rgba(0,0,0,.55) 46%, transparent 82%);
+  mask-image:radial-gradient(115% 78% at 50% 8%, #000 0%, rgba(0,0,0,.55) 46%, transparent 82%);
+  animation:silkFlow 46s linear infinite;
+}
+@keyframes silkFlow {
+  from { transform:rotate(-6deg) scale(1.15) translate3d(0,0,0); }
+  to   { transform:rotate(-6deg) scale(1.15) translate3d(-150px,-70px,0); }
+}
+.blob1 { background:radial-gradient(circle,rgba(0,163,255,.42),rgba(0,163,255,0) 66%); filter:blur(72px); }
+.blob2 { background:radial-gradient(circle,rgba(0,220,255,.30),rgba(0,220,255,0) 66%); filter:blur(72px); }
+.blob3 { background:radial-gradient(circle,rgba(0,110,220,.34),rgba(0,110,220,0) 66%); filter:blur(80px); }
+.aurora::after {
+  background:
+    radial-gradient(125% 85% at 50% 0%, transparent 50%, rgba(0,0,0,.68) 100%),
+    linear-gradient(180deg, rgba(0,163,255,.05), transparent 28%);
+}
+.avatar.brand {
+  position:relative; background:#fff;
+  border:1px solid rgba(165,225,255,.30);
+  box-shadow:0 0 0 1px rgba(0,163,255,.25), 0 0 26px rgba(0,163,255,.55), 0 12px 34px -12px rgba(0,163,255,.85);
+}
+.avatar.brand::after {
+  content:''; position:absolute; inset:-14px; border-radius:26px; z-index:-1; pointer-events:none;
+  background:radial-gradient(circle,rgba(0,163,255,.55),rgba(0,163,255,0) 70%); filter:blur(9px);
+}
+.btn {
+  background:var(--glass-2), rgba(11,18,32,.50);
+  border:1px solid rgba(140,205,255,.14);
+  -webkit-backdrop-filter:blur(20px) saturate(170%);
+  backdrop-filter:blur(20px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(180,232,255,.16), inset 0 -10px 22px rgba(0,20,45,.35), 0 14px 30px -22px rgba(0,0,0,.95);
+}
+.btn-grad {
+  background:linear-gradient(135deg, rgba(0,163,255,.96) 0%, rgba(0,137,232,.96) 55%, rgba(0,114,204,.98) 100%);
+  border:1px solid rgba(160,225,255,.28);
+  box-shadow:0 12px 34px -12px rgba(0,163,255,.90), inset 0 1px 0 rgba(255,255,255,.38), inset 0 -12px 24px rgba(0,40,90,.35);
+}
+.btn-grad::after {
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 42%);
+}
+.trade-card, .profile-card { box-shadow: var(--edge), var(--e2), 0 0 0 1px rgba(0,163,255,.07), 0 20px 44px -30px rgba(0,163,255,.55); }
+.trade-card.showcase { box-shadow:none; }
+nav { -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%); }
+body.light {
+  --acc:#0072CC; --acc-grad:linear-gradient(135deg,#0072CC 0%,#0068BA 55%,#0060B0 100%);
+  --bg:#EFF4FB; --surface:#FFFFFF; --surface-2:#F3F7FD; --surface-3:#E9F0FA;
+}
+body.light .aurora { background:radial-gradient(120% 62% at 50% -14%, #E6EFFC 0%, #EFF4FB 55%, var(--bg) 85%); }
+body.light .aurora::before { opacity:.22; }
+body.light .avatar.brand { box-shadow:0 0 0 1px rgba(0,114,204,.18), 0 8px 26px -10px rgba(0,114,204,.55); }
+body.light .btn { background:#fff; backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:0 1px 2px rgba(6,18,40,.06); }
+body.light .btn-grad { box-shadow:0 10px 26px -10px rgba(0,114,204,.55), inset 0 1px 0 rgba(255,255,255,.35); }
+
+/* ===== Buttons v3: guaranteed legible in both themes ===== */
+.btn {
+  background:linear-gradient(180deg, rgba(23,37,64,.94), rgba(12,20,38,.94));
+  color:var(--t1);
+  border:1px solid rgba(140,205,255,.22);
+  box-shadow:inset 0 1px 0 rgba(180,232,255,.16), 0 12px 26px -20px rgba(0,0,0,.95);
+}
+.btn-grad {
+  background:linear-gradient(135deg, rgba(0,163,255,.98) 0%, rgba(0,137,232,.98) 55%, rgba(0,114,204,1) 100%);
+  color:#fff;
+  border:1px solid rgba(160,225,255,.30);
+  box-shadow:0 12px 34px -12px rgba(0,163,255,.90), inset 0 1px 0 rgba(255,255,255,.38);
+}
+.btn-green {
+  background:linear-gradient(135deg, #46e06a, #24b843);
+  color:#05270f;
+  border:1px solid transparent;
+  box-shadow:0 10px 26px -12px rgba(50,215,75,.65), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.btn-danger { background:var(--bad-14); color:var(--bad); border:1px solid transparent; }
+.btn-ghost {
+  background:linear-gradient(180deg, rgba(23,37,64,.72), rgba(12,20,38,.72));
+  color:var(--t1);
+  border:1px solid rgba(140,205,255,.20);
+}
+.trade-card .actions .btn {
+  background:var(--acc-grad); color:var(--acc-ink); border-color:transparent;
+  box-shadow:0 8px 22px -8px rgba(0,163,255,.85), inset 0 1px 0 rgba(255,255,255,.30);
+}
+.trade-card .actions .btn-ghost {
+  background:var(--surface-2); color:var(--t2); border:1px solid var(--line); box-shadow:var(--edge);
+}
+body.light .btn {
+  background:#fff; color:var(--t1); border:1px solid rgba(10,30,70,.14);
+  box-shadow:0 1px 3px rgba(6,18,40,.10);
+}
+body.light .btn-grad {
+  background:linear-gradient(135deg,#0072CC 0%,#0068BA 55%,#0060B0 100%);
+  color:#fff; border:1px solid transparent;
+  box-shadow:0 10px 26px -10px rgba(0,114,204,.60), inset 0 1px 0 rgba(255,255,255,.30);
+}
+body.light .btn-green {
+  background:linear-gradient(135deg,#46e06a,#24b843); color:#05270f; border-color:transparent;
+  box-shadow:0 8px 22px -12px rgba(50,215,75,.55);
+}
+body.light .btn-danger { background:var(--bad-14); color:var(--bad); border-color:transparent; }
+body.light .btn-ghost {
+  background:var(--surface-2); color:var(--t1); border:1px solid rgba(10,30,70,.12);
+}
+body.light .icon-btn,
+body.light .ws-close,
+body.light .chip,
+body.light .pill {
+  background:#fff; border-color:rgba(10,30,70,.12);
+}
+
+/* ===== Deposit: gifts block + bank info ===== */
+.dep-top-right {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+    width: 100%; margin-top: 14px; padding-right: 2px;
+}
+.dep-top-right .btn { width: auto; min-width: 168px; padding: 12px 16px; font-size: 14.5px; }
+.btn.dep-gift {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff; border: 1px solid transparent;
+    box-shadow: 0 12px 28px -12px rgba(139, 92, 246, .7);
+}
+body.light .btn.dep-gift {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff; box-shadow: 0 10px 24px -12px rgba(139, 92, 246, .6);
+}
+.dep-gift-link:active { opacity: .6; }
+.bank-info-box {
+    margin-top: 14px; padding: 15px 16px;
+    border-radius: var(--r-md);
+    background: var(--glass-2), var(--surface-2);
+    border: 1px solid var(--line-2);
+    box-shadow: var(--edge);
+}
+.bank-info-box p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--t1); }
+.bank-info-box p + p { margin-top: 9px; color: var(--t2); font-size: 14px; }
+
+/* profile: extra scroll room so the last settings row clears the tab bar */
+#page-profile { padding-bottom: 26px; }
+#page-profile .menu-list:last-child { margin-bottom: 6px; }
+
+    </style>
+</head>
+<body>
+    <div id="app-loader">
+        <div class="loader-inner">
+            <div class="loader-ring"></div>
+            <div class="loader-bar"><span></span></div>
+        </div>
+    </div>
+    <div class="aurora"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+    <div id="confetti"></div>
+    <div id="toast"><div class="toast-progress"></div></div>
+
+    <header>
+        <div class="avatar brand" id="avatar"><img src="/logo.png?v=6" alt="SupGift"></div>
+        <div class="greet">
+            <div class="hi"><span class="brand-name">SupGift</span></div>
+            <div class="sub" id="user-id" style="display:none"></div>
+                </div>
+        <button class="icon-btn" id="refresh-btn" onclick="refresh(true)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>
+    </header>
+
+
+    <div class="tab-page active" id="page-market">
+        <div class="sec-title">
+            <h3><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg> <span data-i18n="marketTitle">Активные трейды</span></h3>
+            <span class="chip" id="market-count">0</span>
+        </div>
+        <div id="market-list">
+            <div class="sk-row"><div class="sk sk-orb"></div><div class="sk-lines"><div class="sk sk-l1"></div><div class="sk sk-l2"></div></div></div>
+            <div class="sk-row"><div class="sk sk-orb"></div><div class="sk-lines"><div class="sk sk-l1"></div><div class="sk sk-l2"></div></div></div>
+            <div class="sk-row"><div class="sk sk-orb"></div><div class="sk-lines"><div class="sk sk-l1"></div><div class="sk sk-l2"></div></div></div>
+        </div>
+    </div>
+
+    <div class="tab-page" id="page-trades">
+        <div class="sec-title">
+            <h3><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg> <span data-i18n="tradesTitle">Мои сделки</span></h3>
+            <span class="chip" id="trades-count">0</span>
+        </div>
+        <div id="my-trades-list">
+            <div class="sk-row"><div class="sk sk-orb"></div><div class="sk-lines"><div class="sk sk-l1"></div><div class="sk sk-l2"></div></div></div>
+            <div class="sk-row"><div class="sk sk-orb"></div><div class="sk-lines"><div class="sk sk-l1"></div><div class="sk sk-l2"></div></div></div>
+        </div>
+    </div>
+
+    <div class="tab-page" id="page-support">
+        <div class="sec-title">
+            <h3><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M9 15v-2a3 3 0 0 1 6 0v2"/></svg> <span data-i18n="support">Поддержка</span></h3>
+            <span class="chip" id="tickets-count">0</span>
+        </div>
+        <button class="btn btn-grad" style="margin:0 0 12px" onclick="openSupportTicket('general')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> <span data-i18n="newTicket">Создать обращение</span></button>
+        <div class="chat-list" id="support-chat">
+            <div class="sk" style="height:80px;border-radius:18px"></div>
+        </div>
+    </div>
+
+    <div class="tab-page" id="page-profile">
+        <div class="profile-card enter">
+            <div class="pf-avatar" id="profile-avatar"><img id="profile-avatar-img" alt=""></div>
+            <div class="pf-main">
+                <div class="pf-name" id="profile-name">Гость</div>
+                <div class="pf-username" id="profile-username">@—</div>
+                <button class="pf-id" id="profile-id-btn" onclick="copyMyId()"><span data-i18n="myId">ID:</span> <span id="profile-id">…</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            </div>
+        </div>
+
+        <div class="pf-stats enter">
+            <div class="pv-stat"><div class="pv-stat-num" id="my-success">0</div><div class="pv-stat-lbl" data-i18n="pvSuccessful">Успешных сделок</div></div>
+            <div class="pv-stat"><div class="pv-stat-num" id="my-completed">0</div><div class="pv-stat-lbl" data-i18n="pvCompleted">Завершенных сделок</div></div>
+        </div>
+
+        <div class="sec-title" style="margin-top:22px">
+            <h3><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M16 12h.01"/><path d="M2 10h20"/></svg> <span data-i18n="balanceRow">Баланс</span></h3>
+        </div>
+        <div class="balance-hero enter">
+            <div class="balance-grid">
+                <div class="balance-item"><div class="coin coin-rub">₽</div><div class="amt" id="bal-rub">0</div><small>RUB</small></div>
+                <div class="balance-item"><div class="coin coin-usdt">₮</div><div class="amt" id="bal-usdt">0</div><small>USDT</small></div>
+                <div class="balance-item"><div class="coin coin-ton"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#009eea" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 9l-9 12L3 9l9-6z"/><path d="M3 9h18"/><path d="M12 3v18"/></svg></div><div class="amt" id="bal-ton">0</div><small>TON</small></div>
+            </div>
+            <div class="hero-actions">
+                <button class="btn btn-ghost" style="margin:0" onclick="openDepositMenu()"><span data-i18n="deposit">Пополнить</span></button>
+                <button class="btn btn-grad" style="margin:0" onclick="openWithdrawMenu()"><span data-i18n="withdraw">Вывести</span></button>
+            </div>
+        </div>
+
+        <div class="sec-title">
+            <h3><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.63.71 1.06 1.36 1.06H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span data-i18n="settings">Настройки</span></h3>
+        </div>
+        <div class="menu-list enter">
+            <button class="menu-row" id="menu-admin" style="display:none" onclick="openAdminPanel()">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg></span>
+                <span class="menu-txt"><span data-i18n="adminPanel">Админ-панель</span><small data-i18n="adminPanelSub">Поддержка, профили, сделки, промокоды</small></span>
+                <span class="menu-chev">›</span>
+            </button>
+            <button class="menu-row" onclick="openLanguage()">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+                <span class="menu-txt"><span data-i18n="language">Язык</span></span>
+                <span class="menu-val" id="val-lang">Русский</span>
+                <span class="menu-chev">›</span>
+            </button>
+            <button class="menu-row" onclick="toggleTheme()">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#4FC0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span>
+                <span class="menu-txt"><span data-i18n="theme">Тема</span></span>
+                <span class="menu-val" id="val-theme">Тёмная</span>
+                <span class="menu-chev">›</span>
+            </button>
+            <button class="menu-row" onclick="openHistory('purchases')">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3ddc97" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                <span class="menu-txt"><span data-i18n="purchases">Покупки</span></span>
+                <span class="menu-val" id="val-purchases">0</span>
+                <span class="menu-chev">›</span>
+            </button>
+            <button class="menu-row" onclick="openHistory('sales')">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
+                <span class="menu-txt"><span data-i18n="sales">Продажи</span></span>
+                <span class="menu-val" id="val-sales">0</span>
+                <span class="menu-chev">›</span>
+            </button>
+            <button class="menu-row" onclick="openGifts()">
+                <span class="menu-ico"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg></span>
+                <span class="menu-txt"><span data-i18n="myGifts">Мои подарки</span><small data-i18n="myGiftsSub">Подарки аккаунта</small></span>
+                <span class="menu-val" id="val-gifts">0</span>
+                <span class="menu-chev">›</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="profile-view" class="pv-overlay" onclick="if(event.target===this)closeUserProfile()">
+        <div class="pv-card">
+            <div class="pv-top">
+                <button class="pv-back" onclick="closeUserProfile()" aria-label="Назад">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <span class="pv-top-title" data-i18n="pvTitle">Профиль</span>
+            </div>
+            <div class="pv-hero">
+                <div class="pf-avatar pv-avatar" id="pv-avatar"><img id="pv-avatar-img" alt=""></div>
+                <div class="pv-name" id="pv-name">—</div>
+                <button class="pv-username" id="pv-username-btn" onclick="openPvUsername()">@—</button>
+                <button class="pf-id pv-id" onclick="copyPvId()"><span>ID:</span> <span id="pv-id">…</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+            </div>
+            <div class="pv-stats">
+                <div class="pv-stat">
+                    <div class="pv-stat-ico">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                    </div>
+                    <div class="pv-stat-num" id="pv-success">0</div>
+                    <div class="pv-stat-lbl" data-i18n="pvSuccessful">Успешных сделок</div>
+                </div>
+                <div class="pv-stat">
+                    <div class="pv-stat-ico">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    </div>
+                    <div class="pv-stat-num" id="pv-completed">0</div>
+                    <div class="pv-stat-lbl" data-i18n="pvCompleted">Завершенных сделок</div>
+                </div>
+            </div>
+            <button class="btn btn-grad pv-cta" id="pv-cta" onclick="openPvChat()" data-i18n="pvWrite">Написать в Telegram</button>
+        </div>
+    </div>
+
+    <div id="withdraw-menu-overlay" onclick="if(event.target===this)closeWithdrawMenu()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin">?</div>
+                <div>
+                    <div class="ws-title" data-i18n="wdTitle">Вывести</div>
+                    <div class="ws-sub" data-i18n="wdSub">Выбери, что вывести</div>
+                </div>
+                <button class="ws-close" onclick="closeWithdrawMenu()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <button class="btn btn-grad" style="margin-top:12px" id="wd-currency-btn" onclick="openWithdrawCurrency()"><span data-i18n="wdCurrency">Вывести валюту</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" id="wd-gift-btn" onclick="openGiftWithdraw()"><span data-i18n="wdGift">Вывести подарок</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeWithdrawMenu()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="withdraw-currency-overlay" onclick="if(event.target===this)closeWithdrawCurrency()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin">?</div>
+                <div>
+                    <div class="ws-title" data-i18n="curTitle">Валюта</div>
+                    <div class="ws-sub" data-i18n="curSub">Выбери валюту для вывода</div>
+                </div>
+                <button class="ws-close" onclick="closeWithdrawCurrency()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div id="withdraw-currency-options"></div>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeWithdrawCurrency()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="withdraw-gift-overlay" onclick="if(event.target===this)closeWithdrawGift()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></div>
+                <div>
+                    <div class="ws-title" data-i18n="wdGift">Вывести подарок</div>
+                    <div class="ws-sub" data-i18n="wdGiftSub">Выбери подарок и укажи, куда отправить</div>
+                </div>
+                <button class="ws-close" onclick="closeWithdrawGift()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div id="withdraw-gift-list"></div>
+            <input type="text" id="withdraw-gift-target" inputmode="text" placeholder="@username или ID" data-i18n-ph="userOrId" style="margin-top:12px">
+            <button class="btn btn-grad" id="withdraw-gift-submit" style="margin-top:12px" onclick="submitGiftWithdraw()"><span data-i18n="createRequestBtn">Создать заявку</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeWithdrawGift()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="deposit-menu-overlay" onclick="if(event.target===this)closeDepositMenu()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></div>
+                <div>
+                    <div class="ws-title" data-i18n="depTitle">Пополнить</div>
+                    <div class="ws-sub" data-i18n="depSub">Выбери способ пополнения</div>
+                </div>
+                <button class="ws-close" onclick="closeDepositMenu()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <button class="btn dep-gift" id="dep-gift-btn" style="margin-top:12px" onclick="openBankGiftInfo()"><span data-i18n="depGiftBtn">Внести подарки</span></button>
+            <button class="btn btn-ghost" style="margin-top:12px" onclick="openDepositCurrency('ton')"><span data-i18n="depTon">Пополнить TON</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="openDepositCurrency('usdt')"><span data-i18n="depUsdt">Пополнить USDT</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="openSupportTicket('deposit')"><span data-i18n="depRub">Пополнить RUB через поддержку</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeDepositMenu()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="bank-info-overlay" onclick="if(event.target===this)closeBankGiftInfo()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#00A3FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg></div>
+                <div>
+                    <div class="ws-title" data-i18n="bankInfoTitle">Внести подарки</div>
+                    <div class="ws-sub" data-i18n="bankInfoSub">Банк-аккаунт SupGift</div>
+                </div>
+                <button class="ws-close" onclick="closeBankGiftInfo()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div class="bank-info-box">
+                <p data-i18n="bankInfoLine1">Перейдите в чат с банком @supgiftbank</p>
+                <p data-i18n="bankInfoLine2">Отправьте подарок в наш банк, время зачисления примерно ~3с</p>
+            </div>
+            <button class="btn btn-grad" style="margin-top:14px" onclick="openBankProfile()"><span data-i18n="bankInfoBtn">Отправить подарок</span></button>
+        </div>
+    </div>
+
+    <div id="deposit-currency-overlay" onclick="if(event.target===this)closeDepositCurrency()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin" id="deposit-coin">₮</div>
+                <div>
+                    <div class="ws-title" id="deposit-title">USDT</div>
+                    <div class="ws-sub" data-i18n="depCurSub">Переведи средства на адрес ниже</div>
+                </div>
+                <button class="ws-close" onclick="closeDepositCurrency()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div class="addr-box" id="deposit-addr-box" onclick="copyDepositAddress()" title="Нажми, чтобы скопировать">
+                <div class="addr-label"><span data-i18n="depAddr">Адрес для пополнения</span><span class="addr-hint" id="addr-hint" data-i18n="tapCopy">Тапни, чтобы скопировать</span></div>
+                <div class="addr-row">
+                    <span id="deposit-address" class="addr-text"></span>
+                    <span class="addr-copy" id="addr-copy-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+                </div>
+            </div>
+            <input type="number" id="deposit-amount" inputmode="decimal" min="0" placeholder="Сумма" data-i18n-ph="amountPh" style="margin-top:12px">
+            <button class="btn btn-grad" id="deposit-submit" style="margin-top:12px" onclick="submitDeposit()"><span data-i18n="sendReview">Отправить на проверку</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeDepositCurrency()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="support-ticket-overlay" onclick="if(event.target===this)closeSupportTicket()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6z"/><path d="M13 5v2"/><path d="M13 11v2"/><path d="M13 17v2"/></svg></div>
+                <div>
+                    <div class="ws-title" id="support-title">Поддержка RUB</div>
+                    <div class="ws-sub" id="support-sub">Создай тикет для пополнения</div>
+                </div>
+                <button class="ws-close" onclick="closeSupportTicket()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <input type="number" id="support-amount" inputmode="decimal" min="0" placeholder="Сумма RUB" style="margin-top:12px;display:none">
+            <textarea id="support-message" rows="3" placeholder="Сообщение для поддержки" data-i18n-ph="supMsgPh" style="margin-top:10px"></textarea>
+            <button class="btn btn-grad" id="support-submit" style="margin-top:12px" onclick="submitSupportTicket()"><span data-i18n="createTicket">Создать тикет</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeSupportTicket()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="wallet-overlay" onclick="if(event.target===this)closeWallet()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin" id="ws-coin">₮</div>
+                <div>
+                    <div class="ws-title" id="ws-title">USDT</div>
+                    <div class="ws-sub"><span data-i18n="balanceLabel">Баланс:</span> <span id="ws-balance">0</span></div>
+                </div>
+                <button class="ws-close" onclick="closeWallet()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <input type="number" id="wallet-amount" inputmode="decimal" min="0" placeholder="Сумма" data-i18n-ph="amountPh">
+            <input type="text" id="wallet-dest" inputmode="text" placeholder="Реквизиты" data-i18n-ph="requisites">
+            <div class="quick-amounts" id="quick-amounts"></div>
+            <button class="btn btn-grad" id="wallet-submit" onclick="submitWallet()">Пополнить</button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeWallet()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="language-overlay" onclick="if(event.target===this)closeLanguage()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg></div>
+                <div>
+                    <div class="ws-title" data-i18n="language">Язык</div>
+                    <div class="ws-sub" data-i18n="chooseLang">Выбери язык интерфейса</div>
+                </div>
+                <button class="ws-close" onclick="closeLanguage()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <button class="btn" id="lang-ru" style="margin-top:12px" onclick="setLanguage('ru')">Русский</button>
+            <button class="btn" id="lang-en" style="margin-top:10px" onclick="setLanguage('en')">English</button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeLanguage()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="history-overlay" onclick="if(event.target===this)closeHistory()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#4FC0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h11"/><path d="M8 12h11"/><path d="M8 18h11"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg></div>
+                <div>
+                    <div class="ws-title" id="history-title">Покупки</div>
+                    <div class="ws-sub" id="history-sub">Завершённые сделки</div>
+                </div>
+                <button class="ws-close" onclick="closeHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div id="history-list"></div>
+            <button class="btn btn-ghost" style="margin-top:12px" onclick="closeHistory()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="gifts-overlay" onclick="if(event.target===this)closeGifts()">
+        <div class="wallet-sheet" style="max-height:86vh;overflow-y:auto">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></div>
+                <div>
+                    <div class="ws-title" data-i18n="myGifts">Мои подарки</div>
+                    <div class="ws-sub" data-i18n="myGiftsSub2">Выбери подарок, чтобы создать трейд</div>
+                </div>
+                <button class="ws-close" onclick="closeGifts()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div class="gifts-grid" id="gifts-container">
+                <div class="sk" style="height:176px;border-radius:22px"></div>
+                <div class="sk" style="height:176px;border-radius:22px"></div>
+            </div>
+            <textarea id="trade-comment" style="display:none" maxlength="300" rows="2" placeholder="Комментарий к трейду (необязательно)"></textarea>
+            <button class="btn btn-grad" id="create-trade-btn" style="display:none" onclick="createTrade()"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <span data-i18n="createTrade">Создать трейд-ссылку</span></button>
+            <button class="btn btn-ghost" style="margin-top:10px" onclick="closeGifts()" data-i18n="back">Назад</button>
+        </div>
+    </div>
+
+    <div id="ticket-overlay" onclick="if(event.target===this)closeTicketOverlay()">
+        <div class="wallet-sheet">
+            <span class="sheet-handle"></span>
+            <div class="ws-head">
+                <div class="ws-coin"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+                <div>
+                    <div class="ws-title" id="ticket-title">Поддержка</div>
+                    <div class="ws-sub" data-i18n="ticketThreadSub">Продолжи разговор</div>
+                </div>
+                <button class="ws-close" onclick="closeTicketOverlay()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <div id="ticket-thread"></div>
+            <div class="ticket-compose">
+                <textarea id="ticket-input" rows="1" maxlength="2000" placeholder="Напиши сообщение…" data-i18n-ph="msgPh" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendTicketMessage()}"></textarea>
+                <button class="ticket-send" id="ticket-send" onclick="sendTicketMessage()" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-5z"/></svg></button>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-ind" id="nav-ind"></div>
+        <button class="active" data-tab="market" onclick="switchTab('market')"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></svg></span><span data-i18n="navMarket">ТРЕЙДЫ</span></button>
+        <button data-tab="trades" onclick="switchTab('trades')"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span><span data-i18n="navTrades">МОИ СДЕЛКИ</span></button>
+        <button data-tab="support" onclick="switchTab('support')"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><span data-i18n="navSupport">ПОДДЕРЖКА</span></button>
+        <button data-tab="profile" onclick="switchTab('profile')"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span data-i18n="navProfile">ПРОФИЛЬ</span></button>
+    </nav>
+
+    <script>
+        const tg = window.Telegram?.WebApp || {
+            initData: '', initDataUnsafe: {}, HapticFeedback: null,
+            expand() {}, ready() {}, close() {}, setHeaderColor() {}, setBackgroundColor() {}
+        };
+        try { tg.expand(); } catch {}
+        try { tg.ready(); } catch {}
+        try { tg.setHeaderColor('#08080a'); tg.setBackgroundColor('#08080a'); } catch {}
+        const tgUser = tg.initDataUnsafe?.user;
+        const userId = tgUser?.id || 123456789;
+
+        const I18N = {
+            ru: {
+                greet: 'Привет,', appName: 'SupGift', myId: 'ID:', appTagline: '',
+                navMarket: 'ТРЕЙДЫ', navTrades: 'МОИ СДЕЛКИ', navSupport: 'ПОДДЕРЖКА', navProfile: 'ПРОФИЛЬ',
+                settings: 'Настройки', moreOffers: 'Ещё предложения',
+                marketTitle: 'Активные трейды', tradesTitle: 'Мои сделки', myGifts: 'Мои подарки',
+                deposit: 'Пополнить', withdraw: 'Вывести', balance: 'Твой баланс', createTrade: 'Создать трейд-ссылку',
+                adminPanel: 'Админ-панель', adminPanelSub: 'Поддержка, профили, сделки, промокоды',
+                language: 'Язык', theme: 'Тема', purchases: 'Покупки', sales: 'Продажи', support: 'Поддержка',
+                newTicket: 'Создать обращение', back: 'Назад', chooseLang: 'Выбери язык интерфейса',
+                dark: 'Тёмная', light: 'Светлая', ru: 'Русский', en: 'English',
+                balanceRow: 'Баланс', balanceRowSub: 'Средства на аккаунте', balanceSub: 'Пополнение и вывод средств', myGiftsSub: 'Подарки аккаунта', myGiftsSub2: 'Выбери подарок, чтобы создать трейд',
+                wdTitle: 'Вывести', wdSub: 'Выбери, что вывести', wdCurrency: 'Вывести валюту', wdGift: 'Вывести подарок',
+                curTitle: 'Валюта', curSub: 'Выбери валюту для вывода', wdGiftSub: 'Выбери подарок и укажи, куда отправить',
+                userOrId: '@username или ID', createRequestBtn: 'Создать заявку',
+                depTitle: 'Пополнить', depSub: 'Выбери способ пополнения', depTon: 'Пополнить TON', depUsdt: 'Пополнить USDT', depRub: 'Пополнить RUB через поддержку',
+                depGiftBtn: 'Внести подарки', bankInfoTitle: 'Внести подарки', bankInfoSub: 'Банк-аккаунт SupGift', bankInfoLine1: 'Перейдите в чат с банком @supgiftbank', bankInfoLine2: 'Отправьте подарок в наш банк, время зачисления примерно ~3с', bankInfoBtn: 'Отправить подарок', depCurSub: 'Переведи средства на адрес ниже', depAddr: 'Адрес для пополнения', tapCopy: 'Тапни, чтобы скопировать', copied: 'Скопировано!',
+                amountPh: 'Сумма', sendReview: 'Отправить на проверку', supMsgPh: 'Сообщение для поддержки', createTicket: 'Создать тикет',
+                balanceLabel: 'Баланс:', requisites: 'Реквизиты',
+                historyPurchases: 'Покупки', historySales: 'Продажи', historySub: 'Завершённые сделки',
+                emptyHistory: 'Пока пусто', emptyGifts: 'Подарков пока нет.', emptyGiftsSub: 'Админ может начислить их тебе.',
+                emptyMarket: 'Витрина пуста — никто ещё не выставил подарки.', emptyMarketB: 'Будь первым:', emptyMarketC: 'создай трейд в профиле',
+                emptyTrades: 'Активных сделок нет.', emptyTradesC: 'Выбери подарок в профиле и создай трейд',
+                emptyTickets: 'Обращений пока нет.', emptyTicketsC: 'Напиши в поддержку — ответ придёт сюда.',
+                st_waiting: 'Ожидает покупателя', st_connected: 'Покупатель в сделке', st_offer_made: 'Предложение получено', st_completed: 'Обменяно', st_cancelled: 'Отменена',
+                activeOne: 'активный', activeFew: 'активных', activeMany: 'активных',
+                seller: 'продавец', buyer: 'покупатель', minAgo: 'мин назад', open: 'Открыт', closed: 'Закрыт',
+                tradedFor: 'получено', givenFor: 'отдано',
+                sbpPh: 'Номер СБП (телефон)', usdtAddrPh: 'Адрес USDT-кошелька', tonAddrPh: 'TON-адрес',
+                supTitleDep: 'Поддержка RUB', supTitle: 'Поддержка', supSubDep: 'Пополнение через поддержку', supSub: 'Создай тикет для обращения',
+                supAmountRub: 'Сумма RUB', supAmountOpt: 'Сумма (необязательно)', supMsgDep: 'Сообщение для поддержки', supMsgGen: 'Опиши вопрос',
+                sending: 'Отправка…', processing: 'Обработка…',
+                ticketThreadSub: 'Продолжи разговор', msgPh: 'Напиши сообщение…', messagesWord: 'сообщ.', noMessages: 'Сообщений пока нет',
+            you: 'ТЫ', partner: 'Партнёр', waitingOffer: 'выбирает подарок…', shareWithBot: 'Поделиться с помощью', idCopied: 'ID скопирован', bankAccount: 'Банк-аккаунт',
+            pvTitle: 'Профиль', pvSuccessful: 'Успешных сделок', pvCompleted: 'Завершенных сделок', pvWrite: 'Написать в Telegram', pvNotFound: 'Профиль не найден'
+        },
+            en: {
+                greet: 'Hi,', appName: 'SupGift', myId: 'ID:', appTagline: '',
+                navMarket: 'TRADES', navTrades: 'MY DEALS', navSupport: 'SUPPORT', navProfile: 'PROFILE',
+                settings: 'Settings', moreOffers: 'More offers',
+                marketTitle: 'Active trades', tradesTitle: 'My deals', myGifts: 'My gifts',
+                deposit: 'Top up', withdraw: 'Withdraw', balance: 'Your balance', createTrade: 'Create trade link',
+                adminPanel: 'Admin panel', adminPanelSub: 'Support, profiles, deals, promos',
+                language: 'Language', theme: 'Theme', purchases: 'Purchases', sales: 'Sales', support: 'Support',
+                newTicket: 'New request', back: 'Back', chooseLang: 'Choose interface language',
+                dark: 'Dark', light: 'Light', ru: 'Русский', en: 'English',
+                balanceRow: 'Balance', balanceRowSub: 'Account funds', balanceSub: 'Top-up & withdrawal', myGiftsSub: 'Account gifts', myGiftsSub2: 'Pick a gift to create a trade',
+                wdTitle: 'Withdraw', wdSub: 'Choose what to withdraw', wdCurrency: 'Withdraw currency', wdGift: 'Withdraw gift',
+                curTitle: 'Currency', curSub: 'Choose withdrawal currency', wdGiftSub: 'Pick a gift and the destination',
+                userOrId: '@username or ID', createRequestBtn: 'Create request',
+                depTitle: 'Top up', depSub: 'Choose top-up method', depTon: 'Top up TON', depUsdt: 'Top up USDT', depRub: 'Top up RUB via support',
+                depGiftBtn: 'Add gifts', bankInfoTitle: 'Add gifts', bankInfoSub: 'SupGift bank account', bankInfoLine1: 'Go to the bank chat @supgiftbank', bankInfoLine2: 'Send a gift to our bank, crediting takes about 3 seconds', bankInfoBtn: 'Send a gift', depCurSub: 'Send funds to the address below', depAddr: 'Top-up address', tapCopy: 'Tap to copy', copied: 'Copied!',
+                amountPh: 'Amount', sendReview: 'Submit for review', supMsgPh: 'Message to support', createTicket: 'Create ticket',
+                balanceLabel: 'Balance:', requisites: 'Details',
+                historyPurchases: 'Purchases', historySales: 'Sales', historySub: 'Completed deals',
+                emptyHistory: 'Empty for now', emptyGifts: 'No gifts yet.', emptyGiftsSub: 'An admin can grant you some.',
+                emptyMarket: 'The market is empty — no gifts listed yet.', emptyMarketB: 'Be the first:', emptyMarketC: 'create a trade in your profile',
+                emptyTrades: 'No active deals.', emptyTradesC: 'Pick a gift in your profile and create a trade',
+                emptyTickets: 'No requests yet.', emptyTicketsC: 'Message support — the reply appears here.',
+                st_waiting: 'Awaiting buyer', st_connected: 'Buyer joined', st_offer_made: 'Offer received', st_completed: 'Completed', st_cancelled: 'Cancelled',
+                activeOne: 'active', activeFew: 'active', activeMany: 'active',
+                seller: 'seller', buyer: 'buyer', minAgo: 'min ago', open: 'Open', closed: 'Closed',
+                tradedFor: 'received', givenFor: 'gave',
+                sbpPh: 'SBP number (phone)', usdtAddrPh: 'USDT wallet address', tonAddrPh: 'TON address',
+                supTitleDep: 'Support RUB', supTitle: 'Support', supSubDep: 'Top-up via support', supSub: 'Create a support request',
+                supAmountRub: 'Amount RUB', supAmountOpt: 'Amount (optional)', supMsgDep: 'Message to support', supMsgGen: 'Describe your issue',
+                sending: 'Sending…', processing: 'Processing…',
+                ticketThreadSub: 'Continue the conversation', msgPh: 'Write a message…', messagesWord: 'msg', noMessages: 'No messages yet',
+            you: 'YOU', partner: 'Partner', waitingOffer: 'choosing a gift…', shareWithBot: 'Share via', idCopied: 'ID copied', bankAccount: 'Bank account',
+            pvTitle: 'Profile', pvSuccessful: 'Successful deals', pvCompleted: 'Completed deals', pvWrite: 'Message on Telegram', pvNotFound: 'Profile not found'
+        }
+        };
+        let LANG = localStorage.getItem('lang') || 'ru';
+        let THEME = localStorage.getItem('theme') || 'dark';
+        try {
+            const qTheme = new URLSearchParams(location.search).get('theme');
+            if (qTheme === 'light' || qTheme === 'dark') THEME = qTheme;
+        } catch {}
+        document.documentElement.lang = LANG;
+        function t(k) { const d = I18N[LANG] || I18N.ru; return (d[k] != null ? d[k] : (I18N.ru[k] != null ? I18N.ru[k] : k)); }
+        function applyI18n() {
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.getAttribute('data-i18n')); });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph'))); });
+            const vl = document.getElementById('val-lang'); if (vl) vl.textContent = t(LANG);
+            const lr = document.getElementById('lang-ru'), le = document.getElementById('lang-en');
+            if (lr) lr.className = 'btn ' + (LANG === 'ru' ? 'btn-grad' : 'btn-ghost');
+            if (le) le.className = 'btn ' + (LANG === 'en' ? 'btn-grad' : 'btn-ghost');
+        }
+        function applyTheme() {
+            document.body.classList.toggle('light', THEME === 'light');
+            const vt = document.getElementById('val-theme'); if (vt) vt.textContent = THEME === 'light' ? t('light') : t('dark');
+            try { tg.setHeaderColor(THEME === 'light' ? '#f2f2f7' : '#08080a'); tg.setBackgroundColor(THEME === 'light' ? '#f2f2f7' : '#08080a'); } catch {}
+        }
+        function toggleTheme() { THEME = THEME === 'light' ? 'dark' : 'light'; localStorage.setItem('theme', THEME); applyTheme(); tap(); }
+        function openLanguage() { applyI18n(); openOverlaySmart(document.getElementById('language-overlay')); tap(); }
+        function closeLanguage() { closeOverlaySmart(document.getElementById('language-overlay')); tap(); }
+        function setLanguage(l) {
+            LANG = l; localStorage.setItem('lang', l); document.documentElement.lang = l;
+            applyI18n(); applyTheme(); closeLanguage();
+            renderMarket(); renderMyTrades(); renderSupport(); renderHistory();
+        }
+        function openAdminPanel() { tap(); location.href = '/admin.html?v=' + Date.now(); }
+
+        let historyData = { purchases: [], sales: [] };
+        let historyTab = 'purchases';
+        async function loadHistory() {
+            historyData = await api('/api/trades/history?userId=' + userId).catch(() => ({ purchases: [], sales: [] }));
+            if (!historyData || !historyData.purchases) historyData = { purchases: [], sales: [] };
+            const vp = document.getElementById('val-purchases'), vs = document.getElementById('val-sales');
+            if (vp) vp.textContent = historyData.purchases.length;
+            if (vs) vs.textContent = historyData.sales.length;
+            if (document.getElementById('history-overlay').classList.contains('open')) renderHistory();
+        }
+        function openHistory(tab) { historyTab = tab; renderHistory(); openOverlaySmart(document.getElementById('history-overlay')); tap(); }
+        function closeHistory() { closeOverlaySmart(document.getElementById('history-overlay')); tap(); }
+        function openGifts() { loadUser(); tap(); openOverlaySmart(document.getElementById('gifts-overlay')); }
+        function closeGifts() { closeOverlaySmart(document.getElementById('gifts-overlay')); tap(); }
+        function renderHistory() {
+            const el = document.getElementById('history-list');
+            if (!el) return;
+            document.getElementById('history-title').textContent = t(historyTab === 'purchases' ? 'historyPurchases' : 'historySales');
+            const items = (historyData && historyData[historyTab]) || [];
+            document.getElementById('history-sub').textContent = t('historySub') + ' · ' + items.length;
+            if (!items.length) { el.innerHTML = '<div class="empty">' + t('emptyHistory') + '</div>'; return; }
+            el.innerHTML = items.map(tr => {
+                const g = tr.sellerGift || {};
+                const counter = historyTab === 'purchases' ? tr.sellerId : (tr.buyerId || '—');
+                const dt = new Date(tr.createdAt).toLocaleDateString(LANG === 'en' ? 'en-GB' : 'ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                return '<div class="trade-card"><div class="mini-orb" style="' + bgStyle(g.bg) + '">' + miniVisual(g.image) + '</div><div class="info"><div class="name">' + esc(g.name || '') + '</div><div class="sub">' + t(historyTab === 'purchases' ? 'buyer' : 'seller') + ' ↔ ' + counter + ' · ' + dt + '</div><div style="margin-top:8px">' + statusPill('completed') + '</div></div></div>';
+            }).join('');
+        }
+
+        let tickets = [];
+        async function loadTickets() {
+            tickets = await api('/api/support/tickets?userId=' + userId).catch(() => []);
+            if (!Array.isArray(tickets)) tickets = [];
+            renderSupport();
+        }
+        let currentTicketId = null;
+        function renderSupport() {
+            const box = document.getElementById('support-chat');
+            if (!box) return;
+            const tc = document.getElementById('tickets-count');
+            if (tc) tc.textContent = tickets.length;
+            if (!tickets.length) {
+                box.innerHTML = '<div class="empty" style="padding:22px 10px;grid-column:1/-1">' + t('emptyTickets') + '<br><span style="color:var(--t3)">' + t('emptyTicketsC') + '</span></div>';
+                return;
+            }
+            box.innerHTML = tickets.map(tk => {
+                const dt = new Date(tk.createdAt).toLocaleString(LANG === 'en' ? 'en-GB' : 'ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+                const subj = tk.subject || t('support');
+                const msgs = Array.isArray(tk.messages) ? tk.messages : [];
+                const count = msgs.length || 1;
+                const lastText = tk.lastMessage || tk.message || '';
+                const fromAdmin = (tk.lastSender || 'user') === 'admin';
+                const preview = (fromAdmin ? t('support') + ': ' : '') + lastText;
+                const pill = tk.status === 'open'
+                    ? '<span class="pill st-offer_made live"><span class="dot"></span>' + t('open') + '</span>'
+                    : '<span class="pill st-completed"><span class="dot"></span>' + t('closed') + '</span>';
+                return '<button class="chat-item ticket-row" onclick="openTicket(\'' + tk.id + '\')"><div class="chat-head"><span class="chat-subject">' + esc(subj) + '</span><span class="chat-time">' + dt + '</span></div><div class="ticket-preview' + (fromAdmin ? '' : ' mine') + '">' + esc(preview) + '</div><div class="ticket-foot">' + pill + '<span class="ticket-count">' + count + ' ' + t('messagesWord') + '</span></div></button>';
+            }).join('');
+        }
+        function openTicket(id) {
+            currentTicketId = id;
+            openOverlaySmart(document.getElementById('ticket-overlay'));
+            renderThread();
+            tap();
+        }
+        function closeTicketOverlay() {
+            closeOverlaySmart(document.getElementById('ticket-overlay'));
+            currentTicketId = null;
+            tap();
+        }
+        function renderThread() {
+            const tk = tickets.find(x => x.id === currentTicketId);
+            const box = document.getElementById('ticket-thread');
+            if (!tk || !box) return;
+            document.getElementById('ticket-title').textContent = tk.subject || t('support');
+            const msgs = Array.isArray(tk.messages) ? tk.messages : [];
+            box.innerHTML = msgs.length ? msgs.map(m => {
+                const admin = m.sender === 'admin';
+                const when = new Date(m.at || tk.createdAt).toLocaleString(LANG === 'en' ? 'en-GB' : 'ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+                return '<div class="chat-bubble ' + (admin ? 'admin' : 'me') + '">' + (admin ? '<span class="who">' + t('support') + '</span>' : '') + esc(m.text) + '<span class="ticket-msg-time">' + when + '</span></div>';
+            }).join('') : '<div class="empty">' + t('noMessages') + '</div>';
+            box.scrollTop = box.scrollHeight;
+        }
+        async function sendTicketMessage() {
+            const input = document.getElementById('ticket-input');
+            const text = (input.value || '').trim();
+            if (!text || !currentTicketId) return;
+            const btn = document.getElementById('ticket-send');
+            btn.disabled = true;
+            const data = await api('/api/support/ticket/' + encodeURIComponent(currentTicketId) + '/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, message: text })
+            }).catch(() => ({}));
+            btn.disabled = false;
+            if (!data.success) { toast(data.error || 'Ошибка соединения', '#f87171', 'err'); haptic('error'); return; }
+            input.value = '';
+            const tk = tickets.find(x => x.id === currentTicketId);
+            if (tk) {
+                if (!Array.isArray(tk.messages)) tk.messages = [];
+                tk.messages.push({ sender: 'user', text, at: Date.now() });
+                tk.lastSender = 'user';
+                tk.lastMessage = text;
+                tk.status = 'open';
+            }
+            renderThread();
+            renderSupport();
+            haptic('success');
+            tap();
+        }
+
+        let selectedGiftId = null;
+        let userData = null;
+        let allTrades = [];
+        let feedTrades = [];
+        let evtSource = null;
+        let isAdmin = false;
+        let balancesShown = { rub: 0, usdt: 0, ton: 0 };
+
+        api('/api/admin/check', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ initData: tg.initData })
+        }).then(d => {
+            if (d && d.isAdmin) {
+                isAdmin = true;
+                const m = document.getElementById('menu-admin');
+                if (m) m.style.display = 'flex';
+                if (allTrades.length) renderMarket();
+            }
+        }).catch(() => {});
+
+        document.getElementById('profile-id').innerText = userId;
+        const firstName = tgUser?.first_name || 'Гость';
+        const initial = (firstName || 'G').charAt(0).toUpperCase();
+        const userNameEl = document.getElementById('user-name');
+        if (userNameEl) userNameEl.innerText = firstName;
+        document.getElementById('profile-name').innerText = firstName;
+        document.getElementById('profile-username').innerText = tgUser?.username ? '@' + tgUser.username : '@' + (tgUser?.id || userId);
+        const profileAvatarEl = document.getElementById('profile-avatar');
+        const profileAvatarImg = document.getElementById('profile-avatar-img');
+        if (profileAvatarImg) {
+            profileAvatarImg.onerror = () => { profileAvatarImg.remove(); if (profileAvatarEl) profileAvatarEl.innerText = initial; };
+            profileAvatarImg.src = '/api/avatar/' + encodeURIComponent(userId);
+        }
+
+        function haptic(type) { try { tg.HapticFeedback?.notificationOccurred(type); } catch {} }
+        function tap() { try { tg.HapticFeedback?.impactOccurred('light'); } catch {} }
+
+        function avatarOf(id, name, extraClass) {
+            const ini = String(name || '?').trim().charAt(0).toUpperCase() || '?';
+            return `<span class="tg-av${extraClass ? ' ' + extraClass : ''}" data-i="${esc(ini)}"><img src="/api/avatar/${encodeURIComponent(id)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.textContent=this.parentNode.getAttribute('data-i')"></span>`;
+        }
+
+        function botHandle(link) {
+            const m = String(link || '').match(/t\.me\/([A-Za-z0-9_]+)/);
+            return '@' + (m ? m[1] : 'SuppGiftbot');
+        }
+
+        let pvData = null;
+
+        function renderPvUser(d) {
+            const name = d.name || (d.username ? '@' + d.username : ('ID ' + d.id));
+            document.getElementById('pv-name').innerText = name;
+            const un = document.getElementById('pv-username-btn');
+            un.innerText = d.username ? '@' + d.username : '@—';
+            un.style.display = d.username ? '' : 'none';
+            document.getElementById('pv-id').innerText = String(d.id);
+            const avatar = document.getElementById('pv-avatar');
+            avatar.innerText = '';
+            const img = document.createElement('img');
+            img.alt = '';
+            img.onerror = () => { img.remove(); avatar.innerText = (name || '?').replace(/^@/, '').charAt(0).toUpperCase(); };
+            img.src = '/api/avatar/' + encodeURIComponent(d.id) + '?v=' + Date.now();
+            avatar.appendChild(img);
+            countUp(document.getElementById('pv-success'), Number(d.successfulDeals || 0));
+            countUp(document.getElementById('pv-completed'), Number(d.completedDeals || 0));
+            const cta = document.getElementById('pv-cta');
+            cta.style.display = d.username ? '' : 'none';
+        }
+
+        async function openUserProfile(id) {
+            const uid = Number(id);
+            if (!Number.isFinite(uid) || uid <= 0) return;
+            pvData = { id: uid, name: '', username: '', successfulDeals: 0, completedDeals: 0 };
+            renderPvUser(pvData);
+            openOverlaySmart(document.getElementById('profile-view'));
+            try {
+                const d = await api('/api/profile/' + encodeURIComponent(uid));
+                if (d && !d.error) {
+                    pvData = d;
+                    renderPvUser(d);
+                }
+            } catch {}
+        }
+
+        function closeUserProfile() {
+            closeOverlaySmart(document.getElementById('profile-view'));
+            tap();
+        }
+
+        function openPvUsername() {
+            if (!pvData || !pvData.username) return;
+            tap();
+            try {
+                if (tg.openTelegramLink) tg.openTelegramLink('https://t.me/' + pvData.username);
+                else window.open('https://t.me/' + pvData.username, '_blank');
+            } catch {}
+        }
+
+        function openPvChat() {
+            openPvUsername();
+        }
+
+        async function copyPvId() {
+            if (!pvData) return;
+            tap();
+            const text = String(pvData.id);
+            try {
+                if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+                else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+                }
+                toast(t('idCopied'), '#34d399', 'ok');
+                haptic('success');
+            } catch {
+                toast('ID: ' + text, '#00A3FF', 'info');
+            }
+        }
+
+        async function copyMyId() {
+            tap();
+            const text = String(userId);
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove();
+                }
+                toast(t('idCopied'), '#34d399', 'ok');
+                haptic('success');
+            } catch {
+                toast('ID: ' + text, '#00A3FF', 'info');
+            }
+        }
+
+        function shareTrade(tradeId) {
+            tap();
+            const query = 'trade_' + tradeId;
+            if (tg.switchInlineQuery) {
+                tg.switchInlineQuery(query, ['users', 'groups', 'channels']);
+                return;
+            }
+            const tr = allTrades.find(x => x.tradeId === tradeId);
+            const link = (tr && tr.link) || ('https://t.me/SuppGiftbot?start=trade_' + tradeId);
+            const uname = tgUser?.username ? '@' + tgUser.username : (firstName || 'Пользователь');
+            const text = uname + ' приглашает тебя обменяться\nОткрой сделку, добавь свой подарок и подтверди обмен.';
+            const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(text);
+            if (tg.openTelegramLink) tg.openTelegramLink(shareUrl);
+            else window.open(shareUrl, '_blank');
+        }
+
+        function toast(text, color, icon) {
+            const t = document.getElementById('toast');
+            t.innerHTML = `<div class="toast-progress"></div>${TICons[icon] || TICons.info}<span>${esc(text)}</span>`;
+            const ic = t.querySelector('svg');
+            if (ic) ic.style.color = color || '#00A3FF';
+            t.classList.remove('show'); void t.offsetWidth;
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3800);
+        }
+
+        function confetti() {
+            const box = document.getElementById('confetti');
+            const colors = ['#12AAFF', '#00A3FF', '#ec4899', '#22d3ee', '#fbbf24', '#34d399'];
+            for (let i = 0; i < 70; i++) {
+                const c = document.createElement('div');
+                c.className = 'cf';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (1.6 + Math.random() * 1.8) + 's';
+                c.style.animationDelay = (Math.random() * .5) + 's';
+                c.style.transform = `rotate(${Math.random() * 360}deg)`;
+                box.appendChild(c);
+                setTimeout(() => c.remove(), 4200);
+            }
+        }
+
+        const TAB_ORDER = ['market', 'trades', 'support', 'profile'];
+        function moveNavIndicator(tab) {
+            const ind = document.getElementById('nav-ind');
+            const i = TAB_ORDER.indexOf(tab);
+            if (i < 0 || !ind) return;
+            const n = TAB_ORDER.length;
+            const w = (ind.parentElement.clientWidth - 16 - (n - 1) * 4) / n;
+            ind.style.width = w + 'px';
+            ind.style.transform = `translateX(${8 + i * (w + 4)}px)`;
+        }
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById('page-' + tab).classList.add('active');
+            document.querySelector(`nav button[data-tab="${tab}"]`).classList.add('active');
+            moveNavIndicator(tab);
+            tap();
+            refresh();
+        }
+
+        const STATUS_CLASS = {
+            waiting: ['st-waiting', false],
+            connected: ['st-connected', true],
+            offer_made: ['st-offer_made', true],
+            completed: ['st-completed', false],
+            cancelled: ['st-cancelled', false]
+        };
+
+        function statusPill(status) {
+            const [cls, live] = STATUS_CLASS[status] || STATUS_CLASS.waiting;
+            const label = t('st_' + (STATUS_CLASS[status] ? status : 'waiting'));
+            return `<span class="pill ${cls}${live ? ' live' : ''}"><span class="dot"></span>${label}</span>`;
+        }
+
+        function orbClass(g) {
+            return String(g.image || '').startsWith('/') ? 'orb-nft' : 'orb-common';
+        }
+
+        function giftVisual(image) {
+            return String(image).startsWith('/')
+                ? `<img class="orb-img" src="${image}" alt="" loading="lazy" decoding="async">`
+                : `<span class="emoji">${image}</span>`;
+        }
+        function miniVisual(image) {
+            return String(image).startsWith('/')
+                ? `<img class="mini-img" src="${image}" alt="" loading="lazy" decoding="async">`
+                : image;
+        }
+
+        const CUR_ICON = {
+            ton: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#009eea" stroke-width="2" stroke-linejoin="round"><path d="M12 2.6 21.4 9 12 21.4 2.6 9z"/><path d="M2.6 9h18.8"/><path d="M12 2.6v18.8"/></svg>',
+            usdt: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#26a17b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8h7"/><path d="M8.5 11h6"/><path d="M13.2 11v5.6"/><path d="M10.8 16.6h4.8"/></svg>',
+            rub: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#e0745a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 7.2v9.6"/><path d="M9.6 7.2h3.9a2.5 2.5 0 0 1 0 5H9.6"/></svg>',
+            gift: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>'
+        };
+        function curIcon(type) { return CUR_ICON[type] || CUR_ICON.gift; }
+
+        function bgStyle(bg) {
+            if (bg && bg.length >= 2) return `background:linear-gradient(160deg, ${bg[0].color} ${bg[0].offset || '0%'}, ${bg[1].color} ${bg[1].offset || '100%'})`;
+            if (bg && bg.length === 1) return `background:${bg[0].color}`;
+            return '';
+        }
+
+        const SVG = {
+            check: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+            x: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+            copy: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
+            send: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>',
+            swap: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>',
+            gem: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+            usercheck: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7cb8fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>',
+            linkicon: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+            tag: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>',
+            store: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#00A3FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M2 7h20"/></svg>',
+            trades: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#00A3FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>',
+            gift: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#00A3FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>'
+        };
+
+        const TICons = {
+            ok: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            warn: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+            err: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+            info: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+            gem: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>',
+            user: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>'
+        };
+
+        function offerText(offer) {
+            if (!offer) return '';
+            if (offer.type === 'gift') {
+                const img = String(offer.data?.image || '');
+                const prefix = img.startsWith('/') ? '◆' : (img || '◆');
+                return `${prefix} ${offer.data?.name || 'подарок'}`;
+            }
+            return `${offer.data} ${offer.type.toUpperCase()}`;
+        }
+
+        function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        async function api(url, opts) {
+            const res = await fetch(url, opts);
+            return res.json();
+        }
+
+        function countUp(el, to) {
+            const key = el.id.replace('bal-', '');
+            const from = balancesShown[key] || 0;
+            balancesShown[key] = to;
+            if (from === to) { el.innerText = Math.round(to * 100) / 100; return; }
+            const start = performance.now(), dur = 500;
+            function frame(now) {
+                const p = Math.min((now - start) / dur, 1);
+                const e = 1 - Math.pow(1 - p, 3);
+                el.innerText = Math.round((from + (to - from) * e) * 100) / 100;
+                if (p < 1) requestAnimationFrame(frame);
+                else {
+                    el.classList.remove('bump');
+                    void el.offsetWidth;
+                    el.classList.add('bump');
+                    setTimeout(() => el.classList.remove('bump'), 550);
+                }
+            }
+            requestAnimationFrame(frame);
+        }
+
+        document.addEventListener('pointerdown', (e) => {
+            const t = e.target.closest('.btn, .gift-card, .trade-card, nav button, .ws-close, .icon-btn, .addr-box, .t2, .quick-amounts button');
+            if (!t) return;
+            const r = t.getBoundingClientRect();
+            const s = Math.max(r.width, r.height) * 1.4;
+            const rip = document.createElement('span');
+            rip.className = 'ripple';
+            rip.style.width = rip.style.height = s + 'px';
+            rip.style.left = (e.clientX - r.left - s / 2) + 'px';
+            rip.style.top = (e.clientY - r.top - s / 2) + 'px';
+            t.appendChild(rip);
+            setTimeout(() => rip.remove(), 620);
+        }, { passive: true });
+
+        function closeOverlaySmart(el) {
+            if (!el || !el.classList.contains('open')) return;
+            const sheet = el.querySelector('.wallet-sheet');
+            if (sheet) {
+                sheet.classList.add('sheet-close-anim');
+                setTimeout(() => sheet.classList.remove('sheet-close-anim'), 280);
+            }
+            el.classList.add('overlay-fade-out');
+            setTimeout(() => {
+                if (el.classList.contains('overlay-fade-out')) el.classList.remove('open', 'overlay-fade-out');
+            }, 240);
+        }
+        function openOverlaySmart(el) {
+            el.classList.remove('overlay-fade-out');
+            el.classList.add('open');
+        }
+
+        let lastUserKey = '';
+        async function loadUser() {
+            userData = await api(`/api/user/${userId}`);
+            countUp(document.getElementById('bal-rub'), userData.rub);
+            countUp(document.getElementById('bal-usdt'), userData.usdt);
+            countUp(document.getElementById('bal-ton'), userData.ton);
+            const myS = document.getElementById('my-success');
+            if (myS) countUp(myS, Number(userData.successfulDeals || 0));
+            const myC = document.getElementById('my-completed');
+            if (myC) countUp(myC, Number(userData.completedDeals || 0));
+
+            const renderKey = JSON.stringify([userData.rub, userData.usdt, userData.ton, userData.gifts, selectedGiftId]);
+            if (renderKey === lastUserKey) return;
+            lastUserKey = renderKey;
+
+            const container = document.getElementById('gifts-container');
+            const vg = document.getElementById('val-gifts'); if (vg) vg.innerText = userData.gifts.length;
+            if (!userData.gifts.length) {
+                container.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">${SVG.gift}</span><br>${t('emptyGifts')}</div>`;
+                document.getElementById('create-trade-btn').style.display = 'none';
+                document.getElementById('trade-comment').style.display = 'none';
+                return;
+            }
+            container.innerHTML = '';
+            userData.gifts.forEach((g, i) => {
+                const div = document.createElement('div');
+                div.className = 'gift-card enter' + (g.id === selectedGiftId ? ' selected' : '');
+                div.style.animationDelay = (i * 60) + 'ms';
+                div.innerHTML = `<div class="check">${SVG.check}</div>
+                    <div class="orb ${orbClass(g)}" style="${bgStyle(g.bg)}">${giftVisual(g.image)}</div>
+                    <div class="name">${esc(g.name)}</div>`;
+                div.onclick = () => {
+                    selectedGiftId = selectedGiftId === g.id ? null : g.id;
+                    tap();
+                    loadUser();
+                };
+                container.appendChild(div);
+            });
+            document.getElementById('create-trade-btn').style.display = selectedGiftId ? 'block' : 'none';
+            document.getElementById('trade-comment').style.display = selectedGiftId ? 'block' : 'none';
+        }
+
+        let lastTradesKey = '';
+        async function loadTrades() {
+            const [trades, feed] = await Promise.all([
+                api('/api/trades'),
+                api('/api/feed').catch(() => [])
+            ]);
+            allTrades = trades;
+            feedTrades = feed;
+            const renderKey = JSON.stringify([trades, feed]);
+            if (renderKey === lastTradesKey) return;
+            lastTradesKey = renderKey;
+            renderMarket();
+            renderMyTrades();
+        }
+
+        function plural(n, one, few, many) {
+            const m10 = n % 10, m100 = n % 100;
+            if (m10 === 1 && m100 !== 11) return one;
+            if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+            return many;
+        }
+
+        function renderMarket() {
+            const list = document.getElementById('market-list');
+            const others = [];
+            const total = feedTrades.length;
+            document.getElementById('market-count').innerText = `${total} ${plural(total, t('activeOne'), t('activeFew'), t('activeMany'))}`;
+            if (!total) {
+                list.innerHTML = `<div class="empty enter"><span class="big">${SVG.store}</span><br>${t('emptyMarket')}<br><b style="color:var(--acc)">${t('emptyMarketB')}</b> ${t('emptyMarketC')}</div>`;
+                return;
+            }
+            const sellerLabel = t('seller');
+            const minAgoLabel = t('minAgo');
+            const showcase = feedTrades.map((t, i) => `
+                <div class="trade-card showcase enter" style="animation-delay:${(others.length + i) * 50}ms" onclick="showcaseTap()">
+                    <div class="mini-orb" style="${bgStyle(t.sellerGift.bg)}">${miniVisual(t.sellerGift.image)}</div>
+                    <div class="info">
+                        <div class="name">${esc(t.sellerGift.name)}</div>
+                        <div class="sub">${sellerLabel} ${t.sellerId} · ${t.minutesAgo} ${minAgoLabel}</div>
+                        <div class="actions"><span class="ask-chip t-${t.ask.type}">${curIcon(t.ask.type)} ${esc(t.ask.text)}</span> ${statusPill(t.status)}</div>
+                    </div>
+                </div>`).join('');
+            list.innerHTML = showcase;
+        }
+
+        function showcaseTap() {
+            toast('Продавец офлайн — сделка временно недоступна', '#fbbf24', 'warn');
+            haptic('warning');
+        }
+
+        function renderMyTrades() {
+            const list = document.getElementById('my-trades-list');
+            const mine = allTrades.filter(t => t.sellerId === userId);
+            document.getElementById('trades-count').innerText = `${mine.length} ${plural(mine.length, t('activeOne'), t('activeFew'), t('activeMany'))}`;
+            if (!mine.length) {
+                list.innerHTML = `<div class="empty enter"><span class="big">${SVG.trades}</span><br>${t('emptyTrades')}<br>${t('emptyTradesC')}</div>`;
+                return;
+            }
+            const arrow = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>`;
+            list.innerHTML = mine.map((tr, i) => {
+                let body = '';
+                const partnerName = tr.buyerUsername ? '@' + tr.buyerUsername : (tr.buyerName || ('ID ' + tr.buyerId));
+                const youLabel = esc(t('you'));
+                const partnerLabel = esc(t('partner'));
+                if (tr.status === 'offer_made' && tr.buyerOffer) {
+                    body = `<div class="ex-card"><div class="ex-grid">
+                            <div class="ex-side"><div class="ex-label">${youLabel}</div>${avatarOf(userId, firstName, 'ex')}<div class="ex-name">${esc(firstName)}</div><div class="ex-item">${esc(tr.sellerGift.name)}</div></div>
+                            <div class="ex-arrow">${arrow}</div>
+                            <div class="ex-side"><div class="ex-label">${partnerLabel}</div>${avatarOf(tr.buyerId, tr.buyerName || tr.buyerUsername || partnerName, 'ex')}<div class="ex-name">${esc(partnerName)}</div><div class="ex-item">${curIcon(tr.buyerOffer && tr.buyerOffer.type)} ${esc(offerText(tr.buyerOffer))}</div></div>
+                        </div></div>
+                        <button class="btn btn-green small" onclick="confirmTrade('${tr.tradeId}')">${SVG.check} Подтвердить</button>
+                        <button class="btn btn-danger small" onclick="cancelTrade('${tr.tradeId}')">${SVG.x} Отменить</button>`;
+                } else if (tr.status === 'connected') {
+                    body = `<div class="ex-card"><div class="ex-grid">
+                            <div class="ex-side"><div class="ex-label">${youLabel}</div>${avatarOf(userId, firstName, 'ex')}<div class="ex-name">${esc(firstName)}</div><div class="ex-item">${esc(tr.sellerGift.name)}</div></div>
+                            <div class="ex-arrow">${arrow}</div>
+                            <div class="ex-side"><div class="ex-label">${partnerLabel}</div>${avatarOf(tr.buyerId, tr.buyerName || tr.buyerUsername || partnerName, 'ex')}<div class="ex-name">${esc(partnerName)}</div><div class="ex-item">${esc(t('waitingOffer'))}</div></div>
+                        </div></div>
+                        <button class="btn btn-danger small" onclick="cancelTrade('${tr.tradeId}')">${SVG.x} Отменить</button>`;
+                } else {
+                    body = `<div class="link-box">${SVG.linkicon} <span>${esc(tr.link || ('https://t.me/SuppGiftbot?start=trade_' + tr.tradeId))}</span></div>
+                        <button class="btn btn-green small" onclick="shareTrade('${tr.tradeId}')">${SVG.send} ${esc(t('shareWithBot'))} ${esc(botHandle(tr.link))}</button>
+                        <button class="btn btn-ghost small" onclick="copyLink('${tr.tradeId}')">${SVG.copy} Копировать ссылку</button>
+                        <button class="btn btn-ghost small" onclick="shareLink('${tr.tradeId}')">${SVG.send} Открыть в Telegram</button>
+                        <button class="btn btn-danger small" onclick="cancelTrade('${tr.tradeId}')">${SVG.x} Отменить</button>`;
+                }
+                return `<div class="trade-card enter" style="animation-delay:${i * 60}ms; display:block">
+                    <div style="display:flex; gap:12px; align-items:center">
+                        <div class="mini-orb" style="${bgStyle(tr.sellerGift.bg)}">${miniVisual(tr.sellerGift.image)}</div>
+                        <div class="info">
+                            <div class="name">${esc(tr.sellerGift.name)}</div>
+                            <div class="sub">ID: ${tr.tradeId}</div>
+                            <div style="margin-top:8px">${statusPill(tr.status)}</div>
+                        </div>
+                    </div>${body}
+                </div>`;
+            }).join('');
+        }
+
+        function joinTrade(tradeId) {
+            tap();
+            window.location.href = `/trade.html?id=${tradeId}`;
+        }
+
+        async function copyLink(tradeId) {
+            const trade = await api(`/api/trade/${tradeId}`);
+            const link = trade.link || ('https://t.me/SuppGiftbot?start=trade_' + tradeId);
+            try {
+                await navigator.clipboard.writeText(link);
+                toast('Ссылка скопирована — отправь её покупателю!', '#34d399', 'ok');
+            } catch {
+                prompt('Скопируй ссылку:', link);
+            }
+            haptic('success');
+        }
+
+        function shareLink(tradeId) {
+            const t = allTrades.find(x => x.tradeId === tradeId);
+            const link = t?.link || ('https://t.me/SuppGiftbot?start=trade_' + tradeId);
+            if (!link) return;
+            if (tg.openTelegramLink) tg.openTelegramLink(link);
+            else window.open(link, '_blank');
+        }
+
+        async function createTrade() {
+            if (!selectedGiftId) return;
+            const comment = document.getElementById('trade-comment').value.trim();
+            const data = await api('/api/trade/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sellerId: userId, giftId: selectedGiftId, comment })
+            });
+            if (data.error) { toast(data.error, '#f87171', 'err'); haptic('error'); return; }
+            selectedGiftId = null;
+            document.getElementById('trade-comment').value = '';
+            haptic('success');
+            confetti();
+            toast('Трейд создан! Ссылка в разделе «Сделки»', '#34d399', 'ok');
+            await Promise.all([loadUser(), loadTrades()]);
+            const mine = allTrades.find(t => t.tradeId === data.tradeId);
+            const tradeLink = data.link || ('https://t.me/SuppGiftbot?start=trade_' + data.tradeId);
+            if (mine) mine.link = tradeLink;
+            renderMyTrades();
+            switchTab('trades');
+            try { await navigator.clipboard.writeText(tradeLink); } catch {}
+        }
+
+        async function confirmTrade(tradeId) {
+            const data = await api(`/api/trade/${tradeId}/confirm`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, initData: tg.initData })
+            });
+            if (data.success) {
+                toast('Сделка завершена! Средства зачислены.', '#34d399', 'ok');
+                haptic('success');
+                confetti();
+            } else {
+                toast(data.error, '#f87171', 'err');
+                haptic('error');
+            }
+            refresh();
+        }
+
+        async function cancelTrade(tradeId) {
+            const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm('Отменить сделку? Подарок вернётся в твой профиль.', r)) : confirm('Отменить сделку?');
+            if (!ok) return;
+            const data = await api(`/api/trade/${tradeId}/cancel`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, initData: tg.initData })
+            });
+            if (data.success) { toast('Сделка отменена, подарок возвращён.', '#f87171', 'info'); haptic('warning'); }
+            else toast(data.error || 'Ошибка', '#f87171', 'err');
+            refresh();
+        }
+
+        async function adminCancelTrade(tradeId) {
+            const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm('Отменить чужой трейд? Подарок вернётся продавцу.', r)) : confirm('Отменить чужой трейд?');
+            if (!ok) return;
+            const data = await api(`/api/trade/${tradeId}/cancel`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, initData: tg.initData })
+            });
+            if (data.success) { toast('Трейд отменён администратором.', '#f87171', 'warn'); haptic('warning'); }
+            else toast(data.error || 'Ошибка', '#f87171', 'err');
+            refresh();
+        }
+
+        async function refresh(manual) {
+            if (manual) {
+                const b = document.getElementById('refresh-btn');
+                b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin');
+                tap();
+            }
+            await Promise.all([loadUser(), loadTrades(), loadHistory(), loadTickets()]);
+        }
+
+        const CURRENCIES = {
+            rub: { sym: '₽', name: 'RUB', cls: 'coin-rub', quick: [100, 500, 1000, 5000] },
+            usdt: { sym: '₮', name: 'USDT', cls: 'coin-usdt', quick: [10, 50, 100, 300] },
+            ton: { sym: '◈', name: 'TON', cls: 'coin-ton', quick: [1, 5, 10, 50] }
+        };
+        const TON_SVG = '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#083344" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 9l-9 12L3 9l9-6z"/><path d="M3 9h18"/><path d="M12 3v18"/></svg>';
+        let walletCurrency = null;
+        let walletMode = 'deposit';
+
+        function openWallet(cur, mode = 'deposit') {
+            walletCurrency = cur;
+            const c = CURRENCIES[cur];
+            const coin = document.getElementById('ws-coin');
+            coin.className = 'ws-coin coin ' + c.cls;
+            coin.innerHTML = cur === 'ton' ? TON_SVG : c.sym;
+            document.getElementById('ws-title').innerText = c.name;
+            document.getElementById('wallet-amount').value = '';
+            const dest = document.getElementById('wallet-dest');
+            dest.value = '';
+            dest.placeholder = cur === 'rub' ? t('sbpPh') : (cur === 'usdt' ? t('usdtAddrPh') : t('tonAddrPh'));
+            document.getElementById('quick-amounts').innerHTML = c.quick.map(v => `<button onclick="document.getElementById('wallet-amount').value=${v}">+${v}</button>`).join('');
+            updateWalletBalance();
+            setWalletMode(mode);
+            openOverlaySmart(document.getElementById('wallet-overlay'));
+            tap();
+        }
+
+        function updateWalletBalance() {
+            if (walletCurrency && userData) {
+                document.getElementById('ws-balance').innerText = Math.round(userData[walletCurrency] * 100) / 100;
+            }
+        }
+
+        function setWalletMode(m) {
+            walletMode = m;
+            document.querySelectorAll('.t2').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+            const btn = document.getElementById('wallet-submit');
+            btn.innerText = m === 'deposit' ? 'Пополнить' : 'Вывести';
+            btn.className = 'btn ' + (m === 'deposit' ? 'btn-grad' : 'btn-danger');
+        }
+
+        function closeWallet() {
+            closeOverlaySmart(document.getElementById('wallet-overlay'));
+            tap();
+        }
+
+        function openWithdrawMenu() {
+            const hasCurrency = !!(userData && (userData.rub > 0 || userData.usdt > 0 || userData.ton > 0));
+            const hasGift = !!(userData && userData.gifts && userData.gifts.length);
+            if (!hasCurrency && !hasGift) { toast('В профиле пока нечего выводить', '#f87171', 'warn'); haptic('error'); return; }
+            document.getElementById('wd-currency-btn').style.display = hasCurrency ? '' : 'none';
+            document.getElementById('wd-gift-btn').style.display = hasGift ? '' : 'none';
+            openOverlaySmart(document.getElementById('withdraw-menu-overlay'));
+            tap();
+        }
+        function closeWithdrawMenu() {
+            closeOverlaySmart(document.getElementById('withdraw-menu-overlay'));
+            tap();
+        }
+        function openWithdrawCurrency() {
+            closeWithdrawMenu();
+            const box = document.getElementById('withdraw-currency-options');
+            box.innerHTML = '';
+            const items = [];
+            if (userData && userData.rub > 0) items.push(['rub', 'RUB', userData.rub]);
+            if (userData && userData.usdt > 0) items.push(['usdt', 'USDT', userData.usdt]);
+            if (userData && userData.ton > 0) items.push(['ton', 'TON', userData.ton]);
+            if (!items.length) { toast('Нет валюты для вывода', '#f87171', 'warn'); haptic('error'); return; }
+            items.forEach(([cur, name, amount]) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-ghost';
+                btn.style.marginTop = '10px';
+                btn.textContent = name + ' — ' + (Math.round(amount * 100) / 100);
+                btn.onclick = () => openWithdrawCurrencyChoice(cur);
+                box.appendChild(btn);
+            });
+            openOverlaySmart(document.getElementById('withdraw-currency-overlay'));
+            tap();
+        }
+        function closeWithdrawCurrency() {
+            closeOverlaySmart(document.getElementById('withdraw-currency-overlay'));
+            tap();
+        }
+        function openWithdrawCurrencyChoice(cur) {
+            closeWithdrawCurrency();
+            openWallet(cur, 'withdraw');
+        }
+        let giftWithdrawSelected = null;
+        function renderGiftWithdraw() {
+            const list = document.getElementById('withdraw-gift-list');
+            if (!userData?.gifts?.length) { list.innerHTML = '<div class="empty">Нет подарков для вывода</div>'; return; }
+            if (!giftWithdrawSelected || !userData.gifts.some(g => g.id === giftWithdrawSelected)) giftWithdrawSelected = userData.gifts[0].id;
+            list.innerHTML = userData.gifts.map(g => `<button class="btn ${g.id === giftWithdrawSelected ? 'btn-grad' : 'btn-ghost'}" style="margin-top:8px" onclick="selectGiftWithdraw('${g.id}')">${esc(g.name)}</button>`).join('');
+        }
+        function selectGiftWithdraw(id) {
+            giftWithdrawSelected = id;
+            renderGiftWithdraw();
+        }
+        function openGiftWithdraw() {
+            closeWithdrawMenu();
+            if (!userData?.gifts?.length) { toast('У тебя нет подарков для вывода', '#f87171', 'warn'); haptic('error'); return; }
+            renderGiftWithdraw();
+            document.getElementById('withdraw-gift-target').value = '';
+            openOverlaySmart(document.getElementById('withdraw-gift-overlay'));
+            tap();
+        }
+        function closeWithdrawGift() {
+            closeOverlaySmart(document.getElementById('withdraw-gift-overlay'));
+            tap();
+        }
+
+        function openBankGiftInfo() {
+            openOverlaySmart(document.getElementById('bank-info-overlay'));
+            tap();
+        }
+        function closeBankGiftInfo() {
+            closeOverlaySmart(document.getElementById('bank-info-overlay'));
+        }
+        function openBankProfile() {
+            closeBankGiftInfo();
+            const url = 'https://t.me/supgiftbank';
+            if (typeof tg !== 'undefined' && tg.openTelegramLink) tg.openTelegramLink(url);
+            else window.open(url, '_blank');
+        }
+        function openDepositMenu() {
+            openOverlaySmart(document.getElementById('deposit-menu-overlay'));
+            tap();
+        }
+        function closeDepositMenu() {
+            closeOverlaySmart(document.getElementById('deposit-menu-overlay'));
+            tap();
+        }
+        function openDepositCurrency(cur) {
+            closeDepositMenu();
+            depositCurrency = cur;
+            const coin = document.getElementById('deposit-coin');
+            const title = document.getElementById('deposit-title');
+            const address = document.getElementById('deposit-address');
+            if (cur === 'ton') {
+                coin.className = 'ws-coin coin coin-ton';
+                    coin.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#009eea" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 9l-9 12L3 9l9-6z"/><path d="M3 9h18"/><path d="M12 3v18"/></svg>';
+                title.innerText = 'TON';
+            } else {
+                coin.className = 'ws-coin coin coin-usdt';
+                coin.innerHTML = '₮';
+                title.innerText = 'USDT';
+            }
+            address.innerText = DEPOSIT_ADDRESS;
+            document.getElementById('deposit-amount').value = '';
+            document.getElementById('addr-hint').innerText = t('tapCopy');
+            document.getElementById('deposit-addr-box').classList.remove('copied');
+            openOverlaySmart(document.getElementById('deposit-currency-overlay'));
+            tap();
+        }
+        const DEPOSIT_ADDRESS = 'UQAgVyTPjT0e5LsG40gAb2BwWn9-eHoDh1dQRfXJvbrQiUui';
+        async function copyDepositAddress() {
+            const box = document.getElementById('deposit-addr-box');
+            let ok = false;
+            try {
+                if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(DEPOSIT_ADDRESS); ok = true; }
+            } catch {}
+            if (!ok) {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = DEPOSIT_ADDRESS;
+                    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+                    document.body.appendChild(ta);
+                    ta.focus(); ta.select();
+                    ok = document.execCommand('copy');
+                    ta.remove();
+                } catch {}
+            }
+            if (ok) {
+                box.classList.add('copied');
+                document.getElementById('addr-hint').innerText = t('copied');
+                toast('Адрес скопирован', '#34d399', 'ok');
+                haptic('success');
+                tap();
+                clearTimeout(box._t);
+                box._t = setTimeout(() => {
+                    box.classList.remove('copied');
+                    document.getElementById('addr-hint').innerText = t('tapCopy');
+                }, 2400);
+            } else {
+                toast('Не удалось скопировать — выдели адрес вручную', '#f87171', 'warn');
+                haptic('error');
+            }
+        }
+        function closeDepositCurrency() {
+            closeOverlaySmart(document.getElementById('deposit-currency-overlay'));
+            tap();
+        }
+        async function submitDeposit() {
+            const amount = Number(document.getElementById('deposit-amount').value);
+            if (!amount || amount <= 0) { toast('Введи сумму', '#f87171', 'warn'); haptic('error'); return; }
+            const btn = document.getElementById('deposit-submit');
+            btn.disabled = true;
+            btn.innerText = 'Отправка…';
+            const data = await api('/api/deposit/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, currency: depositCurrency, amount })
+            }).catch(() => ({}));
+            btn.disabled = false;
+            btn.innerText = 'Отправить на проверку';
+            if (data.success) {
+                closeDepositCurrency();
+                toast('Заявка на пополнение отправлена', '#34d399', 'ok');
+                haptic('success');
+            } else {
+                toast(data.error || 'Ошибка соединения', '#f87171', 'err');
+                haptic('error');
+            }
+        }
+        let supportMode = 'general';
+        function openSupportTicket(mode = 'general') {
+            supportMode = mode;
+            closeDepositMenu();
+            document.getElementById('support-amount').value = '';
+            document.getElementById('support-message').value = '';
+            document.getElementById('support-title').innerText = mode === 'deposit' ? t('supTitleDep') : t('supTitle');
+            document.getElementById('support-sub').innerText = mode === 'deposit' ? t('supSubDep') : t('supSub');
+            document.getElementById('support-amount').placeholder = mode === 'deposit' ? t('supAmountRub') : t('supAmountOpt');
+            document.getElementById('support-message').placeholder = mode === 'deposit' ? t('supMsgDep') : t('supMsgGen');
+            const sa = document.getElementById('support-amount');
+            sa.style.display = mode === 'deposit' ? 'block' : 'none';
+            openOverlaySmart(document.getElementById('support-ticket-overlay'));
+            tap();
+        }
+        function closeSupportTicket() {
+            closeOverlaySmart(document.getElementById('support-ticket-overlay'));
+            tap();
+        }
+        async function submitSupportTicket() {
+            const amount = document.getElementById('support-amount').value.trim();
+            const message = document.getElementById('support-message').value.trim();
+            if (!message) { toast('Введи сообщение для поддержки', '#f87171', 'warn'); haptic('error'); return; }
+            if (supportMode === 'deposit' && (!amount || Number(amount) <= 0)) { toast('Введи сумму пополнения', '#f87171', 'warn'); haptic('error'); return; }
+            const btn = document.getElementById('support-submit');
+            btn.disabled = true;
+            btn.innerText = 'Отправка…';
+            const subject = supportMode === 'deposit' ? ('Пополнение RUB ' + amount) : 'Поддержка';
+            const text = supportMode === 'deposit' && amount ? ('Сумма: ' + amount + ' RUB\n' + message) : message;
+            const data = await api('/api/support/ticket', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, subject, message: text })
+            }).catch(() => ({}));
+            btn.disabled = false;
+            btn.innerText = 'Создать тикет';
+            if (data.success) {
+                closeSupportTicket();
+                toast('Тикет создан, поддержка ответит', '#34d399', 'ok');
+                haptic('success');
+                await loadTickets();
+            } else {
+                toast(data.error || 'Ошибка соединения', '#f87171', 'err');
+                haptic('error');
+            }
+        }
+        async function submitGiftWithdraw() {
+            const target = document.getElementById('withdraw-gift-target').value.trim().replace(/^@/, '');
+            if (!giftWithdrawSelected) { toast('Выбери подарок', '#f87171', 'warn'); haptic('error'); return; }
+            if (!/^[a-zA-Z0-9_]{5,32}$/.test(target) && !/^\d{5,15}$/.test(target)) { toast('Введи @username или ID', '#f87171', 'warn'); haptic('error'); return; }
+            const btn = document.getElementById('withdraw-gift-submit');
+            btn.disabled = true;
+            btn.innerText = 'Отправка…';
+            const data = await api('/api/withdraw/gift', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, giftId: giftWithdrawSelected, targetUsername: target })
+            }).catch(() => ({}));
+            btn.disabled = false;
+            btn.innerText = 'Создать заявку';
+            if (data.success) {
+                closeWithdrawGift();
+                toast('Заявка на вывод подарка создана', '#34d399', 'ok');
+                haptic('success');
+                await loadUser();
+            } else {
+                toast(data.error || 'Ошибка соединения', '#f87171', 'err');
+                haptic('error');
+            }
+        }
+
+        async function submitWallet() {
+            const btn = document.getElementById('wallet-submit');
+            const amount = Number(document.getElementById('wallet-amount').value);
+            const destination = document.getElementById('wallet-dest').value.trim();
+            if (!amount || amount <= 0) { toast('Введи сумму', '#f87171', 'warn'); haptic('error'); return; }
+            if (walletMode === 'withdraw' && !destination) { toast('Укажи реквизиты для вывода', '#f87171', 'warn'); haptic('error'); return; }
+            if (walletMode === 'withdraw' && walletCurrency === 'rub' && !/^\+?\d{10,15}$/.test(destination.replace(/\s+/g, ''))) { toast('Укажи номер СБП', '#f87171', 'warn'); haptic('error'); return; }
+            if (walletMode === 'withdraw' && (walletCurrency === 'usdt' || walletCurrency === 'ton') && destination.length < 10) { toast('Укажи адрес кошелька', '#f87171', 'warn'); haptic('error'); return; }
+            if (walletMode === 'withdraw' && userData && userData[walletCurrency] < amount) {
+                toast(`Недостаточно средств (у тебя ${userData[walletCurrency]})`, '#f87171', 'warn');
+                haptic('error');
+                return;
+            }
+            btn.disabled = true;
+            btn.innerText = 'Обработка…';
+            await new Promise(r => setTimeout(r, 1100));
+            const data = await api(`/api/wallet/${walletMode}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, currency: walletCurrency, amount, destination })
+            }).catch(() => ({}));
+            btn.disabled = false;
+            setWalletMode(walletMode);
+            if (data.success) {
+                if (walletMode === 'deposit') {
+                    confetti();
+                    toast(`Пополнено ${amount} ${CURRENCIES[walletCurrency].name}!`, '#34d399', 'ok');
+                } else {
+                    toast(`Вывод ${amount} ${CURRENCIES[walletCurrency].name} выполнен`, '#34d399', 'ok');
+                }
+                haptic('success');
+                document.getElementById('wallet-amount').value = '';
+                await loadUser();
+                updateWalletBalance();
+            } else {
+                toast(data.error || 'Ошибка соединения', '#f87171', 'err');
+                haptic('error');
+            }
+        }
+
+        function initSSE() {
+            if (evtSource) { try { evtSource.close(); } catch {} }
+            try { evtSource = new EventSource(`/api/trade/stream/${userId}`); }
+            catch { evtSource = null; setTimeout(initSSE, 4000); return; }
+            evtSource.onmessage = (event) => {
+                let data;
+                try { data = JSON.parse(event.data); } catch { return; }
+                if (data.type === 'buyer_connected') {
+                    toast(`Покупатель зашёл в сделку ${data.tradeId}!`, '#60a5fa', 'user');
+                    haptic('success');
+                } else if (data.type === 'offer_made') {
+                    toast(`Новый оффер: ${offerText(data.offer)} — ждёт в «Сделках»`, '#fbbf24', 'gem');
+                    haptic('success');
+                } else if (data.type === 'completed') {
+                    toast('Сделка завершена!', '#34d399', 'ok');
+                    haptic('success');
+                    confetti();
+                } else if (data.type === 'cancelled') {
+                    toast('Сделка отменена', '#f87171', 'info');
+                }
+                refresh();
+            };
+            evtSource.onerror = () => {
+                if (!evtSource || evtSource.readyState === EventSource.CLOSED) {
+                    evtSource = null;
+                    setTimeout(initSSE, 4000);
+                }
+            };
+        }
+
+        function resumeApp() {
+            try { tg.expand(); } catch {}
+        try { tg.setHeaderColor('#08080a'); tg.setBackgroundColor('#08080a'); } catch {}
+            if (!evtSource || evtSource.readyState === EventSource.CLOSED) initSSE();
+            refresh();
+            forceRepaint();
+        }
+
+        function forceRepaint() {
+            try {
+                const el = document.getElementById('page-market');
+                if (el) { el.style.display = 'none'; void el.offsetHeight; el.style.display = ''; }
+                window.dispatchEvent(new Event('resize'));
+            } catch {}
+        }
+
+        let resumeTimer = null;
+        function scheduleResume() {
+            clearTimeout(resumeTimer);
+            resumeTimer = setTimeout(resumeApp, 200);
+        }
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleResume(); });
+        window.addEventListener('pageshow', (e) => { if (e.persisted) scheduleResume(); });
+        window.addEventListener('focus', scheduleResume);
+        window.addEventListener('online', scheduleResume);
+
+        setInterval(() => { if (!document.hidden && !document.getElementById('wallet-overlay').classList.contains('open')) refresh(); }, 5000);
+
+        applyTheme();
+        applyI18n();
+        initSSE();
+        requestAnimationFrame(() => moveNavIndicator('market'));
+        const loaderEl = document.getElementById('app-loader');
+        let hidden = false;
+        const hideLoader = () => {
+            if (hidden || !loaderEl) return;
+            hidden = true;
+            loaderEl.classList.add('hide');
+            setTimeout(() => { if (loaderEl && loaderEl.parentNode) loaderEl.remove(); }, 500);
+        };
+        const t0 = Date.now();
+        refresh().catch(() => {}).then(() => {
+            setTimeout(hideLoader, Math.max(0, 450 - (Date.now() - t0)));
+        });
+        setTimeout(hideLoader, 6000);
+        try {
+            const pvParam = new URLSearchParams(location.search).get('profile');
+            if (pvParam) setTimeout(() => openUserProfile(pvParam), 250);
+        } catch {}
+        window.addEventListener('resize', () => {
+            const a = document.querySelector('nav button.active');
+            if (a) moveNavIndicator(a.dataset.tab);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+services:
+  # ---------- Основной бот (веб-сервис: API + мини-апп) ----------
+  - type: web
+    name: trade
+    runtime: node
+    plan: free
+    rootDir: trade
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.3"
+      - key: BOT_TOKEN
+        sync: false
+      - key: MAIN_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trade-db
+          property: connectionString
+      - key: WEBHOOK_SECRET
+        generateValue: true
+      - key: BANK_ACCOUNT
+        sync: false
+      - key: APP_URL
+        fromService:
+          type: web
+          name: trade
+          property: host
+          envVarKey: APP_URL
+      - key: ADMIN_ID
+        value: "7593759960"
+
+  # ---------- Второй бот: магазин подарков ----------
+  - type: worker
+    name: bot2
+    runtime: node
+    plan: free
+    rootDir: bot2
+    buildCommand: npm install
+    startCommand: node bot2.js
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.3"
+      - key: BOT2_TOKEN
+        sync: false
+      - key: MAIN_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trade-db
+          property: connectionString
+
+  # ---------- Work bot (@FKPDSFKOSKObot) ----------
+  - type: worker
+    name: work-bot
+    runtime: node
+    plan: free
+    rootDir: work-bot
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: "22.23.3"
+      - key: WORK_BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trade-db
+          property: connectionString
+      - key: INTERNAL_API_SECRET
+        generateValue: true
+
+  # ---------- Offers bot (@StarToGiftsBot) ----------
+  - type: worker
+    name: offera
+    runtime: python
+    plan: free
+    rootDir: offera
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: OFFERA_API_ID
+        sync: false
+      - key: OFFERA_API_HASH
+        sync: false
+
+  # ---------- Checks bot (чеки) ----------
+  - type: worker
+    name: checks
+    runtime: python
+    plan: free
+    rootDir: checks
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run_bot_launcher.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+
+databases:
+  - name: trade-db
+    databaseName: trade_bot
+    user: trade_bot
+    plan: free

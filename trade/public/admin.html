@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Админ-панель</title>
+    <script src="/telegram-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050810;
+            --glass: rgba(255,255,255,.045);
+            --stroke: rgba(255,255,255,.09);
+            --txt: #f1f5f9;
+            --txt2: #94a3b8;
+            --txt3: #5b6b82;
+            --gold: #fbbf24;
+            --red: #f87171;
+            --green: #34d399;
+            --cyan: #22d3ee;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { color-scheme: dark; }
+        html { height: 100%; overflow-y: auto; }
+        body { font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--txt); margin: 0; padding: 16px calc(16px + env(safe-area-inset-right)) calc(30px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left)); overflow-x: hidden; overflow-y: auto; height: 100%; min-height: 100dvh; -webkit-overflow-scrolling: touch; }
+        ::-webkit-scrollbar { display: none; }
+        .aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+        .blob { position: absolute; border-radius: 50%; }
+        .blob1 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(180,83,9,.38), rgba(180,83,9,0) 68%); top: -120px; left: -100px; animation: drift1 17s ease-in-out infinite alternate; }
+        .blob2 { width: 340px; height: 340px; background: radial-gradient(circle, rgba(190,18,60,.32), rgba(190,18,60,0) 68%); bottom: -100px; right: -120px; animation: drift2 21s ease-in-out infinite alternate; }
+        @keyframes drift1 { to { transform: translate(60px, 50px) scale(1.15); } }
+        @keyframes drift2 { to { transform: translate(-50px, -40px) scale(1.1); } }
+
+        .grain { position: fixed; inset: -50%; width: 200%; height: 200%; z-index: 80; pointer-events: none; opacity: .05; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grainShift 1.1s steps(4) infinite; }
+        @keyframes grainShift { 0% { transform: translate(0,0); } 25% { transform: translate(-2%,1%); } 50% { transform: translate(1%,-2%); } 75% { transform: translate(-1%,-1%); } 100% { transform: translate(0,0); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+        }
+
+        h1 { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 21px; margin: 14px 0 16px; font-weight: 800; }
+
+        .topbar { margin-top: calc(8px + env(safe-area-inset-top)); margin-bottom: -6px; display: flex; justify-content: flex-start; }
+        .back-btn { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); color: var(--txt2); font-family: inherit; font-size: 12.5px; font-weight: 700; padding: 7px 13px 7px 9px; border-radius: 999px; cursor: pointer; margin: 0; transition: transform .25s cubic-bezier(.34,1.56,.64,1), background .2s, color .2s; position: relative; overflow: hidden; }
+        .back-btn:hover { background: rgba(255,255,255,.09); color: var(--txt); }
+        .back-btn:active { transform: scale(.93); }
+        .ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.28); transform: scale(0); animation: rip .55s ease-out forwards; pointer-events: none; z-index: 2; }
+        @keyframes rip { to { transform: scale(3.2); opacity: 0; } }
+        h1 .grad { background: linear-gradient(90deg, #fbbf24, #f87171); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        h1 svg { color: var(--gold); filter: drop-shadow(0 0 12px rgba(251,191,36,.5)); }
+
+        .seg { display: flex; flex-wrap: wrap; gap: 6px; background: rgba(5,8,16,.6); border: 1px solid var(--stroke); border-radius: 16px; padding: 5px; margin-bottom: 14px; position: sticky; top: calc(8px + env(safe-area-inset-top)); z-index: 20; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .seg button { flex: 1 1 auto; min-width: max-content; display: flex; align-items: center; justify-content: center; gap: 7px; background: none; border: none; color: var(--txt3); font-family: inherit; font-weight: 800; font-size: 13px; padding: 12px 11px; border-radius: 12px; cursor: pointer; transition: all .2s; letter-spacing: .2px; white-space: nowrap; }
+        .seg button.active { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; box-shadow: 0 6px 20px rgba(239,68,68,.35), inset 0 1px 0 rgba(255,255,255,.25); }
+
+        .tab-page { display: none; }
+        .tab-page.active { display: block; animation: fadeUp .35s cubic-bezier(.2,.7,.3,1); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+        .card { background: var(--glass); border: 1px solid var(--stroke); border-radius: 22px; padding: 18px 16px; margin-bottom: 14px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 10px 34px rgba(0,0,0,.28); }
+        .card h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 14px; font-weight: 800; color: var(--txt2); }
+        .card h3 svg { color: var(--gold); flex-shrink: 0; }
+        label { font-size: 11px; color: var(--txt3); display: block; margin-top: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        input, select { width: 100%; padding: 14px; border-radius: 14px; border: 1px solid var(--stroke); background: rgba(5,8,16,.6); color: #fff; font-size: 16px; font-family: inherit; margin-top: 6px; outline: none; transition: border-color .2s, box-shadow .2s; }
+        input:focus, select:focus { border-color: rgba(251,191,36,.55); box-shadow: 0 0 0 3px rgba(251,191,36,.15); }
+        select option { background: #0b1220; }
+        button.issue { position: relative; background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; border: none; padding: 16px; width: 100%; border-radius: 16px; font-weight: 800; font-size: 14.5px; cursor: pointer; margin-top: 16px; font-family: inherit; overflow: hidden; box-shadow: 0 10px 30px rgba(239,68,68,.35), inset 0 1px 0 rgba(255,255,255,.25); transition: transform .15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        button.issue:active { transform: scale(.97); }
+        button.issue:disabled { opacity: .45; box-shadow: none; }
+        button.issue.ready::before { content: ''; position: absolute; top: 0; left: -80%; width: 50%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); animation: btnsheen 3s ease-in-out infinite; }
+        @keyframes btnsheen { 0%, 55% { left: -80%; } 90%, 100% { left: 140%; } }
+
+        .crumbs { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12.5px; font-weight: 700; color: var(--txt3); flex-wrap: wrap; }
+        .crumbs .back { background: rgba(255,255,255,.06); border: 1px solid var(--stroke); color: var(--txt2); width: 30px; height: 30px; border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; flex-shrink: 0; }
+        .crumbs b { color: var(--gold); font-weight: 800; }
+        .crumbs .sep { opacity: .5; }
+
+        .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; max-height: 420px; overflow-y: auto; padding: 2px; }
+        .pick { position: relative; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); border-radius: 14px; padding: 9px 5px 8px; text-align: center; cursor: pointer; transition: all .15s; }
+        .pick:active { transform: scale(.95); }
+        .pick .pic { width: 100%; aspect-ratio: 1; border-radius: 11px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .pick img { width: 86%; height: 86%; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,.5)); }
+        .pick .gname { font-size: 10px; font-weight: 700; margin-top: 5px; line-height: 1.25; color: var(--txt2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 2px; }
+        .pick.selected { border-color: var(--gold); background: linear-gradient(160deg, rgba(251,191,36,.16), rgba(5,8,16,.5)); box-shadow: 0 0 0 3px rgba(251,191,36,.2), 0 8px 24px rgba(251,191,36,.15); }
+        .pick.selected .gname { color: var(--gold); }
+        .pick .tick { position: absolute; top: 5px; right: 5px; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #ef4444); display: none; align-items: center; justify-content: center; z-index: 2; }
+        .pick.selected .tick { display: flex; animation: pop .25s cubic-bezier(.2,1.6,.4,1); }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+        .swatch { width: 100%; aspect-ratio: 1; border-radius: 11px; border: 1px solid rgba(255,255,255,.08); box-shadow: inset 0 2px 12px rgba(255,255,255,.12); }
+
+        .nft-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 800; letter-spacing: .8px; padding: 2px 7px; border-radius: 999px; background: linear-gradient(90deg, rgba(34,211,238,.18), rgba(236,72,153,.18)); border: 1px solid rgba(34,211,238,.4); color: var(--cyan); }
+        .count-chip { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--cyan); background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.25); padding: 3px 10px; border-radius: 999px; }
+        .search-wrap { position: relative; margin: 10px 0; }
+        .search-wrap svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--txt3); pointer-events: none; }
+        .search-wrap input { padding-left: 40px; margin-top: 0; }
+        .loader { text-align: center; color: var(--txt3); padding: 34px 10px; font-size: 13px; grid-column: 1/-1; }
+        .spin { display: inline-block; width: 22px; height: 22px; border: 3px solid rgba(251,191,36,.25); border-top-color: var(--gold); border-radius: 50%; animation: sp 1s linear infinite; vertical-align: middle; margin-bottom: 10px; }
+        @keyframes sp { to { transform: rotate(360deg); } }
+        .hint { font-size: 12px; color: var(--txt3); margin: 8px 2px 0; line-height: 1.5; }
+
+        .row-inline { display: flex; gap: 8px; align-items: flex-end; }
+        .row-inline input { flex: 1 1 auto; min-width: 0; }
+        .mini-btn { flex-shrink: 0; background: rgba(255,255,255,.07); border: 1px solid var(--stroke); color: var(--txt); font-family: inherit; font-weight: 800; font-size: 13px; padding: 14px 16px; border-radius: 14px; margin-top: 6px; cursor: pointer; transition: transform .15s, background .2s; }
+        .mini-btn:active { transform: scale(.95); background: rgba(255,255,255,.12); }
+
+        .tg-av { overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; font-weight: 800; }
+        .tg-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .prof-head { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px; border-radius: 16px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); }
+        .prof-head .tg-av { width: 48px; height: 48px; border-radius: 16px; font-size: 19px; }
+        .prof-main { min-width: 0; flex: 1; }
+        .prof-name { font-size: 15.5px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .prof-user { display: inline-block; font-size: 12.5px; font-weight: 700; color: var(--cyan); text-decoration: none; margin-top: 1px; }
+        .prof-user:active { opacity: .7; }
+        .prof-idtext { font-size: 11.5px; color: var(--txt3); font-weight: 700; margin-top: 2px; }
+        .prof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+        .prof-stat { text-align: center; padding: 12px 5px 11px; border-radius: 14px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); }
+        .prof-num { font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; background: linear-gradient(135deg, #fbbf24, #f87171); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .prof-lbl { font-size: 9.5px; color: var(--txt3); font-weight: 700; margin-top: 2px; line-height: 1.3; }
+        .prof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        button.ghost-btn { background: rgba(255,255,255,.06); border: 1px solid var(--stroke); color: var(--txt2); padding: 14px; width: 100%; border-radius: 16px; font-weight: 800; font-size: 13.5px; cursor: pointer; margin-top: 8px; font-family: inherit; transition: transform .15s, background .2s; }
+        button.ghost-btn:active { transform: scale(.97); background: rgba(255,255,255,.1); }
+
+        .ref-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .ref-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 15px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); }
+        .ref-item .tg-av { width: 36px; height: 36px; border-radius: 12px; font-size: 14px; }
+        .ref-main { min-width: 0; flex: 1; }
+        .ref-name { font-size: 13px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ref-sub { font-size: 10.5px; color: var(--txt3); font-weight: 700; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ref-badge { flex-shrink: 0; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: rgba(34,211,238,.12); border: 1px solid rgba(34,211,238,.3); color: var(--cyan); white-space: nowrap; }
+        .admin-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); padding: 8px 8px 8px 13px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+        .chip-x { background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.3); color: var(--red); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; margin: 0; }
+        .steps { display: flex; gap: 6px; margin: 12px 0 4px; }
+        .step { flex: 1; height: 4px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+        .step.done { background: linear-gradient(90deg, #f59e0b, #ef4444); box-shadow: 0 0 10px rgba(245,158,11,.5); }
+
+        .denied { text-align: center; padding: 50px 20px; }
+        .denied .shield { width: 74px; height: 74px; margin: 0 auto 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, rgba(248,113,113,.25), rgba(5,8,16,.5)); border: 1px solid rgba(248,113,113,.35); color: var(--red); animation: floaty 3.5s ease-in-out infinite; }
+        @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .denied h2 { font-size: 20px; margin: 0 0 8px; color: var(--red); font-weight: 800; }
+        .denied p { color: var(--txt3); font-size: 13px; line-height: 1.6; margin: 0; }
+
+        #toast { position: fixed; top: calc(14px + env(safe-area-inset-top)); left: 14px; right: 14px; background: rgba(15,22,40,.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.14); border-left: 3px solid var(--green); padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 600; z-index: 100; opacity: 0; transform: translateY(-24px) scale(.96); transition: all .35s cubic-bezier(.2,.9,.3,1.2); pointer-events: none; box-shadow: 0 16px 50px rgba(0,0,0,.65); display: flex; align-items: center; gap: 10px; }
+        #toast.show { opacity: 1; transform: none; }
+        #toast svg { flex-shrink: 0; }
+
+        .pmtabs { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; padding: 4px; border-radius: 14px; background: rgba(5,8,16,.55); border: 1px solid var(--stroke); }
+        .pmtabs button { flex: 1 1 auto; min-width: max-content; background: none; border: none; color: var(--txt3); font-family: inherit; font-weight: 800; font-size: 12px; padding: 9px 8px; border-radius: 10px; cursor: pointer; transition: all .18s; white-space: nowrap; }
+        .pmtabs button.active { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,.3); }
+        .pm-panel { display: none; margin-top: 12px; }
+        .pm-panel.active { display: block; animation: fadeUp .25s cubic-bezier(.2,.7,.3,1); }
+        .kv { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 13px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); margin-bottom: 7px; }
+        .kv:last-child { margin-bottom: 0; }
+        .kv-k { font-size: 11.5px; color: var(--txt3); font-weight: 700; }
+        .kv-v { font-size: 13px; font-weight: 800; text-align: right; word-break: break-word; }
+        .kv-v.money { color: var(--gold); font-variant-numeric: tabular-nums; }
+        .mstatus { flex-shrink: 0; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: rgba(52,211,153,.12); border: 1px solid rgba(52,211,153,.32); color: var(--green); }
+        .mstatus.bad { background: rgba(248,113,113,.12); border-color: rgba(248,113,113,.35); color: var(--red); }
+        .mitems { display: flex; flex-direction: column; gap: 7px; }
+        .mitem { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 14px; background: rgba(5,8,16,.5); border: 1px solid var(--stroke); }
+        .mitem .tg-av { width: 34px; height: 34px; border-radius: 11px; font-size: 13px; }
+        .mitem-main { min-width: 0; flex: 1; }
+        .mitem-t { font-size: 12.5px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .mitem-s { font-size: 10.5px; color: var(--txt3); font-weight: 700; margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .mitem-x { flex-shrink: 0; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.32); color: var(--red); width: 28px; height: 28px; border-radius: 9px; font-size: 15px; font-weight: 800; cursor: pointer; padding: 0; font-family: inherit; }
+        .mitem-x:active { transform: scale(.9); }
+        .mbadge { flex-shrink: 0; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid var(--stroke); color: var(--txt2); white-space: nowrap; }
+        .mbadge.ok { background: rgba(52,211,153,.12); border-color: rgba(52,211,153,.3); color: var(--green); }
+        .mbadge.wait { background: rgba(251,191,36,.12); border-color: rgba(251,191,36,.3); color: var(--gold); }
+        .mbadge.bad { background: rgba(248,113,113,.12); border-color: rgba(248,113,113,.3); color: var(--red); }
+        .mact { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        textarea { width: 100%; min-height: 78px; padding: 13px; border-radius: 14px; border: 1px solid var(--stroke); background: rgba(5,8,16,.6); color: #fff; font-size: 15px; font-family: inherit; margin-top: 6px; outline: none; resize: vertical; }
+        textarea:focus { border-color: rgba(251,191,36,.55); box-shadow: 0 0 0 3px rgba(251,191,36,.15); }
+        .mempty { text-align: center; color: var(--txt3); font-size: 12.5px; padding: 18px 10px; }
+    </style>
+</head>
+<body>
+    <div class="aurora"><div class="blob blob1"></div><div class="blob blob2"></div></div>
+    <div class="grain"></div>
+    <div id="toast"></div>
+
+    <div id="access-denied" class="card denied" style="display:none">
+        <div class="shield">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/></svg>
+        </div>
+        <h2>Доступ запрещен</h2>
+        <p>Эта панель доступна только администратору<br>внутри Telegram Mini App.</p>
+    </div>
+
+    <div id="admin-content" style="display:none">
+        <div class="topbar">
+            <button class="back-btn" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Назад</button>
+        </div>
+        <h1>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+            <span class="grad">Админ-панель</span>
+        </h1>
+
+        <div class="seg">
+            <button class="active" data-tab="balance" onclick="switchTab('balance')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+                Баланс
+            </button>
+            <button data-tab="nft" onclick="switchTab('nft')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+                NFT-подарки
+            </button>
+            <button data-tab="profiles" onclick="switchTab('profiles')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/><path d="m16 12 2 2 4-4"/></svg>
+                Профили
+            </button>
+            <button data-tab="admins" id="seg-admins" onclick="switchTab('admins')" style="display:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Админы
+            </button>
+        </div>
+
+        <div class="tab-page active" id="tab-balance">
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                    Начисление валюты
+                </h3>
+                <label>Telegram ID пользователя</label>
+                <input type="number" id="target-id" placeholder="Например: 123456789" inputmode="numeric">
+                <label>Валюта</label>
+                <select id="currency">
+                    <option value="rub">₽ RUB</option>
+                    <option value="usdt">₮ USDT</option>
+                    <option value="ton">◈ TON</option>
+                </select>
+                <label>Количество</label>
+                <input type="number" id="amount" placeholder="100" inputmode="decimal">
+                <button class="issue ready" onclick="issueCurrency()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+                    Начислить баланс
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-page" id="tab-admins">
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Управление админами
+                </h3>
+                <label>Текущие админы</label>
+                <div id="admins-list" style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;"></div>
+                <label>Выдать админку по Telegram ID</label>
+                <input type="number" id="new-admin-id" placeholder="Например: 123456789" inputmode="numeric">
+                <button class="issue ready" onclick="grantAdmin()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    Выдать админку
+                </button>
+            </div>
+        </div>
+
+        <div class="tab-page" id="tab-profiles">
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+                    Профиль пользователя
+                </h3>
+                <label>Telegram ID пользователя</label>
+                <div class="row-inline">
+                    <input type="number" id="prof-id" placeholder="Например: 123456789" inputmode="numeric">
+                    <button class="mini-btn" onclick="loadProfile()">Найти</button>
+                </div>
+
+                <div id="prof-result" style="display:none">
+                    <div class="prof-head">
+                        <span class="tg-av" id="prof-avatar"></span>
+                        <div class="prof-main">
+                            <div class="prof-name" id="prof-name">—</div>
+                            <a class="prof-user" id="prof-user" href="#" target="_blank" rel="noopener">—</a>
+                            <div class="prof-idtext" id="prof-idtext">ID: —</div>
+                        </div>
+                        <span class="mstatus" id="prof-status">Активен</span>
+                    </div>
+
+                    <div class="prof-stats">
+                        <div class="prof-stat">
+                            <div class="prof-num" id="prof-success">0</div>
+                            <div class="prof-lbl">Успешных сделок</div>
+                        </div>
+                        <div class="prof-stat">
+                            <div class="prof-num" id="prof-completed">0</div>
+                            <div class="prof-lbl">Завершенных сделок</div>
+                        </div>
+                        <div class="prof-stat">
+                            <div class="prof-num" id="prof-gifts">0</div>
+                            <div class="prof-lbl">Подарков</div>
+                        </div>
+                    </div>
+
+                    <div class="pmtabs">
+                        <button class="active" data-pm="info" onclick="pmTab('info')">Инфо</button>
+                        <button data-pm="balance" onclick="pmTab('balance')">Баланс</button>
+                        <button data-pm="gifts" onclick="pmTab('gifts')">Подарки</button>
+                        <button data-pm="trades" onclick="pmTab('trades')">Сделки</button>
+                        <button data-pm="refs" onclick="pmTab('refs')">Рефералы</button>
+                        <button data-pm="hist" onclick="pmTab('hist')">История</button>
+                    </div>
+
+                    <div class="pm-panel active" id="pm-info">
+                        <div class="kv"><span class="kv-k">Telegram ID</span><span class="kv-v" id="pm-id">—</span></div>
+                        <div class="kv"><span class="kv-k">Username</span><span class="kv-v" id="pm-username">—</span></div>
+                        <div class="kv"><span class="kv-k">Имя</span><span class="kv-v" id="pm-firstname">—</span></div>
+                        <div class="kv"><span class="kv-k">Регистрация</span><span class="kv-v" id="pm-created">—</span></div>
+                        <div class="kv"><span class="kv-k">Статус</span><span class="kv-v" id="pm-status">—</span></div>
+                        <div class="kv"><span class="kv-k">Баланс</span><span class="kv-v money" id="pm-balance-summary">—</span></div>
+                    </div>
+
+                    <div class="pm-panel" id="pm-balance">
+                        <div class="kv"><span class="kv-k">RUB</span><span class="kv-v money" id="pm-rub">0</span></div>
+                        <div class="kv"><span class="kv-k">USDT</span><span class="kv-v money" id="pm-usdt">0</span></div>
+                        <div class="kv"><span class="kv-k">TON</span><span class="kv-v money" id="pm-ton">0</span></div>
+                        <label>Валюта</label>
+                        <select id="pm-cur">
+                            <option value="rub">RUB</option>
+                            <option value="usdt">USDT</option>
+                            <option value="ton">TON</option>
+                        </select>
+                        <label>Сумма</label>
+                        <input type="number" id="pm-amount" placeholder="0" inputmode="decimal" step="0.01">
+                        <div class="mact">
+                            <button class="ghost-btn" onclick="pmBalance('add')">Начислить</button>
+                            <button class="ghost-btn" onclick="pmBalance('subtract')">Списать</button>
+                        </div>
+                        <button class="ghost-btn" onclick="pmBalance('set')">Установить ровно</button>
+                    </div>
+
+                    <div class="pm-panel" id="pm-gifts">
+                        <label>Подарки пользователя</label>
+                        <div class="mitems" id="pm-gift-list"></div>
+
+                        <label>Выдать подарок из каталога</label>
+                        <div class="search-wrap">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" id="pm-gift-search" placeholder="Поиск подарка..." oninput="pmRenderCollections()">
+                        </div>
+                        <div class="crumbs" id="pm-crumbs" style="display:none">
+                            <button class="back" onclick="pmCatalogBack()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                            <span id="pm-crumbs-text"></span>
+                        </div>
+                        <div class="grid3" id="pm-collections-grid"><div class="loader"><span class="spin"></span><br>Загрузка каталога...</div></div>
+                        <div class="grid3" id="pm-models-grid" style="display:none"></div>
+                        <div class="grid3" id="pm-backdrops-grid" style="display:none"></div>
+                        <button class="ghost-btn" id="pm-issue-btn" onclick="pmIssueGift()" disabled>Выбери подарок</button>
+                    </div>
+
+                    <div class="pm-panel" id="pm-trades">
+                        <div class="mitems" id="pm-trade-list"></div>
+                        <button class="ghost-btn" onclick="pmTrades(1)">Обновить список</button>
+                    </div>
+
+                    <div class="pm-panel" id="pm-refs">
+                        <div class="kv"><span class="kv-k">Пригласил</span><span class="kv-v" id="pm-ref-invited">0</span></div>
+                        <div class="kv"><span class="kv-k">Пришёл по ссылке</span><span class="kv-v" id="pm-ref-by">0</span></div>
+                        <div class="kv"><span class="kv-k">Из сделок</span><span class="kv-v" id="pm-ref-trade">0</span></div>
+                        <div class="mitems" id="pm-ref-list" style="margin-top:10px"></div>
+                    </div>
+
+                    <div class="pm-panel" id="pm-hist">
+                        <div class="mitems" id="pm-hist-list"></div>
+                    </div>
+
+                    <div class="mact">
+                        <button class="ghost-btn" id="pm-ban-btn" onclick="pmBan()">Забанить</button>
+                        <button class="ghost-btn" onclick="pmBalanceSet()">Обновить баланс</button>
+                    </div>
+
+                    <label>Сообщение пользователю</label>
+                    <textarea id="pm-msg-text" placeholder="Текст сообщения..."></textarea>
+                    <button class="ghost-btn" onclick="pmSend()">Отправить сообщение</button>
+
+                    <label>Выдача достижений</label>
+                    <div class="prof-grid">
+                        <input type="number" id="grant-success" placeholder="Успешных" inputmode="numeric">
+                        <input type="number" id="grant-completed" placeholder="Завершенных" inputmode="numeric">
+                    </div>
+                    <button class="issue ready" onclick="grantDeals('add')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                        Выдать сделки
+                    </button>
+                    <button class="ghost-btn" onclick="grantDeals('set')">Установить ровно</button>
+                </div>
+
+                <div class="hint">Введи Telegram ID, чтобы открыть полное управление пользователем: баланс, подарки, сделки, рефералы, история заявок, бан и отправка сообщений.</div>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M21 21v-5h-5"/><path d="M3 8a9 9 0 0 1 13.5-5"/><path d="M21 16a9 9 0 0 1-13.5 5"/><path d="M12 8v4l3 2"/></svg>
+                    Создать трейд <span class="nft-chip">на валюту</span>
+                </h3>
+                <label>Продавец (Telegram ID)</label>
+                <input type="number" id="traid-seller-id" placeholder="Например: 123456789" inputmode="numeric">
+                <label>Предлагает (сумма и валюта)</label>
+                <div class="prof-grid">
+                    <input type="number" id="traid-offer-amount" placeholder="Сумма" inputmode="decimal" step="0.01">
+                    <select id="traid-offer-currency">
+                        <option value="ton">TON</option>
+                        <option value="usdt">USDT</option>
+                        <option value="rub">RUB</option>
+                    </select>
+                </div>
+                <label>Что хочешь получить взамен</label>
+                <div class="pmtabs" style="margin-top:6px">
+                    <button class="active" data-tw="currency" onclick="traidWantType('currency')">Валюту</button>
+                    <button data-tw="gift" onclick="traidWantType('gift')">Подарок</button>
+                </div>
+                <div id="traid-want-currency">
+                    <div class="prof-grid">
+                        <input type="number" id="traid-want-amount" placeholder="Сумма" inputmode="decimal" step="0.01">
+                        <select id="traid-want-currency-sel">
+                            <option value="ton">TON</option>
+                            <option value="usdt">USDT</option>
+                            <option value="rub">RUB</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="traid-want-gift" style="display:none">
+                    <input type="text" id="traid-want-name" placeholder="Название подарка">
+                    <input type="text" id="traid-want-link" placeholder="Ссылка, например t.me/nft/PlushPepe-1">
+                </div>
+                <label>Комментарий (необязательно)</label>
+                <input type="text" id="traid-comment" placeholder="Краткое описание сделки">
+                <button class="issue ready" onclick="adminCreateTrade()">Создать трейд</button>
+                <div id="traid-result" style="display:none; margin-top:12px">
+                    <div class="kv"><span class="kv-k">Ссылка на трейд</span><span class="kv-v" id="traid-link">—</span></div>
+                    <div class="mact">
+                        <button class="ghost-btn" onclick="copyTraidLink()">Скопировать</button>
+                        <button class="ghost-btn" onclick="openTraidLink()">Открыть</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    Присоединились по ссылкам
+                </h3>
+                <div id="ref-list" class="ref-list"><div class="loader">Загрузка...</div></div>
+            </div>
+        </div>
+
+        <div class="tab-page" id="tab-nft">
+            <div class="card">
+                <h3>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+                    Выдача NFT <span class="nft-chip">◆ NFT</span>
+                    <span class="count-chip" id="step-chip">Шаг 1/3</span>
+                </h3>
+                <div class="steps">
+                    <div class="step done" id="step1"></div>
+                    <div class="step" id="step2"></div>
+                    <div class="step" id="step3"></div>
+                </div>
+
+                <div class="crumbs" id="crumbs" style="display:none">
+                    <button class="back" onclick="goBack()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                    <span id="crumbs-text"></span>
+                </div>
+
+                <div id="collections-view">
+                    <div class="search-wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <input type="text" id="gift-search" placeholder="Поиск коллекции..." oninput="renderCollections()">
+                    </div>
+                    <div class="grid3" id="collections-grid"><div class="loader"><span class="spin"></span><br>Загрузка каталога...</div></div>
+                </div>
+
+                <div id="models-view" style="display:none">
+                    <div class="grid3" id="models-grid"></div>
+                </div>
+
+                <div id="backdrops-view" style="display:none">
+                    <div class="grid3" id="backdrops-grid"></div>
+                </div>
+
+                <label>Telegram ID получателя</label>
+                <input type="number" id="gift-target-id" placeholder="Например: 123456789" inputmode="numeric">
+
+                <button class="issue" id="issue-gift-btn" onclick="issueGift()" disabled>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
+                    <span id="issue-gift-label">Выбери подарок</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp || {
+            initData: '', initDataUnsafe: {}, HapticFeedback: null,
+            expand() {}, ready() {}, close() {}, setHeaderColor() {}, setBackgroundColor() {}
+        };
+        try { tg.expand(); } catch {}
+        try { if (tg.disableVerticalSwipes) tg.disableVerticalSwipes(); } catch {}
+        try { document.body.style.height = '100%'; document.body.style.overflowY = 'auto'; } catch {}
+        try { tg.ready(); } catch {}
+        try { tg.setHeaderColor('#050810'); tg.setBackgroundColor('#050810'); } catch {}
+
+        document.addEventListener('pointerdown', (e) => {
+            const t = e.target.closest('.back-btn');
+            if (!t) return;
+            const r = t.getBoundingClientRect();
+            const s = Math.max(r.width, r.height) * 1.4;
+            const rip = document.createElement('span');
+            rip.className = 'ripple';
+            rip.style.width = rip.style.height = s + 'px';
+            rip.style.left = (e.clientX - r.left - s / 2) + 'px';
+            rip.style.top = (e.clientY - r.top - s / 2) + 'px';
+            t.appendChild(rip);
+            setTimeout(() => rip.remove(), 620);
+        }, { passive: true });
+
+        let isAdmin = false;
+        let isMain = false;
+        let giftCatalog = [];
+        let view = 'collections';
+        let selCollection = null;
+        let selModel = null;
+        let selBackdrop = null;
+        let optionsCache = {};
+
+        const TICons = {
+            ok: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            warn: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+            err: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+            deny: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/></svg>'
+        };
+
+        function toast(text, ok, icon) {
+            const t = document.getElementById('toast');
+            t.innerHTML = `${TICons[icon || (ok ? 'ok' : 'err')] || TICons.err}<span>${esc(text)}</span>`;
+            t.style.borderLeftColor = ok ? '#34d399' : '#f87171';
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+            try { tg.HapticFeedback?.notificationOccurred(ok ? 'success' : 'error'); } catch {}
+        }
+        function tick() { try { tg.HapticFeedback?.selectionChanged(); } catch {} }
+        function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+        function bgCss(stops) {
+            if (!stops || !stops.length) return 'radial-gradient(circle at 35% 30%, rgba(139,92,246,.25), rgba(5,8,16,.6))';
+            if (stops.length === 1) return stops[0].color;
+            return `linear-gradient(160deg, ${stops.map(s => s.color + ' ' + (s.offset || '0%')).join(', ')})`;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.seg button').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.querySelector(`.seg button[data-tab="${tab}"]`).classList.add('active');
+            if (tab === 'profiles') loadReferrals();
+            tick();
+        }
+
+        let currentProfile = null;
+        let pmTabName = 'info';
+
+        function pmTab(name) {
+            pmTabName = name;
+            document.querySelectorAll('.pmtabs button').forEach(b => b.classList.toggle('active', b.dataset.pm === name));
+            document.querySelectorAll('.pm-panel').forEach(p => p.classList.toggle('active', p.id === 'pm-' + name));
+            if (name === 'trades' && currentProfile) pmTrades(1);
+            if (name === 'gifts') pmLoadCatalog();
+        }
+
+        function pmShow(name) {
+            document.querySelectorAll('.pmtabs button').forEach(b => b.classList.toggle('active', b.dataset.pm === name));
+            document.querySelectorAll('.pm-panel').forEach(p => p.classList.toggle('active', p.id === 'pm-' + name));
+        }
+
+        function fmtDate(ts) {
+            const n = Number(ts || 0);
+            if (!n) return '—';
+            const d = new Date(n);
+            if (isNaN(d.getTime())) return '—';
+            return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function fmtNum(n) {
+            return Number(n || 0).toLocaleString('ru-RU', { maximumFractionDigits: 2 });
+        }
+
+        function tradeStatusClass(st) {
+            const s = String(st || '').toLowerCase();
+            if (s.includes('complet') || s.includes('done') || s.includes('success') || s.includes('finish')) return 'ok';
+            if (s.includes('cancel') || s.includes('reject') || s.includes('fail') || s.includes('dispute')) return 'bad';
+            if (s.includes('wait') || s.includes('pend') || s.includes('offer') || s.includes('progress') || s.includes('new')) return 'wait';
+            return '';
+        }
+
+        function giftTitle(g) {
+            if (!g) return '';
+            if (typeof g === 'string') return g;
+            if (typeof g === 'object') return g.name || g.title || g.id || '';
+            return String(g);
+        }
+
+        function renderAdminUser(u) {
+            currentProfile = u;
+            document.getElementById('prof-result').style.display = 'block';
+
+            const name = u.first_name || (u.username ? '@' + u.username : ('ID ' + u.id));
+            document.getElementById('prof-name').innerText = name;
+            const un = document.getElementById('prof-user');
+            if (u.username) {
+                un.innerText = '@' + u.username;
+                un.href = 'https://t.me/' + u.username;
+                un.style.pointerEvents = '';
+                un.style.opacity = '';
+            } else {
+                un.innerText = 'нет username';
+                un.removeAttribute('href');
+                un.style.pointerEvents = 'none';
+                un.style.opacity = '.5';
+            }
+            document.getElementById('prof-idtext').innerText = 'ID: ' + u.id;
+            const av = document.getElementById('prof-avatar');
+            av.innerText = '';
+            const img = document.createElement('img');
+            img.alt = '';
+            img.onerror = () => { img.remove(); av.innerText = (name || '?').replace(/^@/, '').charAt(0).toUpperCase(); };
+            img.src = '/api/avatar/' + encodeURIComponent(u.id) + '?v=' + Date.now();
+            av.appendChild(img);
+
+            document.getElementById('prof-success').innerText = Number(u.successful_deals || 0);
+            document.getElementById('prof-completed').innerText = Number(u.completed_deals || 0);
+            document.getElementById('prof-gifts').innerText = Number(u.gifts_count || 0);
+
+            const st = document.getElementById('prof-status');
+            st.innerText = u.banned ? 'Забанен' : 'Активен';
+            st.className = 'mstatus' + (u.banned ? ' bad' : '');
+            document.getElementById('pm-ban-btn').innerText = u.banned ? 'Разбанить' : 'Забанить';
+
+            document.getElementById('pm-id').innerText = u.id;
+            document.getElementById('pm-username').innerText = u.username ? '@' + u.username : 'нет';
+            document.getElementById('pm-firstname').innerText = u.first_name || '—';
+            document.getElementById('pm-created').innerText = fmtDate(u.created_at);
+            document.getElementById('pm-status').innerText = u.banned ? 'Забанен' : 'Активен';
+
+            const bal = u.balance || {};
+            document.getElementById('pm-balance-summary').innerText = fmtNum(bal.rub) + ' RUB · ' + fmtNum(bal.usdt) + ' USDT · ' + fmtNum(bal.ton) + ' TON';
+            document.getElementById('pm-rub').innerText = fmtNum(bal.rub);
+            document.getElementById('pm-usdt').innerText = fmtNum(bal.usdt);
+            document.getElementById('pm-ton').innerText = fmtNum(bal.ton);
+
+            renderGifts(u.gifts || []);
+            renderTrades(u.trades || []);
+            renderRefs(u);
+            renderHist(u.balance_history || []);
+            pmShow(pmTabName);
+            if (pmTabName === 'gifts') pmResetPicker();
+        }
+
+        function pmResetPicker() {
+            pmSelCollection = null;
+            pmSelModel = null;
+            pmSelBackdrop = null;
+            pmCatalogView('collections');
+            pmUpdateIssueBtn();
+            if (pmCatalog.length) pmRenderCollections();
+            else pmLoadCatalog();
+        }
+
+        function renderGifts(list) {
+            const box = document.getElementById('pm-gift-list');
+            if (!box) return;
+            if (!list.length) { box.innerHTML = '<div class="mempty">Подарков нет</div>'; return; }
+            box.innerHTML = list.map(g => {
+                const title = giftTitle(g) || 'Подарок';
+                const ini = title.replace(/^@/, '').charAt(0).toUpperCase() || '?';
+                const sub = [g.rarity, g.id].filter(Boolean).map(esc).join(' · ');
+                const bgs = g.bg && g.bg.length ? ' style="background:' + bgCss(g.bg) + '"' : '';
+                const pic = g.image ? `<img src="${esc(g.image)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.textContent=this.parentNode.getAttribute('data-i')">` : '';
+                return `<div class="mitem"><span class="tg-av" data-i="${esc(ini)}"${bgs}>${pic}</span><div class="mitem-main"><div class="mitem-t">${esc(title)}</div><div class="mitem-s">${sub}</div></div><button class="mitem-x" onclick="pmGiftRemove(this.dataset.gid)" data-gid="${esc(g.id)}">×</button></div>`;
+            }).join('');
+        }
+
+        function renderTrades(list) {
+            const box = document.getElementById('pm-trade-list');
+            if (!box) return;
+            if (!list.length) { box.innerHTML = '<div class="mempty">Сделок нет</div>'; return; }
+            const me = currentProfile ? Number(currentProfile.id) : 0;
+            box.innerHTML = list.map(t => {
+                const sellerId = Number(t.sellerId != null ? t.sellerId : t.seller_id);
+                const buyerId = t.buyerId != null ? t.buyerId : t.buyer_id;
+                const gift = giftTitle(t.sellerGift != null ? t.sellerGift : t.seller_gift);
+                const offer = giftTitle(t.buyerOffer != null ? t.buyerOffer : t.buyer_offer);
+                const title = offer ? gift + ' ⇄ ' + offer : gift;
+                const side = sellerId === me ? ('Покупатель: ' + (buyerId || '—')) : ('Продавец: ' + (sellerId || '—'));
+                const created = fmtDate(t.createdAt != null ? t.createdAt : t.created_at);
+                return `<div class="mitem"><span class="tg-av" data-i="⇄">⇄</span><div class="mitem-main"><div class="mitem-t">${esc(title || 'Сделка')}</div><div class="mitem-s">${esc(side)} · ${created}</div></div><span class="mbadge ${tradeStatusClass(t.status)}">${esc(t.status || '—')}</span></div>`;
+            }).join('');
+        }
+
+        function renderRefs(u) {
+            const st = u.referral_stats || {};
+            document.getElementById('pm-ref-invited').innerText = Number(st.invited || 0);
+            document.getElementById('pm-ref-by').innerText = Number(st.invited_by || 0);
+            document.getElementById('pm-ref-trade').innerText = Number(st.by_trade || 0);
+            const box = document.getElementById('pm-ref-list');
+            if (!box) return;
+            const list = u.referrals || [];
+            if (!list.length) { box.innerHTML = '<div class="mempty">Рефералов нет</div>'; return; }
+            box.innerHTML = list.map(r => {
+                const who = r.joiner_username ? '@' + r.joiner_username : (r.joiner_name || ('ID ' + r.joiner_id));
+                const from = r.referrer_username ? '@' + r.referrer_username : ('ID ' + r.referrer_id);
+                const ini = String(who).replace(/^@/, '').charAt(0).toUpperCase() || '?';
+                const rel = Number(r.joiner_id) === Number(u.id) ? ('пригласил ' + from) : ('пришёл от ' + from);
+                return `<div class="mitem" onclick="pickProfile(${Number(r.joiner_id)})"><span class="tg-av" data-i="${esc(ini)}"></span><div class="mitem-main"><div class="mitem-t">${esc(who)}</div><div class="mitem-s">${esc(rel)} · ID ${Number(r.joiner_id)}</div></div><span class="mbadge">${esc(r.source || '—')}</span></div>`;
+            }).join('');
+        }
+
+        function renderHist(list) {
+            const box = document.getElementById('pm-hist-list');
+            if (!box) return;
+            if (!list.length) { box.innerHTML = '<div class="mempty">Заявок нет</div>'; return; }
+            box.innerHTML = list.map(r => {
+                const s = String(r.status || '').toLowerCase();
+                const cls = s.includes('complet') || s.includes('success') ? 'ok' : (s.includes('pend') || s.includes('wait') ? 'wait' : '');
+                const t = (r.type || '—') + (r.currency ? ' · ' + r.currency.toUpperCase() : '');
+                return `<div class="mitem"><div class="mitem-main"><div class="mitem-t">${esc(t)} ${esc(fmtNum(r.amount))}</div><div class="mitem-s">${fmtDate(r.created_at)}</div></div><span class="mbadge ${cls}">${esc(r.status || '—')}</span></div>`;
+            }).join('');
+        }
+
+        async function pmPost(path, body) {
+            try {
+                const r = await fetch(path, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.assign({ initData: tg.initData || '' }, body || {}))
+                });
+                return await r.json();
+            } catch {
+                return { error: 'Сеть недоступна' };
+            }
+        }
+
+        let traidWantTypeNow = 'currency';
+        function traidWantType(t) {
+            traidWantTypeNow = t;
+            document.querySelectorAll('[data-tw]').forEach(b => b.classList.toggle('active', b.dataset.tw === t));
+            document.getElementById('traid-want-currency').style.display = t === 'currency' ? 'block' : 'none';
+            document.getElementById('traid-want-gift').style.display = t === 'gift' ? 'block' : 'none';
+        }
+
+        async function adminCreateTrade() {
+            const sellerId = document.getElementById('traid-seller-id').value;
+            if (!sellerId) return toast('Укажи ID продавца', false, 'warn');
+            const offerAmount = Number(document.getElementById('traid-offer-amount').value);
+            const offerCurrency = document.getElementById('traid-offer-currency').value;
+            if (!offerAmount || offerAmount <= 0) return toast('Укажи сумму предложения', false, 'warn');
+
+            let wantType = traidWantTypeNow;
+            let wantCurrency, wantAmount, wantName, wantLink;
+            if (wantType === 'currency') {
+                wantAmount = Number(document.getElementById('traid-want-amount').value);
+                wantCurrency = document.getElementById('traid-want-currency-sel').value;
+                if (!wantAmount || wantAmount <= 0) return toast('Укажи желаемую сумму', false, 'warn');
+            } else {
+                wantName = (document.getElementById('traid-want-name').value || '').trim();
+                wantLink = (document.getElementById('traid-want-link').value || '').trim();
+                if (!wantName && !wantLink) return toast('Укажи подарок (название или ссылку)', false, 'warn');
+                if (!wantName) wantName = wantLink;
+            }
+
+            const res = await pmPost('/api/admin/trade/create', {
+                sellerId: Number(sellerId),
+                offerAmount, offerCurrency,
+                wantType, wantCurrency, wantAmount, wantName, wantLink,
+                comment: document.getElementById('traid-comment').value
+            });
+            if (res.success) {
+                const box = document.getElementById('traid-result');
+                document.getElementById('traid-link').innerText = res.link;
+                box.style.display = 'block';
+                toast('Трейд создан: ' + res.tradeId, true);
+            } else {
+                toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+            }
+        }
+
+        function copyTraidLink() {
+            const t = document.getElementById('traid-link').innerText;
+            const done = () => toast('Ссылка скопирована', true);
+            if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(done).catch(() => { fallbackCopy(t); done(); }); }
+            else { fallbackCopy(t); done(); }
+        }
+        function fallbackCopy(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch {}
+            document.body.removeChild(ta);
+        }
+        function openTraidLink() {
+            const t = document.getElementById('traid-link').innerText;
+            if (t) location.href = t;
+        }
+
+        async function loadProfile() {
+            const id = Number(document.getElementById('prof-id').value);
+            if (!Number.isFinite(id) || id <= 0) return toast('Введи Telegram ID', false, 'warn');
+            const box = document.getElementById('prof-result');
+            try {
+                const r = await fetch('/api/admin/user/' + encodeURIComponent(id) + '?initData=' + encodeURIComponent(tg.initData || ''));
+                if (r.status === 403) throw new Error('noauth');
+                const u = await r.json();
+                if (!u || u.error) throw new Error(u && u.error ? u.error : 'не найдено');
+                renderAdminUser(u);
+                tick();
+            } catch (e) {
+                if (e && e.message === 'noauth') {
+                    try {
+                        const p = await fetch('/api/profile/' + encodeURIComponent(id)).then(r => r.ok ? r.json() : Promise.reject(r.status));
+                        if (!p || p.error) throw new Error('не найдено');
+                        renderAdminUser({
+                            id: p.id,
+                            username: p.username || '',
+                            first_name: p.name || '',
+                            balance: { rub: 0, usdt: 0, ton: 0 },
+                            gifts: [], gifts_count: 0, banned: false,
+                            successful_deals: Number(p.successfulDeals || 0),
+                            completed_deals: Number(p.completedDeals || 0),
+                            created_at: 0, trades: [], referrals: [],
+                            referral_stats: {}, balance_history: []
+                        });
+                        toast('Полный доступ только внутри Telegram', false, 'warn');
+                        return;
+                    } catch {
+                        box.style.display = 'none';
+                        toast('Профиль не найден', false, 'warn');
+                        return;
+                    }
+                }
+                box.style.display = 'none';
+                toast('Профиль не найден', false, 'warn');
+            }
+        }
+
+        async function pmBan() {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            const banned = !currentProfile.banned;
+            const q = (banned ? 'Забанить' : 'Разбанить') + ' пользователя ' + currentProfile.id + '?';
+            const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm(q, r)) : confirm(q);
+            if (!ok) return;
+            const res = await pmPost('/api/admin/user/' + currentProfile.id + '/ban', { banned });
+            if (res.success) { toast(banned ? 'Пользователь забанен' : 'Пользователь разбанен', true); loadProfile(); }
+            else toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+        }
+
+        async function pmBalance(mode) {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            const currency = document.getElementById('pm-cur').value;
+            const amount = Number(document.getElementById('pm-amount').value);
+            if (!isFinite(amount) || amount < 0) return toast('Укажи корректную сумму', false, 'warn');
+            if (mode !== 'set' && !amount) return toast('Укажи сумму', false, 'warn');
+            if (mode === 'set') {
+                const q = 'Установить баланс ' + currency.toUpperCase() + ' = ' + amount + '?';
+                const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm(q, r)) : confirm(q);
+                if (!ok) return;
+            }
+            const res = await pmPost('/api/admin/user/' + currentProfile.id + '/balance', { currency, amount, mode });
+            if (res.success) { toast('Баланс обновлён', true); document.getElementById('pm-amount').value = ''; loadProfile(); }
+            else toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+        }
+
+        function pmBalanceSet() { loadProfile(); }
+
+        async function pmSend() {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            const ta = document.getElementById('pm-msg-text');
+            const text = (ta.value || '').trim();
+            if (!text) return toast('Введи текст сообщения', false, 'warn');
+            const res = await pmPost('/api/admin/user/' + currentProfile.id + '/notify', { text });
+            if (res.success) { ta.value = ''; toast('Сообщение отправлено', true); }
+            else toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+        }
+
+        let pmCatalog = [];
+        let pmSelCollection = null;
+        let pmSelModel = null;
+        let pmSelBackdrop = null;
+
+        async function pmLoadCatalog() {
+            const grid = document.getElementById('pm-collections-grid');
+            if (!grid) return;
+            if (pmCatalog.length) { pmRenderCollections(); return; }
+            grid.innerHTML = '<div class="loader"><span class="spin"></span><br>Загрузка каталога...</div>';
+            try { pmCatalog = await fetch('/api/gifts').then(r => r.json()); } catch { pmCatalog = []; }
+            pmRenderCollections();
+        }
+
+        function pmCatalogView(v) {
+            const c = document.getElementById('pm-collections-grid');
+            const m = document.getElementById('pm-models-grid');
+            const b = document.getElementById('pm-backdrops-grid');
+            if (!c || !m || !b) return;
+            c.style.display = v === 'collections' ? 'block' : 'none';
+            m.style.display = v === 'models' ? 'block' : 'none';
+            b.style.display = v === 'backdrops' ? 'block' : 'none';
+            const cr = document.getElementById('pm-crumbs');
+            cr.style.display = v === 'collections' ? 'none' : 'flex';
+            let t = '';
+            if (v !== 'collections' && pmSelCollection) t = `<b>${esc(pmSelCollection.name)}</b>`;
+            if (v === 'backdrops' && pmSelModel) t += ` <span class="sep">→</span> <b>${esc(pmSelModel.name)}</b>`;
+            document.getElementById('pm-crumbs-text').innerHTML = t;
+        }
+
+        function pmRenderCollections() {
+            const grid = document.getElementById('pm-collections-grid');
+            if (!grid) return;
+            const q = (document.getElementById('pm-gift-search').value || '').toLowerCase().trim();
+            const list = q ? pmCatalog.filter(g => String(g.name || '').toLowerCase().includes(q)) : pmCatalog;
+            if (!list.length) {
+                grid.innerHTML = '<div class="loader">Ничего не найдено</div>';
+                return;
+            }
+            grid.innerHTML = list.map(g => `
+                <div class="pick${pmSelCollection && pmSelCollection.id === g.id ? ' selected' : ''}" onclick="pmOpenCollection(this.dataset.id)" data-id="${esc(g.id)}">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic" style="${g.bg && g.bg.length ? 'background:' + bgCss(g.bg) : ''}"><img src="${g.file}" alt="${esc(g.name)}" loading="lazy"></div>
+                    <div class="gname">${esc(g.name)}</div>
+                </div>`).join('');
+        }
+
+        async function pmOpenCollection(id) {
+            tick();
+            pmSelCollection = pmCatalog.find(g => g.id === id) || null;
+            pmSelModel = null;
+            pmSelBackdrop = null;
+            pmCatalogView('models');
+            pmUpdateIssueBtn();
+            const grid = document.getElementById('pm-models-grid');
+            if (optionsCache[id]) { pmRenderModels(optionsCache[id]); return; }
+            grid.innerHTML = '<div class="loader"><span class="spin"></span><br>Загружаем модели и фоны...</div>';
+            try {
+                const opts = await fetch('/api/gifts/' + encodeURIComponent(id) + '/options').then(r => r.ok ? r.json() : Promise.reject(r.status));
+                optionsCache[id] = opts;
+                pmRenderModels(opts);
+            } catch {
+                grid.innerHTML = '<div class="loader">Не удалось загрузить модели.<br>Попробуй ещё раз или выбери другой подарок.</div>';
+                toast('Каталог моделей недоступен', false, 'warn');
+            }
+        }
+
+        function pmRenderModels(opts) {
+            const grid = document.getElementById('pm-models-grid');
+            if (!grid || !opts) return;
+            grid.innerHTML = (opts.models || []).map((m, i) => `
+                <div class="pick${pmSelModel && pmSelModel.id === m.id ? ' selected' : ''}" onclick="pmPickModel(this.dataset.id)" data-id="${esc(m.id)}" style="animation:fadeUp .4s ${Math.min(i * 20, 400)}ms both">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic" style="background:${m.color ? 'radial-gradient(circle at 35% 30%, ' + m.color + '44, rgba(5,8,16,.55))' : 'rgba(5,8,16,.5)'}"><img src="/gift-asset/models/${m.id}.png" alt="${esc(m.name)}" loading="lazy"></div>
+                    <div class="gname">${esc(m.name)}</div>
+                </div>`).join('');
+        }
+
+        function pmPickModel(id) {
+            tick();
+            const opts = pmSelCollection ? optionsCache[pmSelCollection.id] : null;
+            pmSelModel = opts ? (opts.models || []).find(m => m.id === id) : null;
+            pmSelBackdrop = null;
+            pmCatalogView('backdrops');
+            pmRenderBackdrops(opts);
+        }
+
+        function pmRenderBackdrops(opts) {
+            const grid = document.getElementById('pm-backdrops-grid');
+            if (!grid || !opts) return;
+            grid.innerHTML = (opts.backdrops || []).map((b, i) => `
+                <div class="pick${pmSelBackdrop && pmSelBackdrop.id === b.id ? ' selected' : ''}" onclick="pmPickBackdrop(this.dataset.id)" data-id="${esc(b.id)}" style="animation:fadeUp .4s ${Math.min(i * 15, 400)}ms both">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic"><div class="swatch" style="background:${bgCss(b.bg)}"></div></div>
+                    <div class="gname">${esc(b.name)}</div>
+                </div>`).join('');
+        }
+
+        function pmPickBackdrop(id) {
+            tick();
+            const opts = pmSelCollection ? optionsCache[pmSelCollection.id] : null;
+            pmSelBackdrop = opts ? (opts.backdrops || []).find(b => b.id === id) : null;
+            pmRenderBackdrops(opts);
+            pmUpdateIssueBtn();
+            try { tg.HapticFeedback?.notificationOccurred('success'); } catch {}
+        }
+
+        function pmCatalogBack() {
+            tick();
+            if (pmSelBackdrop) {
+                pmSelBackdrop = null;
+                pmCatalogView('models');
+                const o = pmSelCollection ? optionsCache[pmSelCollection.id] : null;
+                if (o) pmRenderModels(o);
+                pmUpdateIssueBtn();
+                return;
+            }
+            if (pmSelModel) {
+                pmSelModel = null;
+                pmSelCollection = null;
+                pmCatalogView('collections');
+                pmRenderCollections();
+                pmUpdateIssueBtn();
+                return;
+            }
+        }
+
+        function pmUpdateIssueBtn() {
+            const btn = document.getElementById('pm-issue-btn');
+            if (!btn) return;
+            const ready = pmSelCollection && pmSelModel && pmSelBackdrop;
+            btn.disabled = !ready;
+            btn.innerText = ready
+                ? 'Выдать: ' + pmSelCollection.name + ' · ' + pmSelModel.name + ' · ' + pmSelBackdrop.name
+                : pmSelCollection ? (pmSelModel ? 'Выбери фон' : 'Выбери модель') : 'Выбери подарок';
+        }
+
+        async function pmIssueGift() {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            if (!pmSelCollection || !pmSelModel || !pmSelBackdrop) return toast('Выбери подарок, модель и фон', false, 'warn');
+            const res = await pmPost('/api/admin/issue-gift', {
+                targetId: currentProfile.id,
+                giftId: pmSelCollection.id,
+                modelId: pmSelModel.id,
+                modelName: pmSelModel.name,
+                backdropId: pmSelBackdrop.id,
+                backdropStops: pmSelBackdrop.bg
+            });
+            if (res.success) {
+                toast((res.gift && res.gift.name ? res.gift.name : 'Подарок') + ' выдан', true);
+                pmSelCollection = null;
+                pmSelModel = null;
+                pmSelBackdrop = null;
+                pmCatalogView('collections');
+                pmRenderCollections();
+                pmUpdateIssueBtn();
+                loadProfile();
+            } else toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+        }
+
+        async function pmGiftRemove(gid) {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            const res = await pmPost('/api/admin/user/' + currentProfile.id + '/gift', { action: 'remove', giftId: gid });
+            if (res.success) { toast('Подарок удалён', true); loadProfile(); }
+            else toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+        }
+
+        async function pmTrades(page) {
+            if (!currentProfile) return;
+            const p = Math.max(1, Number(page) || 1);
+            try {
+                const data = await fetch('/api/admin/user/' + currentProfile.id + '/trades?page=' + p + '&limit=50&initData=' + encodeURIComponent(tg.initData || '')).then(r => r.ok ? r.json() : null);
+                if (!data || !data.trades) return;
+                renderTrades(data.trades);
+            } catch {}
+        }
+
+        async function grantDeals(mode) {
+            if (!currentProfile) return toast('Сначала найди профиль', false, 'warn');
+            const s = Number(document.getElementById('grant-success').value) || 0;
+            const c = Number(document.getElementById('grant-completed').value) || 0;
+            if (mode !== 'set' && !s && !c) return toast('Укажи количество', false, 'warn');
+            if (mode === 'set') {
+                const q = 'Установить ровно ' + s + ' / ' + c + '?';
+                const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm(q, r)) : confirm(q);
+                if (!ok) return;
+            }
+            const res = await fetch('/api/admin/profile-grant', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ initData: tg.initData, targetId: currentProfile.id, successful: s, completed: c, mode })
+            }).then(r => r.json());
+            if (res.success) {
+                document.getElementById('grant-success').value = '';
+                document.getElementById('grant-completed').value = '';
+                toast(mode === 'set' ? 'Значения установлены' : 'Сделки выданы', true);
+                loadProfile();
+                loadReferrals();
+            } else {
+                toast('Ошибка: ' + (res.error || 'неизвестно'), false);
+            }
+        }
+
+        function refAvatar(id, name) {
+            const ini = String(name || '?').replace(/^@/, '').charAt(0).toUpperCase() || '?';
+            return `<span class="tg-av" data-i="${esc(ini)}"><img src="/api/avatar/${encodeURIComponent(id)}" alt="" loading="lazy" onerror="this.remove();this.parentNode.textContent=this.parentNode.getAttribute('data-i')"></span>`;
+        }
+
+        async function loadReferrals() {
+            const box = document.getElementById('ref-list');
+            if (!box) return;
+            try {
+                const data = await fetch('/api/admin/referrals?initData=' + encodeURIComponent(tg.initData)).then(r => r.ok ? r.json() : null);
+                if (!data || !data.referrals || !data.referrals.length) {
+                    box.innerHTML = '<div class="hint">Пока никто не присоединился по ссылкам.</div>';
+                    return;
+                }
+                box.innerHTML = data.referrals.map(r => {
+                    const who = r.joinerUsername ? '@' + r.joinerUsername : (r.joinerName || ('ID ' + r.joinerId));
+                    const from = r.referrerUsername ? '@' + r.referrerUsername : ('ID ' + r.referrerId);
+                    const cnt = (r.successfulDeals || 0) + (r.completedDeals || 0);
+                    return `<div class="ref-item" onclick="pickProfile(${r.joinerId})">
+                        ${refAvatar(r.joinerId, who)}
+                        <div class="ref-main">
+                            <div class="ref-name">${esc(who)}</div>
+                            <div class="ref-sub">пришёл к ${esc(from)} · ID ${r.joinerId}</div>
+                        </div>
+                        <span class="ref-badge">${cnt ? cnt + ' сдел.' : 'профиль'}</span>
+                    </div>`;
+                }).join('');
+            } catch {
+                box.innerHTML = '<div class="hint">Не удалось загрузить список.</div>';
+            }
+        }
+
+        function pickProfile(id) {
+            document.getElementById('prof-id').value = id;
+            switchTab('profiles');
+            loadProfile();
+            tick();
+        }
+
+        async function checkAccess() {
+            try {
+                const res = await fetch('/api/admin/check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ initData: tg.initData })
+                });
+                const data = await res.json();
+                isAdmin = !!data.isAdmin;
+                isMain = !!data.isMain;
+            } catch { isAdmin = false; isMain = false; }
+            document.getElementById(isAdmin ? 'admin-content' : 'access-denied').style.display = 'block';
+            if (isAdmin) {
+                loadGiftCatalog();
+                if (isMain) {
+                    document.getElementById('seg-admins').style.display = 'flex';
+                    loadAdmins();
+                }
+            }
+        }
+
+        async function loadAdmins() {
+            try {
+                const data = await fetch('/api/admin/list?initData=' + encodeURIComponent(tg.initData)).then(r => r.ok ? r.json() : null);
+                const box = document.getElementById('admins-list');
+                if (!data || !data.admins.length) {
+                    box.innerHTML = '<span style="color:#5b6b82;font-size:13px">Выданных админок нет</span>';
+                    return;
+                }
+                box.innerHTML = data.admins.map(id => `
+                    <span class="admin-chip">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                        ${id}
+                        <button class="chip-x" onclick="revokeAdmin(${id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+                    </span>`).join('');
+            } catch {}
+        }
+
+        async function grantAdmin() {
+            if (!isMain) return toast('Только главный админ', false, 'deny');
+            const targetId = document.getElementById('new-admin-id').value;
+            if (!targetId) return toast('Введи Telegram ID', false, 'warn');
+            const res = await fetch('/api/admin/grant', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ initData: tg.initData, targetId })
+            }).then(r => r.json());
+            if (res.success) {
+                toast(`Админка выдана пользователю ${targetId}`, true);
+                document.getElementById('new-admin-id').value = '';
+                loadAdmins();
+            } else {
+                toast('Ошибка: ' + res.error, false);
+            }
+        }
+
+        async function revokeAdmin(targetId) {
+            if (!isMain) return;
+            const ok = tg.showConfirm ? await new Promise(r => tg.showConfirm(`Отозвать админку у ${targetId}?`, r)) : confirm('Отозвать админку?');
+            if (!ok) return;
+            const res = await fetch('/api/admin/revoke', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ initData: tg.initData, targetId })
+            }).then(r => r.json());
+            if (res.success) {
+                toast(`Админка отозвана у ${targetId}`, true);
+                loadAdmins();
+            } else {
+                toast('Ошибка: ' + res.error, false);
+            }
+        }
+
+        async function loadGiftCatalog() {
+            try { giftCatalog = await fetch('/api/gifts').then(r => r.json()); } catch { giftCatalog = []; }
+            renderCollections();
+        }
+
+        function setView(v) {
+            view = v;
+            document.getElementById('collections-view').style.display = v === 'collections' ? 'block' : 'none';
+            document.getElementById('models-view').style.display = v === 'models' ? 'block' : 'none';
+            document.getElementById('backdrops-view').style.display = v === 'backdrops' ? 'block' : 'none';
+            document.getElementById('crumbs').style.display = v === 'collections' ? 'none' : 'flex';
+            const chip = document.getElementById('step-chip');
+            chip.innerText = v === 'collections' ? 'Шаг 1/3' : v === 'models' ? 'Шаг 2/3' : 'Шаг 3/3';
+            document.getElementById('step1').className = 'step done';
+            document.getElementById('step2').className = 'step' + (v !== 'collections' ? ' done' : '');
+            document.getElementById('step3').className = 'step' + (v === 'backdrops' ? ' done' : '');
+            let cr = '';
+            if (v !== 'collections' && selCollection) cr = `<b>${esc(selCollection.name)}</b>`;
+            if (v === 'backdrops' && selModel) cr += ` <span class="sep">→</span> <b>${esc(selModel.name)}</b>`;
+            document.getElementById('crumbs-text').innerHTML = cr;
+            updateIssueBtn();
+        }
+
+        function renderCollections() {
+            const q = (document.getElementById('gift-search').value || '').toLowerCase().trim();
+            const list = q ? giftCatalog.filter(g => g.name.toLowerCase().includes(q)) : giftCatalog;
+            const box = document.getElementById('collections-grid');
+            if (!list.length) {
+                box.innerHTML = '<div class="loader">Ничего не найдено</div>';
+                return;
+            }
+            box.innerHTML = list.map(g => `
+                <div class="pick${selCollection && selCollection.id === g.id ? ' selected' : ''}" onclick="openCollection('${g.id}')">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic" style="${g.bg && g.bg.length ? 'background:' + bgCss(g.bg) : ''}"><img src="${g.file}" alt="${esc(g.name)}" loading="lazy"></div>
+                    <div class="gname">${esc(g.name)}</div>
+                </div>`).join('');
+        }
+
+        async function openCollection(id) {
+            tick();
+            selCollection = giftCatalog.find(g => g.id === id);
+            selModel = null;
+            selBackdrop = null;
+            setView('models');
+            const grid = document.getElementById('models-grid');
+            if (optionsCache[id]) { renderModels(optionsCache[id]); return; }
+            grid.innerHTML = '<div class="loader"><span class="spin"></span><br>Загружаем модели и фоны...</div>';
+            try {
+                const opts = await fetch(`/api/gifts/${id}/options`).then(r => r.ok ? r.json() : Promise.reject(r.status));
+                optionsCache[id] = opts;
+                renderModels(opts);
+            } catch (e) {
+                grid.innerHTML = `<div class="loader">Не удалось загрузить модели.<br>Попробуй ещё раз или выбери другой подарок.</div>`;
+                toast('Каталог моделей недоступен', false, 'warn');
+            }
+        }
+
+        function renderModels(opts) {
+            const grid = document.getElementById('models-grid');
+            grid.innerHTML = opts.models.map((m, i) => `
+                <div class="pick${selModel && selModel.id === m.id ? ' selected' : ''}" onclick="pickModel('${m.id}')" style="animation:fadeUp .4s ${Math.min(i * 20, 400)}ms both">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic" style="background:${m.color ? 'radial-gradient(circle at 35% 30%, ' + m.color + '44, rgba(5,8,16,.55))' : 'rgba(5,8,16,.5)'}"><img src="/gift-asset/models/${m.id}.png" alt="${esc(m.name)}" loading="lazy"></div>
+                    <div class="gname">${esc(m.name)}</div>
+                </div>`).join('');
+        }
+
+        function pickModel(id) {
+            tick();
+            const opts = optionsCache[selCollection.id];
+            selModel = opts.models.find(m => m.id === id);
+            selBackdrop = null;
+            setView('backdrops');
+            renderBackdrops(opts);
+        }
+
+        function renderBackdrops(opts) {
+            const grid = document.getElementById('backdrops-grid');
+            grid.innerHTML = opts.backdrops.map((b, i) => `
+                <div class="pick${selBackdrop && selBackdrop.id === b.id ? ' selected' : ''}" onclick="pickBackdrop('${b.id}')" style="animation:fadeUp .4s ${Math.min(i * 15, 400)}ms both">
+                    <span class="tick"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                    <div class="pic"><div class="swatch" style="background:${bgCss(b.bg)}"></div></div>
+                    <div class="gname">${esc(b.name)}</div>
+                </div>`).join('');
+        }
+
+        function pickBackdrop(id) {
+            tick();
+            const opts = optionsCache[selCollection.id];
+            selBackdrop = opts.backdrops.find(b => b.id === id);
+            renderBackdrops(opts);
+            updateIssueBtn();
+            try { tg.HapticFeedback?.notificationOccurred('success'); } catch {}
+        }
+
+        function goBack() {
+            tick();
+            if (view === 'backdrops') { selBackdrop = null; setView('models'); const o = optionsCache[selCollection.id]; if (o) renderModels(o); return; }
+            if (view === 'models') { selModel = null; selCollection = null; setView('collections'); renderCollections(); return; }
+            try { tg.HapticFeedback?.impactOccurred('light'); } catch {}
+            if (history.length > 1) { history.back(); return; }
+            try { tg.close(); return; } catch {}
+            location.href = '/';
+        }
+
+        function updateIssueBtn() {
+            const btn = document.getElementById('issue-gift-btn');
+            const label = document.getElementById('issue-gift-label');
+            const ready = selCollection && selModel && selBackdrop;
+            btn.disabled = !ready;
+            btn.classList.toggle('ready', !!ready);
+            label.innerText = ready
+                ? `Выдать: ${selCollection.name} · ${selModel.name} · ${selBackdrop.name}`
+                : selCollection ? (selModel ? 'Выбери фон' : 'Выбери модель') : 'Выбери подарок';
+        }
+
+        async function issueGift() {
+            if (!isAdmin) return toast('Доступ запрещен', false, 'deny');
+            const targetId = document.getElementById('gift-target-id').value;
+            if (!selCollection || !selModel || !selBackdrop) return toast('Выбери подарок, модель и фон', false, 'warn');
+            if (!targetId) return toast('Введи Telegram ID получателя', false, 'warn');
+
+            const res = await fetch('/api/admin/issue-gift', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    initData: tg.initData,
+                    targetId,
+                    giftId: selCollection.id,
+                    modelId: selModel.id,
+                    modelName: selModel.name,
+                    backdropId: selBackdrop.id,
+                    backdropStops: selBackdrop.bg
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast(`${data.gift.name} выдан пользователю ${targetId}`, true);
+                document.getElementById('gift-target-id').value = '';
+            } else {
+                toast('Ошибка: ' + data.error, false);
+            }
+        }
+
+        async function issueCurrency() {
+            if (!isAdmin) return toast('Доступ запрещен', false, 'deny');
+            const targetId = document.getElementById('target-id').value;
+            const currency = document.getElementById('currency').value;
+            const amount = document.getElementById('amount').value;
+            if (!targetId || !amount) return toast('Заполни ID и количество', false, 'warn');
+
+            const res = await fetch('/api/admin/issue', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ initData: tg.initData, targetId, currency, amount })
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast(`+${amount} ${currency.toUpperCase()} пользователю ${targetId}`, true);
+                document.getElementById('amount').value = '';
+            } else {
+                toast('Ошибка: ' + data.error, false);
+            }
+        }
+
+        setView('collections');
+        checkAccess();
+
+        let adminResumeTimer = null;
+        function scheduleAdminResume() {
+            clearTimeout(adminResumeTimer);
+            adminResumeTimer = setTimeout(() => {
+                try { checkAccess(); } catch {}
+                try {
+                    const el = document.querySelector('.tab-page.active');
+                    if (el) { el.style.display = 'none'; void el.offsetHeight; el.style.display = ''; }
+                } catch {}
+            }, 200);
+        }
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleAdminResume(); });
+        window.addEventListener('pageshow', (e) => { if (e.persisted) scheduleAdminResume(); });
+        window.addEventListener('focus', scheduleAdminResume);
+    </script>
+</body>
+</html>

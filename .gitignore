@@ -1,0 +1,10 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+*.log
+bot_runtime.log
+tunnel-url.txt
+bot2_access.json
+*.sqlite3-wal
+*.sqlite3-shm

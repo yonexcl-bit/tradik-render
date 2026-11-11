@@ -1,0 +1,2025 @@
+[
+  {
+    "id": "artisanbrick",
+    "name": "Artisan Bricks",
+    "supply": "2,974",
+    "rarity": "NFT",
+    "file": "/gifts/models/artisanbrick.png",
+    "bg": [
+      {
+        "color": "#4c5d63",
+        "offset": "0%"
+      },
+      {
+        "color": "#2f3b42",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "astralshard",
+    "name": "Astral Shards",
+    "supply": "2,967",
+    "rarity": "NFT",
+    "file": "/gifts/models/astralshard.png",
+    "bg": [
+      {
+        "color": "#e7a75a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c5675f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "bdaycandle",
+    "name": "B-Day Candles",
+    "supply": "24,122",
+    "rarity": "NFT",
+    "file": "/gifts/models/bdaycandle.png",
+    "bg": [
+      {
+        "color": "#b1907e",
+        "offset": "0%"
+      },
+      {
+        "color": "#7c6356",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "berrybox",
+    "name": "Berry Boxes",
+    "supply": "8,924",
+    "rarity": "NFT",
+    "file": "/gifts/models/berrybox.png",
+    "bg": [
+      {
+        "color": "#a3a8b5",
+        "offset": "0%"
+      },
+      {
+        "color": "#7c808a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "bigyear",
+    "name": "Big Years",
+    "supply": "12,446",
+    "rarity": "NFT",
+    "file": "/gifts/models/bigyear.png",
+    "bg": [
+      {
+        "color": "#7eb1b4",
+        "offset": "0%"
+      },
+      {
+        "color": "#588390",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "blingbinky",
+    "name": "Bling Binkies",
+    "supply": "2,114",
+    "rarity": "NFT",
+    "file": "/gifts/models/blingbinky.png",
+    "bg": [
+      {
+        "color": "#bf9b47",
+        "offset": "0%"
+      },
+      {
+        "color": "#8d7739",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "bondedring",
+    "name": "Bonded Rings",
+    "supply": "2,951",
+    "rarity": "NFT",
+    "file": "/gifts/models/bondedring.png",
+    "bg": [
+      {
+        "color": "#6088cf",
+        "offset": "0%"
+      },
+      {
+        "color": "#5162b8",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "bowtie",
+    "name": "Bow Ties",
+    "supply": "8,546",
+    "rarity": "NFT",
+    "file": "/gifts/models/bowtie.png",
+    "bg": [
+      {
+        "color": "#97b07c",
+        "offset": "0%"
+      },
+      {
+        "color": "#5c814c",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "bunnymuffin",
+    "name": "Bunny Muffins",
+    "supply": "6,655",
+    "rarity": "NFT",
+    "file": "/gifts/models/bunnymuffin.png",
+    "bg": [
+      {
+        "color": "#8ab163",
+        "offset": "0%"
+      },
+      {
+        "color": "#559345",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "candycane",
+    "name": "Candy Canes",
+    "supply": "16,084",
+    "rarity": "NFT",
+    "file": "/gifts/models/candycane.png",
+    "bg": [
+      {
+        "color": "#b58d38",
+        "offset": "0%"
+      },
+      {
+        "color": "#946925",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "chillflame",
+    "name": "Chill Flames",
+    "supply": "42,226",
+    "rarity": "NFT",
+    "file": "/gifts/models/chillflame.png",
+    "bg": [
+      {
+        "color": "#b58d38",
+        "offset": "0%"
+      },
+      {
+        "color": "#946925",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "cloverpin",
+    "name": "Clover Pins",
+    "supply": "18,725",
+    "rarity": "NFT",
+    "file": "/gifts/models/cloverpin.png",
+    "bg": [
+      {
+        "color": "#b58d38",
+        "offset": "0%"
+      },
+      {
+        "color": "#946925",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "cookieheart",
+    "name": "Cookie Hearts",
+    "supply": "13,413",
+    "rarity": "NFT",
+    "file": "/gifts/models/cookieheart.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "crystalball",
+    "name": "Crystal Balls",
+    "supply": "8,345",
+    "rarity": "NFT",
+    "file": "/gifts/models/crystalball.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "cupidcharm",
+    "name": "Cupid Charms",
+    "supply": "5,878",
+    "rarity": "NFT",
+    "file": "/gifts/models/cupidcharm.png",
+    "bg": [
+      {
+        "color": "#5f7849",
+        "offset": "0%"
+      },
+      {
+        "color": "#3c4f3b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "deskcalendar",
+    "name": "Desk Calendars",
+    "supply": "33,857",
+    "rarity": "NFT",
+    "file": "/gifts/models/deskcalendar.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "diamondring",
+    "name": "Diamond Rings",
+    "supply": "8,537",
+    "rarity": "NFT",
+    "file": "/gifts/models/diamondring.png",
+    "bg": [
+      {
+        "color": "#b789e4",
+        "offset": "0%"
+      },
+      {
+        "color": "#8a5abc",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "durovscap",
+    "name": "Durov’s Caps",
+    "supply": "3,207",
+    "rarity": "NFT",
+    "file": "/gifts/models/durovscap.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "durovsglasses",
+    "name": "Durov’s Glasses",
+    "supply": "558",
+    "rarity": "NFT",
+    "file": "/gifts/models/durovsglasses.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "easteregg",
+    "name": "Easter Eggs",
+    "supply": "27,039",
+    "rarity": "NFT",
+    "file": "/gifts/models/easteregg.png",
+    "bg": [
+      {
+        "color": "#58a3c8",
+        "offset": "0%"
+      },
+      {
+        "color": "#5379c2",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "electricskull",
+    "name": "Electric Skulls",
+    "supply": "4,328",
+    "rarity": "NFT",
+    "file": "/gifts/models/electricskull.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "eternalcandle",
+    "name": "Eternal Candles",
+    "supply": "12,454",
+    "rarity": "NFT",
+    "file": "/gifts/models/eternalcandle.png",
+    "bg": [
+      {
+        "color": "#b186bb",
+        "offset": "0%"
+      },
+      {
+        "color": "#875a91",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "eternalrose",
+    "name": "Eternal Roses",
+    "supply": "5,657",
+    "rarity": "NFT",
+    "file": "/gifts/models/eternalrose.png",
+    "bg": [
+      {
+        "color": "#4d5254",
+        "offset": "0%"
+      },
+      {
+        "color": "#313638",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "evileye",
+    "name": "Evil Eyes",
+    "supply": "18,419",
+    "rarity": "NFT",
+    "file": "/gifts/models/evileye.png",
+    "bg": [
+      {
+        "color": "#b17da5",
+        "offset": "0%"
+      },
+      {
+        "color": "#8c577a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "faithamulet",
+    "name": "Faith Amulets",
+    "supply": "11,715",
+    "rarity": "NFT",
+    "file": "/gifts/models/faithamulet.png",
+    "bg": [
+      {
+        "color": "#d08b6d",
+        "offset": "0%"
+      },
+      {
+        "color": "#b05770",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "finepen",
+    "name": "Fine Pens",
+    "supply": "2,588",
+    "rarity": "NFT",
+    "file": "/gifts/models/finepen.png",
+    "bg": [
+      {
+        "color": "#5c6985",
+        "offset": "0%"
+      },
+      {
+        "color": "#354057",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "flyingbroom",
+    "name": "Flying Brooms",
+    "supply": "6,736",
+    "rarity": "NFT",
+    "file": "/gifts/models/flyingbroom.png",
+    "bg": [
+      {
+        "color": "#8ab163",
+        "offset": "0%"
+      },
+      {
+        "color": "#559345",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "freshsocks",
+    "name": "Fresh Socks",
+    "supply": "11,686",
+    "rarity": "NFT",
+    "file": "/gifts/models/freshsocks.png",
+    "bg": [
+      {
+        "color": "#d4980d",
+        "offset": "0%"
+      },
+      {
+        "color": "#c47712",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "gemsignet",
+    "name": "Gem Signets",
+    "supply": "2,159",
+    "rarity": "NFT",
+    "file": "/gifts/models/gemsignet.png",
+    "bg": [
+      {
+        "color": "#f05f4f",
+        "offset": "0%"
+      },
+      {
+        "color": "#c43949",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "genielamp",
+    "name": "Genie Lamps",
+    "supply": "2,737",
+    "rarity": "NFT",
+    "file": "/gifts/models/genielamp.png",
+    "bg": [
+      {
+        "color": "#b77a77",
+        "offset": "0%"
+      },
+      {
+        "color": "#814c52",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "gingercookie",
+    "name": "Ginger Cookies",
+    "supply": "17,721",
+    "rarity": "NFT",
+    "file": "/gifts/models/gingercookie.png",
+    "bg": [
+      {
+        "color": "#aeb85a",
+        "offset": "0%"
+      },
+      {
+        "color": "#559345",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "hangingstar",
+    "name": "Hanging Stars",
+    "supply": "6,922",
+    "rarity": "NFT",
+    "file": "/gifts/models/hangingstar.png",
+    "bg": [
+      {
+        "color": "#8c8c85",
+        "offset": "0%"
+      },
+      {
+        "color": "#6c6c66",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "happybrownie",
+    "name": "Happy Brownies",
+    "supply": "11,151",
+    "rarity": "NFT",
+    "file": "/gifts/models/happybrownie.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "heartlocket",
+    "name": "Heart Lockets",
+    "supply": "1,326",
+    "rarity": "NFT",
+    "file": "/gifts/models/heartlocket.png",
+    "bg": [
+      {
+        "color": "#b39f82",
+        "offset": "0%"
+      },
+      {
+        "color": "#7e735b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "heroichelmet",
+    "name": "Heroic Helmets",
+    "supply": "1,320",
+    "rarity": "NFT",
+    "file": "/gifts/models/heroichelmet.png",
+    "bg": [
+      {
+        "color": "#db9867",
+        "offset": "0%"
+      },
+      {
+        "color": "#c76f4f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "hexpot",
+    "name": "Hex Pots",
+    "supply": "14,530",
+    "rarity": "NFT",
+    "file": "/gifts/models/hexpot.png",
+    "bg": [
+      {
+        "color": "#858ff3",
+        "offset": "0%"
+      },
+      {
+        "color": "#865fd3",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "holidaydrink",
+    "name": "Holiday Drinks",
+    "supply": "6,325",
+    "rarity": "NFT",
+    "file": "/gifts/models/holidaydrink.png",
+    "bg": [
+      {
+        "color": "#e7a75a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c5675f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "homemadecake",
+    "name": "Homemade Cakes",
+    "supply": "33,173",
+    "rarity": "NFT",
+    "file": "/gifts/models/homemadecake.png",
+    "bg": [
+      {
+        "color": "#d19a3a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c06f47",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "hypnolollipop",
+    "name": "Hypno Lollipops",
+    "supply": "8,760",
+    "rarity": "NFT",
+    "file": "/gifts/models/hypnolollipop.png",
+    "bg": [
+      {
+        "color": "#7eb1b4",
+        "offset": "0%"
+      },
+      {
+        "color": "#588390",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "icecream",
+    "name": "Ice Creams",
+    "supply": "35,219",
+    "rarity": "NFT",
+    "file": "/gifts/models/icecream.png",
+    "bg": [
+      {
+        "color": "#adb070",
+        "offset": "0%"
+      },
+      {
+        "color": "#6b7d54",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "inputkey",
+    "name": "Input Keys",
+    "supply": "14,357",
+    "rarity": "NFT",
+    "file": "/gifts/models/inputkey.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "instantramen",
+    "name": "Instant Ramens",
+    "supply": "24,102",
+    "rarity": "NFT",
+    "file": "/gifts/models/instantramen.png",
+    "bg": [
+      {
+        "color": "#45b8ed",
+        "offset": "0%"
+      },
+      {
+        "color": "#3886d9",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "intelligencecup",
+    "name": "Intelligence Cups",
+    "supply": "15",
+    "rarity": "NFT",
+    "file": "/gifts/models/intelligencecup.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "iongem",
+    "name": "Ion Gems",
+    "supply": "2,699",
+    "rarity": "NFT",
+    "file": "/gifts/models/iongem.png",
+    "bg": [
+      {
+        "color": "#9d74c1",
+        "offset": "0%"
+      },
+      {
+        "color": "#794da0",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "ionicdryer",
+    "name": "Ionic Dryers",
+    "supply": "2,680",
+    "rarity": "NFT",
+    "file": "/gifts/models/ionicdryer.png",
+    "bg": [
+      {
+        "color": "#558a65",
+        "offset": "0%"
+      },
+      {
+        "color": "#3d6657",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "jackinthebox",
+    "name": "Jacks-in-the-Box",
+    "supply": "16,440",
+    "rarity": "NFT",
+    "file": "/gifts/models/jackinthebox.png",
+    "bg": [
+      {
+        "color": "#e0574a",
+        "offset": "0%"
+      },
+      {
+        "color": "#a8383b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "jellybunny",
+    "name": "Jelly Bunnies",
+    "supply": "13,898",
+    "rarity": "NFT",
+    "file": "/gifts/models/jellybunny.png",
+    "bg": [
+      {
+        "color": "#c2af64",
+        "offset": "0%"
+      },
+      {
+        "color": "#887e45",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "jesterhat",
+    "name": "Jester Hats",
+    "supply": "12,919",
+    "rarity": "NFT",
+    "file": "/gifts/models/jesterhat.png",
+    "bg": [
+      {
+        "color": "#5db1cb",
+        "offset": "0%"
+      },
+      {
+        "color": "#448bab",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "jinglebells",
+    "name": "Jingle Bells",
+    "supply": "8,708",
+    "rarity": "NFT",
+    "file": "/gifts/models/jinglebells.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "jollychimp",
+    "name": "Jolly Chimps",
+    "supply": "14,994",
+    "rarity": "NFT",
+    "file": "/gifts/models/jollychimp.png",
+    "bg": [
+      {
+        "color": "#4d5254",
+        "offset": "0%"
+      },
+      {
+        "color": "#313638",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "joyfulbundle",
+    "name": "Joyful Bundles",
+    "supply": "3,919",
+    "rarity": "NFT",
+    "file": "/gifts/models/joyfulbundle.png",
+    "bg": [
+      {
+        "color": "#5f7849",
+        "offset": "0%"
+      },
+      {
+        "color": "#3c4f3b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "khabibspapakha",
+    "name": "Khabib’s Papakhas",
+    "supply": "3,441",
+    "rarity": "NFT",
+    "file": "/gifts/models/khabibspapakha.png",
+    "bg": [
+      {
+        "color": "#80a4b8",
+        "offset": "0%"
+      },
+      {
+        "color": "#607c91",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "kissedfrog",
+    "name": "Kissed Frogs",
+    "supply": "7,660",
+    "rarity": "NFT",
+    "file": "/gifts/models/kissedfrog.png",
+    "bg": [
+      {
+        "color": "#e7a75a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c5675f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "libertyfigure",
+    "name": "Liberty Figures",
+    "supply": "20,902",
+    "rarity": "NFT",
+    "file": "/gifts/models/libertyfigure.png",
+    "bg": [
+      {
+        "color": "#a46e58",
+        "offset": "0%"
+      },
+      {
+        "color": "#74443b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lightsword",
+    "name": "Light Swords",
+    "supply": "16,914",
+    "rarity": "NFT",
+    "file": "/gifts/models/lightsword.png",
+    "bg": [
+      {
+        "color": "#75944d",
+        "offset": "0%"
+      },
+      {
+        "color": "#547341",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lolpop",
+    "name": "Lol Pops",
+    "supply": "67,643",
+    "rarity": "NFT",
+    "file": "/gifts/models/lolpop.png",
+    "bg": [
+      {
+        "color": "#5abea6",
+        "offset": "0%"
+      },
+      {
+        "color": "#3d95ba",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lootbag",
+    "name": "Loot Bags",
+    "supply": "6,591",
+    "rarity": "NFT",
+    "file": "/gifts/models/lootbag.png",
+    "bg": [
+      {
+        "color": "#a35e66",
+        "offset": "0%"
+      },
+      {
+        "color": "#6d414a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lovecandle",
+    "name": "Love Candles",
+    "supply": "3,210",
+    "rarity": "NFT",
+    "file": "/gifts/models/lovecandle.png",
+    "bg": [
+      {
+        "color": "#5c9bc4",
+        "offset": "0%"
+      },
+      {
+        "color": "#37739a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lovepotion",
+    "name": "Love Potions",
+    "supply": "6,711",
+    "rarity": "NFT",
+    "file": "/gifts/models/lovepotion.png",
+    "bg": [
+      {
+        "color": "#e7a75a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c5675f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lowrider",
+    "name": "Low Riders",
+    "supply": "6,748",
+    "rarity": "NFT",
+    "file": "/gifts/models/lowrider.png",
+    "bg": [
+      {
+        "color": "#b39f82",
+        "offset": "0%"
+      },
+      {
+        "color": "#7e735b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lunarsnake",
+    "name": "Lunar Snakes",
+    "supply": "18,734",
+    "rarity": "NFT",
+    "file": "/gifts/models/lunarsnake.png",
+    "bg": [
+      {
+        "color": "#d19a3a",
+        "offset": "0%"
+      },
+      {
+        "color": "#c06f47",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "lushbouquet",
+    "name": "Lush Bouquets",
+    "supply": "6,454",
+    "rarity": "NFT",
+    "file": "/gifts/models/lushbouquet.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "madpumpkin",
+    "name": "Mad Pumpkins",
+    "supply": "6,658",
+    "rarity": "NFT",
+    "file": "/gifts/models/madpumpkin.png",
+    "bg": [
+      {
+        "color": "#58b4c8",
+        "offset": "0%"
+      },
+      {
+        "color": "#538bc2",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "magicpotion",
+    "name": "Magic Potions",
+    "supply": "3,310",
+    "rarity": "NFT",
+    "file": "/gifts/models/magicpotion.png",
+    "bg": [
+      {
+        "color": "#bf9b47",
+        "offset": "0%"
+      },
+      {
+        "color": "#8d7739",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "mightyarm",
+    "name": "Mighty Arms",
+    "supply": "1,829",
+    "rarity": "NFT",
+    "file": "/gifts/models/mightyarm.png",
+    "bg": [
+      {
+        "color": "#97a2ac",
+        "offset": "0%"
+      },
+      {
+        "color": "#63727c",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "minioscar",
+    "name": "Mini Oscars",
+    "supply": "2,158",
+    "rarity": "NFT",
+    "file": "/gifts/models/minioscar.png",
+    "bg": [
+      {
+        "color": "#dab345",
+        "offset": "0%"
+      },
+      {
+        "color": "#b1802a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "moneypot",
+    "name": "Money Pots",
+    "supply": "9,245",
+    "rarity": "NFT",
+    "file": "/gifts/models/moneypot.png",
+    "bg": [
+      {
+        "color": "#31b5aa",
+        "offset": "0%"
+      },
+      {
+        "color": "#189599",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "moodpack",
+    "name": "Mood Packs",
+    "supply": "14,767",
+    "rarity": "NFT",
+    "file": "/gifts/models/moodpack.png",
+    "bg": [
+      {
+        "color": "#ae6cae",
+        "offset": "0%"
+      },
+      {
+        "color": "#844784",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "moonpendant",
+    "name": "Moon Pendants",
+    "supply": "13,228",
+    "rarity": "NFT",
+    "file": "/gifts/models/moonpendant.png",
+    "bg": [
+      {
+        "color": "#ae6cae",
+        "offset": "0%"
+      },
+      {
+        "color": "#844784",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "moussecake",
+    "name": "Mousse Cakes",
+    "supply": "7,522",
+    "rarity": "NFT",
+    "file": "/gifts/models/moussecake.png",
+    "bg": [
+      {
+        "color": "#8fae78",
+        "offset": "0%"
+      },
+      {
+        "color": "#4b825b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "nailbracelet",
+    "name": "Nail Bracelets",
+    "supply": "1,904",
+    "rarity": "NFT",
+    "file": "/gifts/models/nailbracelet.png",
+    "bg": [
+      {
+        "color": "#78c585",
+        "offset": "0%"
+      },
+      {
+        "color": "#42a171",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "nekohelmet",
+    "name": "Neko Helmets",
+    "supply": "4,169",
+    "rarity": "NFT",
+    "file": "/gifts/models/nekohelmet.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "partysparkler",
+    "name": "Party Sparklers",
+    "supply": "21,309",
+    "rarity": "NFT",
+    "file": "/gifts/models/partysparkler.png",
+    "bg": [
+      {
+        "color": "#6fc793",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b9c84",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "perfumebottle",
+    "name": "Perfume Bottles",
+    "supply": "2,168",
+    "rarity": "NFT",
+    "file": "/gifts/models/perfumebottle.png",
+    "bg": [
+      {
+        "color": "#537991",
+        "offset": "0%"
+      },
+      {
+        "color": "#416479",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "petsnake",
+    "name": "Pet Snakes",
+    "supply": "11,294",
+    "rarity": "NFT",
+    "file": "/gifts/models/petsnake.png",
+    "bg": [
+      {
+        "color": "#b186bb",
+        "offset": "0%"
+      },
+      {
+        "color": "#875a91",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "plushpepe",
+    "name": "Plush Pepes",
+    "supply": "2,473",
+    "rarity": "NFT",
+    "file": "/gifts/models/plushpepe.png",
+    "bg": [
+      {
+        "color": "#58a3c8",
+        "offset": "0%"
+      },
+      {
+        "color": "#5379c2",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "poolfloat",
+    "name": "Pool Floats",
+    "supply": "14,638",
+    "rarity": "NFT",
+    "file": "/gifts/models/poolfloat.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "preciouspeach",
+    "name": "Precious Peaches",
+    "supply": "2,145",
+    "rarity": "NFT",
+    "file": "/gifts/models/preciouspeach.png",
+    "bg": [
+      {
+        "color": "#78c585",
+        "offset": "0%"
+      },
+      {
+        "color": "#42a171",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "prettyposy",
+    "name": "Pretty Posies",
+    "supply": "5,515",
+    "rarity": "NFT",
+    "file": "/gifts/models/prettyposy.png",
+    "bg": [
+      {
+        "color": "#ccab41",
+        "offset": "0%"
+      },
+      {
+        "color": "#987b32",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "rarebird",
+    "name": "Rare Birds",
+    "supply": "3,626",
+    "rarity": "NFT",
+    "file": "/gifts/models/rarebird.png",
+    "bg": [
+      {
+        "color": "#4e689c",
+        "offset": "0%"
+      },
+      {
+        "color": "#3b4b7a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "recordplayer",
+    "name": "Record Players",
+    "supply": "5,483",
+    "rarity": "NFT",
+    "file": "/gifts/models/recordplayer.png",
+    "bg": [
+      {
+        "color": "#b17da5",
+        "offset": "0%"
+      },
+      {
+        "color": "#8c577a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "restlessjar",
+    "name": "Restless Jars",
+    "supply": "9,346",
+    "rarity": "NFT",
+    "file": "/gifts/models/restlessjar.png",
+    "bg": [
+      {
+        "color": "#97b07c",
+        "offset": "0%"
+      },
+      {
+        "color": "#5c814c",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "sakuraflower",
+    "name": "Sakura Flowers",
+    "supply": "14,019",
+    "rarity": "NFT",
+    "file": "/gifts/models/sakuraflower.png",
+    "bg": [
+      {
+        "color": "#7596f9",
+        "offset": "0%"
+      },
+      {
+        "color": "#6862e4",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "santahat",
+    "name": "Santa Hats",
+    "supply": "12,404",
+    "rarity": "NFT",
+    "file": "/gifts/models/santahat.png",
+    "bg": [
+      {
+        "color": "#6c9edd",
+        "offset": "0%"
+      },
+      {
+        "color": "#5c6ec9",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "scaredcat",
+    "name": "Scared Cats",
+    "supply": "14,372",
+    "rarity": "NFT",
+    "file": "/gifts/models/scaredcat.png",
+    "bg": [
+      {
+        "color": "#7596f9",
+        "offset": "0%"
+      },
+      {
+        "color": "#6862e4",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "sharptongue",
+    "name": "Sharp Tongues",
+    "supply": "3,882",
+    "rarity": "NFT",
+    "file": "/gifts/models/sharptongue.png",
+    "bg": [
+      {
+        "color": "#8fae78",
+        "offset": "0%"
+      },
+      {
+        "color": "#4b825b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "signetring",
+    "name": "Signet Rings",
+    "supply": "7,253",
+    "rarity": "NFT",
+    "file": "/gifts/models/signetring.png",
+    "bg": [
+      {
+        "color": "#d08b6d",
+        "offset": "0%"
+      },
+      {
+        "color": "#b05770",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "skullflower",
+    "name": "Skull Flowers",
+    "supply": "7,050",
+    "rarity": "NFT",
+    "file": "/gifts/models/skullflower.png",
+    "bg": [
+      {
+        "color": "#b789e4",
+        "offset": "0%"
+      },
+      {
+        "color": "#8a5abc",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "skystilettos",
+    "name": "Sky Stilettos",
+    "file": "/gifts/models/skystilettos.png",
+    "supply": "6,039",
+    "rarity": "NFT",
+    "bg": [
+      {
+        "color": "#b77a77",
+        "offset": "0%"
+      },
+      {
+        "color": "#814c52",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "sleighbell",
+    "name": "Sleigh Bells",
+    "supply": "4,196",
+    "rarity": "NFT",
+    "file": "/gifts/models/sleighbell.png",
+    "bg": [
+      {
+        "color": "#7596f9",
+        "offset": "0%"
+      },
+      {
+        "color": "#6862e4",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "snakebox",
+    "name": "Snake Boxes",
+    "supply": "9,765",
+    "rarity": "NFT",
+    "file": "/gifts/models/snakebox.png",
+    "bg": [
+      {
+        "color": "#4c5d63",
+        "offset": "0%"
+      },
+      {
+        "color": "#2f3b42",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "snoopcigar",
+    "name": "Snoop Cigars",
+    "supply": "18,224",
+    "rarity": "NFT",
+    "file": "/gifts/models/snoopcigar.png",
+    "bg": [
+      {
+        "color": "#bf9b47",
+        "offset": "0%"
+      },
+      {
+        "color": "#8d7739",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "snoopdogg",
+    "name": "Snoop Doggs",
+    "supply": "55,892",
+    "rarity": "NFT",
+    "file": "/gifts/models/snoopdogg.png",
+    "bg": [
+      {
+        "color": "#5c9bc4",
+        "offset": "0%"
+      },
+      {
+        "color": "#37739a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "snowglobe",
+    "name": "Snow Globes",
+    "supply": "6,360",
+    "rarity": "NFT",
+    "file": "/gifts/models/snowglobe.png",
+    "bg": [
+      {
+        "color": "#5f7849",
+        "offset": "0%"
+      },
+      {
+        "color": "#3c4f3b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "snowmittens",
+    "name": "Snow Mittens",
+    "supply": "5,000",
+    "rarity": "NFT",
+    "file": "/gifts/models/snowmittens.png",
+    "bg": [
+      {
+        "color": "#db9867",
+        "offset": "0%"
+      },
+      {
+        "color": "#c76f4f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "spicedwine",
+    "name": "Spiced Wines",
+    "supply": "12,170",
+    "rarity": "NFT",
+    "file": "/gifts/models/spicedwine.png",
+    "bg": [
+      {
+        "color": "#6c9edd",
+        "offset": "0%"
+      },
+      {
+        "color": "#5c6ec9",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "springbasket",
+    "name": "Spring Baskets",
+    "supply": "12,827",
+    "rarity": "NFT",
+    "file": "/gifts/models/springbasket.png",
+    "bg": [
+      {
+        "color": "#97b07c",
+        "offset": "0%"
+      },
+      {
+        "color": "#5c814c",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "spyagaric",
+    "name": "Spy Agarics",
+    "supply": "29,000",
+    "rarity": "NFT",
+    "file": "/gifts/models/spyagaric.png",
+    "bg": [
+      {
+        "color": "#b186bb",
+        "offset": "0%"
+      },
+      {
+        "color": "#875a91",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "starnotepad",
+    "name": "Star Notepads",
+    "supply": "9,077",
+    "rarity": "NFT",
+    "file": "/gifts/models/starnotepad.png",
+    "bg": [
+      {
+        "color": "#adb070",
+        "offset": "0%"
+      },
+      {
+        "color": "#6b7d54",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "stellarrocket",
+    "name": "Stellar Rockets",
+    "supply": "16,464",
+    "rarity": "NFT",
+    "file": "/gifts/models/stellarrocket.png",
+    "bg": [
+      {
+        "color": "#899288",
+        "offset": "0%"
+      },
+      {
+        "color": "#5e6b63",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "surgeboard",
+    "name": "Surge Boards",
+    "supply": "2,833",
+    "rarity": "NFT",
+    "file": "/gifts/models/surgeboard.png",
+    "bg": [
+      {
+        "color": "#b1907e",
+        "offset": "0%"
+      },
+      {
+        "color": "#7c6356",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "swagbag",
+    "name": "Swag Bags",
+    "supply": "20,421",
+    "rarity": "NFT",
+    "file": "/gifts/models/swagbag.png",
+    "bg": [
+      {
+        "color": "#a980f3",
+        "offset": "0%"
+      },
+      {
+        "color": "#5b62d8",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "swisswatch",
+    "name": "Swiss Watches",
+    "supply": "10,844",
+    "rarity": "NFT",
+    "file": "/gifts/models/swisswatch.png",
+    "bg": [
+      {
+        "color": "#d08b6d",
+        "offset": "0%"
+      },
+      {
+        "color": "#b05770",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "tamagadget",
+    "name": "Tama Gadgets",
+    "supply": "11,002",
+    "rarity": "NFT",
+    "file": "/gifts/models/tamagadget.png",
+    "bg": [
+      {
+        "color": "#80a4b8",
+        "offset": "0%"
+      },
+      {
+        "color": "#607c91",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "timelessbook",
+    "name": "Timeless Books",
+    "supply": "8,621",
+    "rarity": "NFT",
+    "file": "/gifts/models/timelessbook.png",
+    "bg": [
+      {
+        "color": "#a980f3",
+        "offset": "0%"
+      },
+      {
+        "color": "#5b62d8",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "tophat",
+    "name": "Top Hats",
+    "supply": "8,624",
+    "rarity": "NFT",
+    "file": "/gifts/models/tophat.png",
+    "bg": [
+      {
+        "color": "#bab6b1",
+        "offset": "0%"
+      },
+      {
+        "color": "#a19d97",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "toybear",
+    "name": "Toy Bears",
+    "supply": "29,495",
+    "rarity": "NFT",
+    "file": "/gifts/models/toybear.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "trappedheart",
+    "name": "Trapped Hearts",
+    "supply": "9,741",
+    "rarity": "NFT",
+    "file": "/gifts/models/trappedheart.png",
+    "bg": [
+      {
+        "color": "#6088cf",
+        "offset": "0%"
+      },
+      {
+        "color": "#5162b8",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "ufcstrike",
+    "name": "UFC Strikes",
+    "supply": "6,574",
+    "rarity": "NFT",
+    "file": "/gifts/models/ufcstrike.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "valentinebox",
+    "name": "Valentine Boxes",
+    "supply": "3,880",
+    "rarity": "NFT",
+    "file": "/gifts/models/valentinebox.png",
+    "bg": [
+      {
+        "color": "#e28ab6",
+        "offset": "0%"
+      },
+      {
+        "color": "#a4588b",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "vicecream",
+    "name": "Vice Creams",
+    "supply": "43,399",
+    "rarity": "NFT",
+    "file": "/gifts/models/vicecream.png",
+    "bg": [
+      {
+        "color": "#b2aea7",
+        "offset": "0%"
+      },
+      {
+        "color": "#88847e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "victorymedal",
+    "name": "Victory Medals",
+    "supply": "15,278",
+    "rarity": "NFT",
+    "file": "/gifts/models/victorymedal.png",
+    "bg": [
+      {
+        "color": "#5db1cb",
+        "offset": "0%"
+      },
+      {
+        "color": "#448bab",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "vintagecigar",
+    "name": "Vintage Cigars",
+    "supply": "8,912",
+    "rarity": "NFT",
+    "file": "/gifts/models/vintagecigar.png",
+    "bg": [
+      {
+        "color": "#ca70c6",
+        "offset": "0%"
+      },
+      {
+        "color": "#9662d4",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "voodoodoll",
+    "name": "Voodoo Dolls",
+    "supply": "11,023",
+    "rarity": "NFT",
+    "file": "/gifts/models/voodoodoll.png",
+    "bg": [
+      {
+        "color": "#5ec0b8",
+        "offset": "0%"
+      },
+      {
+        "color": "#3d928e",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "westsidesign",
+    "name": "Westside Signs",
+    "supply": "5,267",
+    "rarity": "NFT",
+    "file": "/gifts/models/westsidesign.png",
+    "bg": [
+      {
+        "color": "#f05f4f",
+        "offset": "0%"
+      },
+      {
+        "color": "#c43949",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "whipcupcake",
+    "name": "Whip Cupcakes",
+    "supply": "14,871",
+    "rarity": "NFT",
+    "file": "/gifts/models/whipcupcake.png",
+    "bg": [
+      {
+        "color": "#da896b",
+        "offset": "0%"
+      },
+      {
+        "color": "#c4654f",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "winterwreath",
+    "name": "Winter Wreaths",
+    "supply": "9,566",
+    "rarity": "NFT",
+    "file": "/gifts/models/winterwreath.png",
+    "bg": [
+      {
+        "color": "#7ecb82",
+        "offset": "0%"
+      },
+      {
+        "color": "#459e5a",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "witchhat",
+    "name": "Witch Hats",
+    "supply": "31,113",
+    "rarity": "NFT",
+    "file": "/gifts/models/witchhat.png",
+    "bg": [
+      {
+        "color": "#60b195",
+        "offset": "0%"
+      },
+      {
+        "color": "#46abb4",
+        "offset": "100%"
+      }
+    ]
+  },
+  {
+    "id": "xmasstocking",
+    "name": "Xmas Stockings",
+    "supply": "15,267",
+    "rarity": "NFT",
+    "file": "/gifts/models/xmasstocking.png",
+    "bg": [
+      {
+        "color": "#363738",
+        "offset": "0%"
+      },
+      {
+        "color": "#0e0f0f",
+        "offset": "100%"
+      }
+    ]
+  }
+]

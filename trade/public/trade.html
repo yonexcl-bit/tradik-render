@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SupGift — обмен</title>
+    <link rel="icon" href="/logo.png?v=6">
+    <link rel="apple-touch-icon" href="/logo.png?v=6">
+    <script src="/telegram-web-app.js">
+    <meta property="og:type" content="website">
+<meta property="og:site_name" content="SupGift">
+<meta property="og:title" content="SupGift — обмен подарками и NFT">
+<meta property="og:description" content="Обменивай Telegram-подарки и NFT, продавай за TON, USDT и RUB. Открывай сделку и подтверждай обмен прямо в Telegram.">
+<meta property="og:image" content="https://trade-botik.new.tg/trade.jpg">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="511">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://trade-botik.new.tg/trade.jpg">
+</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+/* ==========================================================================
+   SupGift — Exchange screen
+   Shares the design language of the main app: monochrome, one accent,
+   grouped surfaces, quiet motion.
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    --bg:        #050A15;
+    --bg-lift:   #0A0F1D;
+
+    --surface:   #0B1220;
+    --surface-2: #0F1828;
+    --surface-3: #142033;
+    --fill:      rgba(120,190,255,.055);
+
+    --line:      rgba(120,190,255,.10);
+    --line-2:    rgba(145,205,255,.18);
+
+    --t1: #F4F9FF;
+    --t2: #A3B6CE;
+    --t3: #7C90A8;
+
+    --acc:      #00A3FF;
+    --acc-ink:  #ffffff;
+    --acc-08:   rgba(0,163,255,.10);
+    --acc-16:   rgba(0,163,255,.16);
+    --acc-28:   rgba(0,163,255,.28);
+    --acc-40:   rgba(0,163,255,.40);
+    --acc-grad: linear-gradient(135deg, #00A3FF 0%, #0089E8 55%, #0072CC 100%);
+    --acc-glow: 0 8px 26px -6px rgba(0,163,255,.62);
+
+    --glass-1: linear-gradient(180deg, rgba(120,190,255,.055), rgba(140,200,255,.02));
+    --glass-2: linear-gradient(180deg, rgba(140,200,255,.10), rgba(140,200,255,.035));
+    --edge:    inset 0 1px 0 rgba(120,190,255,.10);
+    --edge-2:  inset 0 1px 0 rgba(145,205,255,.18);
+
+    --ok:   #32d74b;  --ok-14:   rgba(50,215,75,.14);
+    --warn: #ffd60a;  --warn-14: rgba(255,214,10,.13);
+    --bad:  #ff453a;  --bad-14:  rgba(255,69,58,.13);
+    --gold: #ffd60a;
+    --cyan: #64d2ff;
+
+    --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 26px; --r-2xl: 32px;
+
+    --e1: 0 1px 2px rgba(0,0,0,.30);
+    --e2: 0 2px 6px rgba(0,0,0,.26), 0 10px 26px rgba(0,0,0,.32);
+    --e3: 0 10px 24px rgba(0,0,0,.42), 0 30px 70px rgba(0,0,0,.50);
+
+    --sp:     cubic-bezier(.32,.72,0,1);
+    --sp-pop: cubic-bezier(.34,1.36,.64,1);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+    margin: 0; padding: 0 16px calc(44px + env(safe-area-inset-bottom));
+    background: var(--bg); color: var(--t1); overflow-x: hidden; min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Manrope', 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px; line-height: 1.45; letter-spacing: -.011em;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+::-webkit-scrollbar { width: 0; height: 0; }
+button, input, select, textarea { font-family: inherit; letter-spacing: inherit; }
+button { border: none; background: none; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- Ambient light ---------------------------------------------- */
+.aurora {
+    position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+    background: radial-gradient(130% 70% at 50% -10%, #0A1730 0%, #050C1A 42%, var(--bg) 78%);
+}
+.aurora .blob {
+    position: absolute; border-radius: 50%; filter: blur(64px);
+    mix-blend-mode: screen; will-change: transform; opacity: .9;
+}
+.blob1 {
+    width: 560px; height: 560px; top: -260px; left: -140px;
+    background: radial-gradient(circle, rgba(0,163,255,.40), rgba(0,163,255,0) 66%);
+    animation: drift1 21s ease-in-out infinite alternate;
+}
+.blob2 {
+    width: 520px; height: 520px; top: -220px; right: -160px;
+    background: radial-gradient(circle, rgba(0,196,255,.26), rgba(0,196,255,0) 66%);
+    animation: drift2 27s ease-in-out infinite alternate;
+}
+.blob3 {
+    width: 600px; height: 600px; bottom: -320px; left: 8%;
+    background: radial-gradient(circle, rgba(0,122,214,.30), rgba(0,122,214,0) 66%);
+    animation: drift3 33s ease-in-out infinite alternate;
+}
+@keyframes drift1 { to { transform: translate(90px, 70px) scale(1.18); } }
+@keyframes drift2 { to { transform: translate(-80px, 60px) scale(1.12); } }
+@keyframes drift3 { to { transform: translate(60px, -70px) scale(1.14); } }
+.aurora::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(125% 85% at 50% 0%, transparent 52%, rgba(0,0,0,.62) 100%);
+}
+body::after {
+    content: ''; position: fixed; inset: 0; z-index: 500; pointer-events: none; opacity: .03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px;
+}
+
+/* ---------- Title bar --------------------------------------------------- */
+.topbar { margin-top: calc(12px + env(safe-area-inset-top)); display: flex; justify-content: flex-start; }
+.back-btn {
+    position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 4px;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line); color: var(--t2);
+    font-size: 13.5px; font-weight: 600; padding: 8px 14px 8px 10px;
+    border-radius: 999px; margin: 0; box-shadow: var(--edge);
+    transition: transform .22s var(--sp), color .2s, background .2s;
+}
+.back-btn:active { transform: scale(.93); color: var(--t1); }
+.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.26); transform: scale(0); animation: rip .55s ease-out forwards; pointer-events: none; z-index: 2; }
+@keyframes rip { to { transform: scale(3.2); opacity: 0; } }
+
+h1 {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 26px; margin: 18px 2px 18px; font-weight: 750; letter-spacing: -.032em;
+}
+h1 svg { color: var(--t3); flex-shrink: 0; }
+        h1 .h1-logo { width: 30px; height: 30px; border-radius: 10px; background: #fff; display: block; box-shadow: 0 6px 16px -8px rgba(0,163,255,.85), 0 0 0 1px rgba(150,215,255,.18); }
+
+/* ---------- Cards -------------------------------------------------------- */
+.card {
+    position: relative; overflow: hidden; margin-bottom: 12px;
+    background: var(--glass-1), var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-xl); padding: 16px; box-shadow: var(--edge), var(--e2);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+}
+.card::before {
+    content: ''; position: absolute; top: 0; left: 14%; right: 14%; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+}
+.card h3 {
+    margin: 0 0 14px; font-size: 11px; font-weight: 700; color: var(--t3);
+    text-transform: uppercase; letter-spacing: .09em; text-align: center;
+}
+
+/* ---------- Hero --------------------------------------------------------- */
+.hero { text-align: center; }
+.hero-orb {
+    width: 124px; height: 124px; margin: 4px auto 14px; border-radius: 34px;
+    display: flex; align-items: center; justify-content: center; font-size: 58px;
+    position: relative; overflow: hidden; padding: 2px;
+    background: var(--acc-grad); border: 0;
+    box-shadow: 0 18px 44px -14px rgba(0,163,255,.7), var(--edge-2);
+}
+.hero-orb > * { border-radius: 32px; }
+.hero-orb::after {
+    content: ''; position: absolute; inset: 2px; border-radius: 32px; pointer-events: none;
+    background: var(--surface-2);
+}
+.hero-orb .emoji, .hero-orb .hero-img { position: relative; z-index: 1; }
+.hero-orb .emoji { animation: floaty 3.4s ease-in-out infinite; }
+@keyframes floaty { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-8px) rotate(3deg); } }
+.hero h2 { margin: 0 0 8px; font-size: 20px; font-weight: 700; letter-spacing: -.024em; }
+.rarity { display: inline-block; font-size: 11px; padding: 4px 12px; border-radius: 999px; font-weight: 650; letter-spacing: .02em; }
+.r-legend  { background: rgba(255,214,10,.11); color: var(--gold); }
+.r-rare    { background: var(--acc-16); color: #7FD4FF; }
+.r-common  { background: var(--surface-2); color: var(--t2); border: 1px solid var(--line); }
+.r-nft     { background: rgba(100,210,255,.11); color: var(--cyan); }
+.hero-img { width: 88%; height: 88%; object-fit: contain; animation: floaty 3.4s ease-in-out infinite; }
+
+/* ---------- Exchange window ---------------------------------------------- */
+.deal { padding: 16px 12px 18px; }
+.deal-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: stretch; }
+.deal-side {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    min-width: 0; padding: 14px 8px;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-lg);
+    box-shadow: var(--edge);
+}
+.deal-label { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--t3); }
+.deal-av {
+    width: 74px; height: 74px; border-radius: 24px; overflow: hidden; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-3); color: var(--t2); font-weight: 700; font-size: 26px;
+    border: 1px solid var(--line); box-shadow: var(--edge);
+}
+.deal-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.deal-name { font-size: 13.5px; font-weight: 650; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deal-item { font-size: 12.5px; color: var(--t2); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deal-arrow { display: flex; align-items: center; justify-content: center; color: var(--t3); }
+.deal-arrow svg {
+    padding: 6px; box-sizing: content-box; border-radius: 50%;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    box-shadow: var(--edge);
+}
+.deal-partner-item { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 100%; }
+.deal-mini-orb {
+    width: 70px; height: 70px; border-radius: 20px; overflow: hidden;
+    padding: 12px; box-sizing: border-box;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-2), var(--surface-3); border: 1px solid var(--line-2);
+    box-shadow: var(--edge), 0 6px 18px -8px rgba(0,0,0,.6);
+}
+.deal-mini-orb img { width: 100%; height: 100%; object-fit: contain; }
+.deal-mini-orb > svg, .deal-mini-orb #seller-gift svg, .deal-mini-orb > span svg { width: 30px; height: 30px; }
+.deal-gift-name { font-size: 11.5px; color: var(--t3); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Success overlay ---------------------------------------------- */
+.success {
+    position: fixed; inset: 0; z-index: 120; overflow-y: auto; overflow-x: hidden;
+    background: radial-gradient(120% 80% at 50% 0%, rgba(10,22,50,.86), rgba(4,10,26,.92) 70%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    display: flex; align-items: flex-start; justify-content: center; padding: 20px 18px;
+    opacity: 0; transition: opacity .45s var(--sp);
+}
+.success.show { opacity: 1; }
+.success-inner { width: 100%; max-width: 420px; text-align: center; position: relative; z-index: 2; margin: auto; }
+
+.success-badge {
+    width: 82px; height: 82px; margin: 0 auto 14px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; position: relative;
+    background: linear-gradient(140deg, #52ec72, #24b843); color: #05270f; transform: scale(0);
+    box-shadow: 0 18px 44px -12px rgba(50,215,75,.6), var(--edge-2);
+}
+.success-badge::after {
+    content: ''; position: absolute; inset: 2px; border-radius: 50%; pointer-events: none;
+    background: linear-gradient(160deg, rgba(255,255,255,.34), rgba(255,255,255,0) 55%);
+}
+.success.show .success-badge { animation: badgePop .8s var(--sp-pop) .12s forwards, badgeRing 1.6s ease-out .5s; }
+.success-badge .tick { stroke-dasharray: 32; stroke-dashoffset: 32; }
+.success.show .success-badge .tick { animation: tickDraw .5s ease-out .55s forwards; }
+@keyframes badgePop { 0% { transform: scale(0) rotate(-25deg); } 70% { transform: scale(1.12) rotate(4deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes badgeRing { 0% { box-shadow: 0 0 0 0 rgba(50,215,75,.4); } 100% { box-shadow: 0 0 0 26px rgba(50,215,75,0); } }
+@keyframes tickDraw { to { stroke-dashoffset: 0; } }
+
+.success-title { font-size: 25px; font-weight: 750; margin: 2px 0 6px; color: var(--t1); letter-spacing: -.028em; }
+.success-sub { color: var(--t2); font-size: 13.5px; margin: 0 0 16px; line-height: 1.5; }
+
+/* ---------- Stage -------------------------------------------------------- */
+.stage { position: relative; height: 336px; margin: 0 auto 14px; }
+.fly-layer { position: absolute; inset: 0; pointer-events: none; z-index: 6; }
+
+.stage-slot {
+    position: absolute; left: 0; right: 0; height: 158px;
+    background: var(--glass-1), var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-xl); padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+    transition: border-color .5s, transform .5s;
+    box-shadow: var(--edge), var(--e1);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+}
+.stage-slot::before {
+    content: ''; position: absolute; top: 0; left: 16%; right: 16%; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+}
+.stage-slot.top { top: 0; }
+.stage-slot.bottom { top: 178px; }
+.stage-slot.done {
+    border-color: rgba(50,215,75,.42);
+    box-shadow: var(--edge), 0 0 0 1px rgba(50,215,75,.18), 0 12px 34px -14px rgba(50,215,75,.4);
+}
+
+.slot-who { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; text-align: left; }
+.slot-who-txt { min-width: 0; }
+.slot-hint { font-size: 10.5px; color: var(--t3); font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.sc-av {
+    width: 46px; height: 46px; border-radius: 16px; overflow: hidden; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface-3); color: var(--t2); font-weight: 700; font-size: 17px;
+    border: 1px solid var(--line); box-shadow: var(--edge);
+}
+.sc-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sc-name { font-size: 14px; font-weight: 650; max-width: 128px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.slot-pod { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; width: 96px; flex-shrink: 0; }
+.pod-orb {
+    width: 74px; height: 74px; border-radius: 22px; position: relative; overflow: hidden;
+    padding: 13px; box-sizing: border-box;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line-2);
+    box-shadow: var(--edge), 0 10px 26px -12px rgba(0,0,0,.7);
+}
+.pod-orb > * { position: relative; z-index: 1; }
+.pod-orb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,.16) 50%, transparent 65%); transform: translateX(-120%); }
+.pod-orb.charge::after { animation: podShine .9s ease .2s; }
+@keyframes podShine { to { transform: translateX(120%); } }
+.pod-orb img { width: 100%; height: 100%; object-fit: contain; }
+.pod-orb > svg, .fly-orb > svg, .deal-mini-orb > svg { width: 50%; height: 50%; }
+.pod-orb span > svg { width: 32px; height: 32px; }
+.pod-orb.void { background: transparent; border: 1px dashed var(--line-2); }
+.pod-orb.void::after { display: none; }
+.pod-emoji { font-size: 30px; line-height: 1; }
+.pod-name { font-size: 11px; color: var(--t2); max-width: 96px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.pod-check {
+    position: absolute; top: 22px; right: 4px; width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(140deg, #52ec72, #24b843); color: #05270f; display: flex; align-items: center; justify-content: center;
+    transform: scale(0); box-shadow: 0 4px 14px -3px rgba(50,215,75,.7), var(--edge-2); z-index: 2;
+}
+.pod-check.on { animation: badgePop .5s var(--sp-pop) forwards; }
+
+.final-plus { display: none; }
+
+.fly-orb {
+    position: absolute; width: 74px; height: 74px; border-radius: 22px; z-index: 7;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line-2);
+    box-shadow: 0 14px 36px -10px rgba(0,0,0,.8), var(--edge-2);
+    will-change: transform;
+}
+.fly-orb img { width: 100%; height: 100%; object-fit: contain; }
+.fly-orb .pod-emoji { font-size: 38px; }
+.fly-orb .fly-trail { display: none; }
+
+.impulse {
+    position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #fff;
+    box-shadow: 0 0 18px 5px rgba(50,215,75,.6); z-index: 8; transform: translate(-50%,-50%) scale(0);
+}
+.impulse.on { animation: impulsePop .6s ease-out forwards; }
+@keyframes impulsePop { 0% { transform: translate(-50%,-50%) scale(0); opacity: 1; } 100% { transform: translate(-50%,-50%) scale(9); opacity: 0; } }
+
+/* ---------- Result caption ----------------------------------------------- */
+.success-caption { opacity: 0; transform: translateY(10px); display: flex; flex-direction: column; gap: 8px; margin: 2px 0 16px; }
+.success-caption.on { animation: fadeUp .5s var(--sp) forwards; }
+.cap-row {
+    display: flex; align-items: center; gap: 10px; text-align: left;
+    background: var(--glass-1), var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 11px 13px; box-shadow: var(--edge);
+}
+.cap-row .cap-ico { width: 28px; height: 28px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.cap-row.get .cap-ico { background: var(--ok-14); color: var(--ok); }
+.cap-row.give .cap-ico { background: var(--surface-3); color: var(--t2); }
+.cap-row .cap-body { min-width: 0; flex: 1; }
+.cap-row .cap-k { font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); }
+.cap-row .cap-v { font-size: 13.5px; font-weight: 650; color: var(--t1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sc-item { font-size: 12px; color: var(--t2); }
+
+/* ---------- Celebration -------------------------------------------------- */
+.salute { position: fixed; inset: 0; pointer-events: none; z-index: 130; overflow: hidden; }
+.burst { position: absolute; width: 0; height: 0; }
+.spark {
+    position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #fff, hsl(var(--hue) 95% 66%) 55%, hsl(var(--hue) 95% 50%));
+    box-shadow: 0 0 16px hsl(var(--hue) 95% 64%), 0 0 30px hsl(var(--hue) 95% 58%);
+    animation: sparkFly var(--dur) cubic-bezier(.15,.7,.4,1) forwards;
+}
+@keyframes sparkFly {
+    0% { transform: translate(0,0) scale(1.15); opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: translate(var(--dx), calc(var(--dy) + 90px)) scale(.35); opacity: 0; }
+}
+.confetti { position: absolute; top: -30px; width: var(--w); height: var(--h); border-radius: 2px; background: hsl(var(--hue) 90% 60%); animation: confFall var(--dur) linear forwards; will-change: transform; }
+.confetti.round { border-radius: 50%; }
+@keyframes confFall {
+    0% { transform: translate3d(0,0,0) rotate(0deg); opacity: 1; }
+    100% { transform: translate3d(var(--sway), 112vh, 0) rotate(var(--rot)); opacity: .85; }
+}
+
+/* ---------- Status pills -------------------------------------------------- */
+.pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill.live .dot { animation: blink 1.4s ease-in-out infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+.st-waiting    { background: var(--surface-2); color: var(--t2); border: 1px solid var(--line); }
+.st-connected  { background: var(--acc-16); color: var(--acc); border: 1px solid transparent; }
+.st-offer_made { background: var(--warn-14); color: var(--warn); border: 1px solid transparent; }
+.st-completed  { background: var(--ok-14); color: var(--ok); border: 1px solid transparent; }
+.st-cancelled  { background: var(--bad-14); color: var(--bad); border: 1px solid transparent; }
+
+/* ---------- Segmented tabs ------------------------------------------------ */
+.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+.tab {
+    padding: 11px 2px 9px; background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    color: var(--t3); border-radius: var(--r-sm); cursor: pointer;
+    font-weight: 650; font-size: 12px; font-family: inherit;
+    transition: background .22s var(--sp), color .22s, border-color .22s, transform .22s var(--sp);
+}
+.tab:active { transform: scale(.96); }
+.tab.active {
+    background: var(--acc-grad); color: #fff; border-color: transparent;
+    box-shadow: 0 6px 18px -7px rgba(0,163,255,.85), var(--edge-2);
+}
+.tab small { display: block; font-size: 9.5px; opacity: .7; margin-top: 2px; font-weight: 600; }
+
+/* ---------- Forms ---------------------------------------------------------- */
+input, select, textarea {
+    width: 100%; margin-top: 12px; padding: 14px 15px;
+    border-radius: var(--r-md); border: 1px solid var(--line);
+    background: var(--surface-2); color: var(--t1); font-size: 16px; font-family: inherit;
+    outline: none; resize: none;
+    transition: border-color .22s, background .22s, box-shadow .22s;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: var(--acc-40); background: var(--surface-3);
+    box-shadow: 0 0 0 3.5px var(--acc-16);
+}
+select option { background: #0E1A38; color: var(--t1); }
+input::placeholder, textarea::placeholder { color: var(--t3); }
+
+.btn {
+    position: relative; overflow: hidden; border: none; color: #fff;
+    padding: 16px; width: 100%; border-radius: var(--r-md);
+    font-weight: 650; font-size: 15.5px; cursor: pointer; margin-top: 14px;
+    font-family: inherit; letter-spacing: -.012em;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .18s var(--sp), opacity .18s, background .2s;
+}
+.btn:active { transform: scale(.975); opacity: .85; }
+.btn-green {
+    background: linear-gradient(135deg, #52ec72, #24b843); color: #05270f;
+    box-shadow: 0 10px 28px -9px rgba(50,215,75,.6), var(--edge-2);
+}
+.btn:disabled { opacity: .45; }
+.btn-grad { background: var(--acc-grad); color: #fff; box-shadow: var(--acc-glow), var(--edge-2); }
+.btn-ghost { background: var(--surface-2); color: var(--t1); border: 1px solid var(--line); }
+.btn-danger { background: var(--bad-14); color: var(--bad); border: 1px solid transparent; }
+
+/* ---------- Waiting / closed ------------------------------------------------ */
+.waiting-wrap { text-align: center; padding: 16px 0 8px; }
+.radar {
+    width: 82px; height: 82px; margin: 0 auto 18px; border-radius: 50%; position: relative;
+    display: flex; align-items: center; justify-content: center; font-size: 32px;
+    background: var(--glass-2), var(--surface-2); border: 1px solid var(--line);
+    box-shadow: var(--edge), 0 14px 34px -14px rgba(0,0,0,.7);
+}
+.radar svg { filter: drop-shadow(0 0 10px rgba(255,214,10,.55)); }
+.radar::before, .radar::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255,214,10,.35); animation: radar 2.2s ease-out infinite; }
+.radar::after { animation-delay: 1.1s; }
+@keyframes radar { from { transform: scale(.62); opacity: 1; } to { transform: scale(1.45); opacity: 0; } }
+.waiting-wrap p { color: var(--t2); font-size: 14px; font-weight: 550; line-height: 1.5; margin: 0; }
+
+.closed { text-align: center; padding: 46px 20px; }
+.closed .big { width: 100px; height: 100px; border-radius: 32px; display: inline-flex; align-items: center; justify-content: center; animation: bouncein .7s var(--sp-pop); }
+.big-ok   { background: var(--ok-14); border: 1px solid rgba(50,215,75,.35); color: var(--ok); }
+.big-err  { background: var(--bad-14); border: 1px solid rgba(255,69,58,.32); color: var(--bad); }
+.big-mute { background: var(--surface-2); border: 1px solid var(--line); color: var(--t3); }
+@keyframes bouncein { from { transform: scale(0) rotate(-18deg); } to { transform: scale(1); } }
+.closed h2 { font-size: 21px; margin: 16px 0 8px; font-weight: 720; letter-spacing: -.022em; }
+.closed p { color: var(--t2); font-size: 14px; line-height: 1.6; margin: 0; }
+
+/* ---------- Entry animation -------------------------------------------------- */
+.enter { animation: fadeUp .5s var(--sp) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Toast ------------------------------------------------------------- */
+#toast {
+    position: fixed; top: calc(12px + env(safe-area-inset-top)); left: 16px; right: 16px;
+    background: linear-gradient(180deg, rgba(12,26,58,.94), rgba(9,20,46,.96));
+    border: 1px solid var(--line-2);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    backdrop-filter: blur(26px) saturate(180%);
+    box-shadow: 0 16px 46px -12px rgba(0,0,0,.8), var(--edge-2);
+    padding: 13px 15px; border-radius: var(--r-lg);
+    font-size: 14px; font-weight: 550; color: var(--t1);
+    z-index: 100; opacity: 0; transform: translateY(-140%);
+    transition: transform .42s var(--sp), opacity .3s;
+    pointer-events: none; display: flex; align-items: center; gap: 10px;
+}
+#toast.show { opacity: 1; transform: none; }
+#toast svg { flex-shrink: 0; filter: drop-shadow(0 0 8px currentColor); }
+
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 90; overflow: hidden; }
+.cf { position: absolute; width: 9px; height: 14px; border-radius: 3px; top: -20px; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: .7; } }
+
+    
+/* ================= Theme v2: obsidian + neon ================= */
+:root {
+  --bg:#050A15; --bg-lift:#0A0F1D;
+  --surface:#0B1220; --surface-2:#0F1828; --surface-3:#142033;
+  --fill:rgba(120,190,255,.055);
+  --line:rgba(120,190,255,.10); --line-2:rgba(140,205,255,.18);
+  --t1:#F4F9FF; --t2:#A3B6CE; --t3:#7C90A8;
+  --acc:#00A3FF;
+  --acc-08:rgba(0,163,255,.10); --acc-16:rgba(0,163,255,.16);
+  --acc-28:rgba(0,163,255,.28); --acc-40:rgba(0,163,255,.40);
+  --acc-grad:linear-gradient(135deg,#00A3FF 0%,#0089E8 55%,#0072CC 100%);
+  --acc-glow:0 8px 30px -6px rgba(0,163,255,.70);
+  --glass-1:linear-gradient(180deg,rgba(120,190,255,.07),rgba(130,200,255,.02));
+  --glass-2:linear-gradient(180deg,rgba(140,205,255,.11),rgba(140,205,255,.04));
+  --edge:inset 0 1px 0 rgba(150,215,255,.12);
+  --edge-2:inset 0 1px 0 rgba(165,225,255,.22);
+  --chrome:rgba(5,10,21,.72); --chrome-2:rgba(8,14,27,.84);
+  --grain:.035;
+}
+.aurora {
+  background:
+    radial-gradient(120% 62% at 50% -14%, #0A1730 0%, #050C1A 46%, var(--bg) 80%),
+    var(--bg);
+}
+.aurora::before {
+  content:''; position:absolute; inset:-35%; pointer-events:none;
+  background:
+    repeating-linear-gradient(74deg,
+      rgba(0,163,255,0) 0 46px,
+      rgba(0,163,255,.085) 56px 62px,
+      rgba(190,235,255,.05) 74px 78px,
+      rgba(0,163,255,0) 96px 150px),
+    repeating-linear-gradient(-58deg,
+      rgba(0,120,214,0) 0 90px,
+      rgba(0,140,235,.055) 110px 118px,
+      rgba(0,163,255,0) 140px 210px);
+  filter:blur(22px) saturate(160%);
+  opacity:.75; transform:rotate(-6deg) scale(1.15);
+  -webkit-mask-image:radial-gradient(115% 78% at 50% 8%, #000 0%, rgba(0,0,0,.55) 46%, transparent 82%);
+  mask-image:radial-gradient(115% 78% at 50% 8%, #000 0%, rgba(0,0,0,.55) 46%, transparent 82%);
+  animation:silkFlow 46s linear infinite;
+}
+@keyframes silkFlow {
+  from { transform:rotate(-6deg) scale(1.15) translate3d(0,0,0); }
+  to   { transform:rotate(-6deg) scale(1.15) translate3d(-150px,-70px,0); }
+}
+.blob1 { background:radial-gradient(circle,rgba(0,163,255,.42),rgba(0,163,255,0) 66%); filter:blur(72px); }
+.blob2 { background:radial-gradient(circle,rgba(0,220,255,.30),rgba(0,220,255,0) 66%); filter:blur(72px); }
+.blob3 { background:radial-gradient(circle,rgba(0,110,220,.34),rgba(0,110,220,0) 66%); filter:blur(80px); }
+.aurora::after {
+  background:
+    radial-gradient(125% 85% at 50% 0%, transparent 50%, rgba(0,0,0,.68) 100%),
+    linear-gradient(180deg, rgba(0,163,255,.05), transparent 28%);
+}
+.avatar.brand {
+  position:relative; background:#fff;
+  border:1px solid rgba(165,225,255,.30);
+  box-shadow:0 0 0 1px rgba(0,163,255,.25), 0 0 26px rgba(0,163,255,.55), 0 12px 34px -12px rgba(0,163,255,.85);
+}
+.avatar.brand::after {
+  content:''; position:absolute; inset:-14px; border-radius:26px; z-index:-1; pointer-events:none;
+  background:radial-gradient(circle,rgba(0,163,255,.55),rgba(0,163,255,0) 70%); filter:blur(9px);
+}
+.btn {
+  background:var(--glass-2), rgba(11,18,32,.50);
+  border:1px solid rgba(140,205,255,.14);
+  -webkit-backdrop-filter:blur(20px) saturate(170%);
+  backdrop-filter:blur(20px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(180,232,255,.16), inset 0 -10px 22px rgba(0,20,45,.35), 0 14px 30px -22px rgba(0,0,0,.95);
+}
+.btn-grad {
+  background:linear-gradient(135deg, rgba(0,163,255,.96) 0%, rgba(0,137,232,.96) 55%, rgba(0,114,204,.98) 100%);
+  border:1px solid rgba(160,225,255,.28);
+  box-shadow:0 12px 34px -12px rgba(0,163,255,.90), inset 0 1px 0 rgba(255,255,255,.38), inset 0 -12px 24px rgba(0,40,90,.35);
+}
+.btn-grad::after {
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,0) 42%);
+}
+.trade-card, .profile-card { box-shadow: var(--edge), var(--e2), 0 0 0 1px rgba(0,163,255,.07), 0 20px 44px -30px rgba(0,163,255,.55); }
+.trade-card.showcase { box-shadow:none; }
+nav { -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%); }
+body.light {
+  --acc:#0072CC; --acc-grad:linear-gradient(135deg,#0072CC 0%,#0068BA 55%,#0060B0 100%);
+  --bg:#EFF4FB; --surface:#FFFFFF; --surface-2:#F3F7FD; --surface-3:#E9F0FA;
+}
+body.light .aurora { background:radial-gradient(120% 62% at 50% -14%, #E6EFFC 0%, #EFF4FB 55%, var(--bg) 85%); }
+body.light .aurora::before { opacity:.22; }
+body.light .avatar.brand { box-shadow:0 0 0 1px rgba(0,114,204,.18), 0 8px 26px -10px rgba(0,114,204,.55); }
+body.light .btn { background:#fff; backdrop-filter:none; -webkit-backdrop-filter:none; box-shadow:0 1px 2px rgba(6,18,40,.06); }
+body.light .btn-grad { box-shadow:0 10px 26px -10px rgba(0,114,204,.55), inset 0 1px 0 rgba(255,255,255,.35); }
+
+/* ===== Buttons v3: guaranteed legible in both themes ===== */
+.btn {
+  background:linear-gradient(180deg, rgba(23,37,64,.94), rgba(12,20,38,.94));
+  color:var(--t1);
+  border:1px solid rgba(140,205,255,.22);
+  box-shadow:inset 0 1px 0 rgba(180,232,255,.16), 0 12px 26px -20px rgba(0,0,0,.95);
+}
+.btn-grad {
+  background:linear-gradient(135deg, rgba(0,163,255,.98) 0%, rgba(0,137,232,.98) 55%, rgba(0,114,204,1) 100%);
+  color:#fff;
+  border:1px solid rgba(160,225,255,.30);
+  box-shadow:0 12px 34px -12px rgba(0,163,255,.90), inset 0 1px 0 rgba(255,255,255,.38);
+}
+.btn-green {
+  background:linear-gradient(135deg, #46e06a, #24b843);
+  color:#05270f;
+  border:1px solid transparent;
+  box-shadow:0 10px 26px -12px rgba(50,215,75,.65), inset 0 1px 0 rgba(255,255,255,.35);
+}
+.btn-danger { background:var(--bad-14); color:var(--bad); border:1px solid transparent; }
+.btn-ghost {
+  background:linear-gradient(180deg, rgba(23,37,64,.72), rgba(12,20,38,.72));
+  color:var(--t1);
+  border:1px solid rgba(140,205,255,.20);
+}
+.trade-card .actions .btn {
+  background:var(--acc-grad); color:var(--acc-ink); border-color:transparent;
+  box-shadow:0 8px 22px -8px rgba(0,163,255,.85), inset 0 1px 0 rgba(255,255,255,.30);
+}
+.trade-card .actions .btn-ghost {
+  background:var(--surface-2); color:var(--t2); border:1px solid var(--line); box-shadow:var(--edge);
+}
+body.light .btn {
+  background:#fff; color:var(--t1); border:1px solid rgba(10,30,70,.14);
+  box-shadow:0 1px 3px rgba(6,18,40,.10);
+}
+body.light .btn-grad {
+  background:linear-gradient(135deg,#0072CC 0%,#0068BA 55%,#0060B0 100%);
+  color:#fff; border:1px solid transparent;
+  box-shadow:0 10px 26px -10px rgba(0,114,204,.60), inset 0 1px 0 rgba(255,255,255,.30);
+}
+body.light .btn-green {
+  background:linear-gradient(135deg,#46e06a,#24b843); color:#05270f; border-color:transparent;
+  box-shadow:0 8px 22px -12px rgba(50,215,75,.55);
+}
+body.light .btn-danger { background:var(--bad-14); color:var(--bad); border-color:transparent; }
+body.light .btn-ghost {
+  background:var(--surface-2); color:var(--t1); border:1px solid rgba(10,30,70,.12);
+}
+body.light .icon-btn,
+body.light .ws-close,
+body.light .chip,
+body.light .pill {
+  background:#fff; border-color:rgba(10,30,70,.12);
+}
+</style>
+</head>
+<body>
+    <div class="aurora"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+    <div id="confetti"></div>
+    <div id="toast"></div>
+
+    <div class="topbar">
+        <button class="back-btn" onclick="goBack()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Назад</button>
+    </div>
+
+    <h1><img class="h1-logo" src="/logo.png?v=6" alt=""> Окно обмена</h1>
+
+    <div id="main-content" style="display:none">
+        <div class="card deal enter">
+            <h3>Окно обмена</h3>
+            <div class="deal-row">
+                <div class="deal-side">
+                    <div class="deal-label">ТЫ</div>
+                    <div class="deal-av" id="me-av">?</div>
+                    <div class="deal-name" id="my-name">Ты</div>
+                    <div class="deal-partner-item">
+                        <span class="deal-mini-orb" id="my-orb"></span>
+                        <span class="deal-item" id="my-offer-item">Предложение не выбрано</span>
+                    </div>
+                </div>
+                <div class="deal-arrow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg></div>
+                <div class="deal-side">
+                    <div class="deal-label">Партнёр</div>
+                    <div class="deal-av" id="partner-av">?</div>
+                    <div class="deal-name" id="partner-name">Продавец</div>
+                    <div class="deal-partner-item">
+                        <span class="deal-mini-orb" id="seller-orb"><span id="seller-gift"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7C90A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".8"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg></span></span>
+                        <span class="deal-gift-name" id="gift-name">Загрузка…</span>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:14px" id="trade-status-wrap"></div>
+        </div>
+
+        <div class="card enter" id="comment-card" style="display:none; animation-delay:.05s">
+            <h3 style="display:flex;align-items:center;justify-content:center;gap:7px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                Комментарий продавца
+            </h3>
+            <p id="comment-text" style="margin:0;font-size:14px;line-height:1.55;color:var(--t2);font-style:italic;text-align:center"></p>
+        </div>
+
+        <div class="card enter" id="want-card" style="display:none; animation-delay:.08s">
+            <h3 style="display:flex;align-items:center;justify-content:center;gap:7px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1 15.6-7.2"/><path d="M9 11h6"/><path d="M12 8v6"/></svg>
+                Партнёр хочет получить
+            </h3>
+            <p id="want-text" style="margin:0;font-size:15px;line-height:1.5;color:var(--gold);font-weight:700;text-align:center"></p>
+        </div>
+
+        <div class="card enter" id="offer-card" style="animation-delay:.1s">
+            <h3>Твоё предложение</h3>
+            <div class="tabs" id="offer-tabs"></div>
+            <div id="offer-input-container"></div>
+            <button class="btn btn-green" id="send-offer-btn" onclick="sendOffer()"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Предложить обмен</button>
+        </div>
+
+        <div class="card enter" id="waiting-card" style="display:none">
+            <div class="waiting-wrap">
+                <div class="radar"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#ffd60a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></div>
+                <p id="waiting-text">Предложение отправлено.<br>Продавец рассматривает его…</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card closed" id="closed-card" style="display:none">
+        <span class="big big-mute" id="closed-icon"></span>
+        <h2 id="closed-title"></h2>
+        <p id="closed-text"></p>
+    </div>
+
+    <div class="success" id="success" style="display:none">
+        <div class="salute" id="salute"></div>
+        <div class="success-inner">
+            <div class="success-badge" id="success-badge">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#05270f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path class="tick" d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <h2 class="success-title">Обмен завершён</h2>
+            <p class="success-sub" id="success-sub">Подарки зачислены в профили обоих участников</p>
+
+            <div class="stage" id="stage">
+                <div class="stage-slot top" id="slot-top">
+                    <div class="slot-who">
+                        <div class="sc-av" id="stage-me-av">?</div>
+                        <div class="slot-who-txt"><div class="sc-name" id="stage-me-name">Ты</div><div class="slot-hint" id="slot-hint-top">отдаёт</div></div>
+                    </div>
+                    <div class="slot-pod">
+                        <div class="pod-orb" id="pod-top-orb"><span class="pod-emoji" id="pod-top-emoji"></span></div>
+                        <div class="pod-name" id="pod-top-name">—</div>
+                        <div class="pod-check" id="pod-top-check"></div>
+                    </div>
+                </div>
+
+                <div class="stage-slot bottom" id="slot-bottom">
+                    <div class="slot-who">
+                        <div class="sc-av" id="stage-partner-av">?</div>
+                        <div class="slot-who-txt"><div class="sc-name" id="stage-partner-name">Партнёр</div><div class="slot-hint" id="slot-hint-bottom">отдаёт</div></div>
+                    </div>
+                    <div class="slot-pod">
+                        <div class="pod-orb" id="pod-bottom-orb"><span class="pod-emoji" id="pod-bottom-emoji"></span></div>
+                        <div class="pod-name" id="pod-bottom-name">—</div>
+                        <div class="pod-check" id="pod-bottom-check"></div>
+                    </div>
+                </div>
+
+                <div class="fly-layer" id="fly-layer"></div>
+            </div>
+
+            <div class="success-caption" id="success-caption">
+                <div class="cap-row" id="cap-row-get"></div>
+                <div class="cap-row" id="cap-row-give"></div>
+            </div>
+            <button class="btn btn-green" onclick="goBack()">Готово</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram?.WebApp || {
+            initData: '', initDataUnsafe: {}, HapticFeedback: null,
+            expand() {}, ready() {}, close() {}, setHeaderColor() {}, setBackgroundColor() {}
+        };
+        try { tg.expand(); } catch {}
+        try { tg.ready(); } catch {}
+        try { tg.setHeaderColor('#050A15'); tg.setBackgroundColor('#050A15'); } catch {}
+        const buyerId = tg.initDataUnsafe?.user?.id || 123456789;
+        const urlParams = new URLSearchParams(window.location.search);
+        const tradeId = urlParams.get('id');
+
+        let currentOfferType = 'usdt';
+        let buyerData = null;
+        let trade = null;
+        let offerSent = false;
+
+        function haptic(type) { try { tg.HapticFeedback?.notificationOccurred(type); } catch {} }
+        function tap() { try { tg.HapticFeedback?.impactOccurred('light'); } catch {} }
+        function goBack() {
+            tap();
+            if (history.length > 1) { history.back(); return; }
+            try { tg.close(); return; } catch {}
+            location.href = '/';
+        }
+        document.addEventListener('pointerdown', (e) => {
+            const t = e.target.closest('.back-btn');
+            if (!t) return;
+            const r = t.getBoundingClientRect();
+            const s = Math.max(r.width, r.height) * 1.4;
+            const rip = document.createElement('span');
+            rip.className = 'ripple';
+            rip.style.width = rip.style.height = s + 'px';
+            rip.style.left = (e.clientX - r.left - s / 2) + 'px';
+            rip.style.top = (e.clientY - r.top - s / 2) + 'px';
+            t.appendChild(rip);
+            setTimeout(() => rip.remove(), 620);
+        }, { passive: true });
+
+        const TICons = {
+            ok: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+            warn: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#2FB4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>',
+            err: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>'
+        };
+        const CICON = {
+            ok: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+            err: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+            search: '<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>'
+        };
+
+        function toast(text, color, icon) {
+            const t = document.getElementById('toast');
+            t.innerHTML = `${TICons[icon] || TICons.warn}<span>${esc(text)}</span>`;
+            const ic = t.querySelector('svg');
+            if (ic) ic.style.color = color || '#00A3FF';
+            t.classList.add('show');
+            clearTimeout(t._timer);
+            t._timer = setTimeout(() => t.classList.remove('show'), 3800);
+        }
+
+        function confetti() {
+            const box = document.getElementById('confetti');
+            const colors = ['#00A3FF', '#4FC0FF', '#64d2ff', '#ffd60a', '#30d158', '#ff453a'];
+            for (let i = 0; i < 80; i++) {
+                const c = document.createElement('div');
+                c.className = 'cf';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (1.6 + Math.random() * 1.8) + 's';
+                c.style.animationDelay = (Math.random() * .6) + 's';
+                box.appendChild(c);
+                setTimeout(() => c.remove(), 4400);
+            }
+        }
+
+        const STATUS_LABEL = {
+            waiting: ['Ожидает покупателя', 'st-waiting', false],
+            connected: ['Ты в сделке — сделай предложение', 'st-connected', true],
+            offer_made: ['Ждём подтверждения продавца', 'st-offer_made', true],
+            completed: ['Обменяно', 'st-completed', false],
+            cancelled: ['Отменена продавцом', 'st-cancelled', false]
+        };
+
+        function esc(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        function renderStatus() {
+            if (!trade) return;
+            const [label, cls, live] = STATUS_LABEL[trade.status] || STATUS_LABEL.waiting;
+            document.getElementById('trade-status-wrap').innerHTML =
+                `<span class="pill ${cls}${live ? ' live' : ''}"><span class="dot"></span>${label}</span>`;
+        }
+
+        function showClosed(status) {
+            document.getElementById('main-content').style.display = 'none';
+            const card = document.getElementById('closed-card');
+            card.style.display = 'block';
+            const iconEl = document.getElementById('closed-icon');
+            if (status === 'completed') {
+                iconEl.className = 'big big-ok';
+                iconEl.innerHTML = CICON.ok;
+                document.getElementById('closed-title').innerText = 'Сделка завершена!';
+                document.getElementById('closed-title').style.color = 'var(--ok)';
+                document.getElementById('closed-text').innerText = trade
+                    ? `Ты получил ${trade.sellerGift.name}!\nБалансы обновлены в профиле Mini App.`
+                    : 'Обмен успешно выполнен.';
+                haptic('success');
+                confetti();
+            } else if (status === 'notfound') {
+                iconEl.className = 'big big-mute';
+                iconEl.innerHTML = CICON.search;
+                document.getElementById('closed-title').innerText = 'Трейд не найден';
+                document.getElementById('closed-text').innerText = 'Возможно, сделка была отменена или ссылка устарела.';
+            } else if (status === 'own') {
+                iconEl.className = 'big big-mute';
+                iconEl.innerHTML = CICON.search;
+                document.getElementById('closed-title').innerText = 'Это твой трейд';
+                document.getElementById('closed-text').innerText = 'Нельзя присоединиться к собственной сделке.\nУправляй ею во вкладке «Сделки».';
+            } else if (status === 'busy') {
+                iconEl.className = 'big big-err';
+                iconEl.innerHTML = CICON.err;
+                document.getElementById('closed-title').innerText = 'Трейд уже занят';
+                document.getElementById('closed-text').innerText = 'К этой сделке уже присоединился другой покупатель.\nВыбери другой трейд на витрине.';
+            } else {
+                iconEl.className = 'big big-err';
+                iconEl.innerHTML = CICON.err;
+                document.getElementById('closed-title').innerText = 'Сделка отменена';
+                document.getElementById('closed-text').innerText = 'Продавец отменил этот обмен.\nПодарок вернулся ему в профиль.';
+            }
+        }
+
+        function offerLabel(o) {
+            if (!o) return '—';
+            if (o.type === 'gift') return (o.data && o.data.name) ? o.data.name : 'подарок';
+            if (['usdt', 'rub', 'ton'].includes(o.type)) return `${o.data} ${String(o.type).toUpperCase()}`;
+            return String(o.data == null ? '' : o.data);
+        }
+
+        function setAv(elId, uid, name) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const ini = String(name || '?').trim().charAt(0).toUpperCase() || '?';
+            el.textContent = ini;
+            const img = new Image();
+            img.alt = '';
+            img.onload = () => { el.textContent = ''; img.style.cssText = 'width:100%;height:100%;object-fit:cover'; el.appendChild(img); };
+            img.src = '/api/avatar/' + encodeURIComponent(uid);
+        }
+
+        function setStageAvatar(elId, uid, name) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            const ini = String(name || '?').trim().charAt(0).toUpperCase() || '?';
+            el.textContent = ini;
+            const img = new Image();
+            img.onload = () => { el.textContent = ''; img.style.cssText = 'width:100%;height:100%;object-fit:cover'; el.appendChild(img); };
+            img.src = '/api/avatar/' + encodeURIComponent(uid);
+        }
+
+        function salute() {
+            const box = document.getElementById('salute');
+            const cHues = [265, 320, 190, 45, 150, 0, 280, 210];
+            for (let c = 0; c < 90; c++) {
+                const el = document.createElement('span');
+                const round = Math.random() < 0.35;
+                el.className = 'confetti' + (round ? ' round' : '');
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.setProperty('--hue', cHues[c % cHues.length] + Math.floor(Math.random() * 24 - 12));
+                el.style.setProperty('--w', (7 + Math.random() * 8) + 'px');
+                el.style.setProperty('--h', (round ? 8 : 12) + Math.random() * 10 + 'px');
+                el.style.setProperty('--dur', (2.4 + Math.random() * 2.2) + 's');
+                el.style.setProperty('--rot', Math.floor(Math.random() * 1440 - 720) + 'deg');
+                el.style.setProperty('--sway', Math.floor(Math.random() * 160 - 80) + 'px');
+                el.style.animationDelay = (Math.random() * 1.4) + 's';
+                box.appendChild(el);
+                setTimeout(() => el.remove(), 5200);
+            }
+            const hues = [265, 320, 190, 45, 150];
+            for (let b = 0; b < 4; b++) {
+                setTimeout(() => {
+                    const burst = document.createElement('div');
+                    burst.className = 'burst';
+                    burst.style.left = (15 + Math.random() * 70) + 'vw';
+                    burst.style.top = (18 + Math.random() * 30) + 'vh';
+                    const hue = hues[b % hues.length];
+                    for (let i = 0; i < 22; i++) {
+                        const p = document.createElement('span');
+                        p.className = 'spark';
+                        p.style.setProperty('--hue', hue + Math.floor(Math.random() * 40 - 20));
+                        const a = (Math.PI * 2 * i) / 22 + Math.random() * 0.2;
+                        const d = 80 + Math.random() * 110;
+                        p.style.setProperty('--dx', Math.cos(a) * d + 'px');
+                        p.style.setProperty('--dy', Math.sin(a) * d * 0.7 + 'px');
+                        p.style.setProperty('--dur', (0.9 + Math.random() * 0.5) + 's');
+                        burst.appendChild(p);
+                    }
+                    box.appendChild(burst);
+                    setTimeout(() => burst.remove(), 1800);
+                }, b * 260);
+            }
+        }
+
+        const GIFT_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#a1a1a6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>';
+        const CUR_SVG = {
+            ton: '<svg viewBox="0 0 24 24" fill="none" stroke="#009eea" stroke-width="1.7" stroke-linejoin="round"><path d="M12 2.6 21.4 9 12 21.4 2.6 9z"/><path d="M2.6 9h18.8"/><path d="M12 2.6v18.8"/></svg>',
+            usdt: '<svg viewBox="0 0 24 24" fill="none" stroke="#26a17b" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8h7"/><path d="M8.5 11h6"/><path d="M13.2 11v5.6"/><path d="M10.8 16.6h4.8"/></svg>',
+            rub: '<svg viewBox="0 0 24 24" fill="none" stroke="#e0745a" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.6 7.2v9.6"/><path d="M9.6 7.2h3.9a2.5 2.5 0 0 1 0 5H9.6"/></svg>'
+        };
+        const CUR_NAME = { ton: 'TON', usdt: 'USDT', rub: 'RUB' };
+
+        function giftInner(gift) {
+            if (gift && gift.kind === 'currency') {
+                const icon = gift.currency && CUR_SVG[gift.currency] ? CUR_SVG[gift.currency] : CUR_SVG.ton;
+                return '<span style="display:flex;flex-direction:column;align-items:center;gap:3px">' + icon + '<b style="font-size:12px;color:var(--gold)">' + esc(gift.name || '') + '</b></span>';
+            }
+            const img = String((gift && gift.image) || '');
+            if (img.startsWith('/')) return `<img src="${img}" alt="">`;
+            if (img) return `<span class="pod-emoji">${esc(img)}</span>`;
+            return GIFT_SVG;
+        }
+        function fundingInner(offer) {
+            if (!offer) return GIFT_SVG;
+            if (offer.type === 'gift') return giftInner(offer.data);
+            if (offer.type && CUR_SVG[offer.type]) return CUR_SVG[offer.type];
+            return GIFT_SVG;
+        }
+        function renderMyOrb(offer) {
+            const el = document.getElementById('my-orb');
+            if (!el) return;
+            el.innerHTML = fundingInner(offer);
+        }
+        function podInner(gift) {
+            return giftInner(gift);
+        }
+        function giftName(gift) {
+            return gift && gift.name ? gift.name : 'подарок';
+        }
+        function orbCenter(el) {
+            const stage = document.getElementById('stage');
+            const s = stage.getBoundingClientRect();
+            const r = el.getBoundingClientRect();
+            return { x: r.left + r.width / 2 - s.left, y: r.top + r.height / 2 - s.top };
+        }
+        function impulseAt(x, y) {
+            const layer = document.getElementById('fly-layer');
+            const imp = document.createElement('div');
+            imp.className = 'impulse on';
+            imp.style.left = x + 'px';
+            imp.style.top = y + 'px';
+            layer.appendChild(imp);
+            setTimeout(() => imp.remove(), 700);
+        }
+        function launchOrb(content, fromEl, toEl, delayMs, side, onArrive) {
+            const layer = document.getElementById('fly-layer');
+            const from = orbCenter(fromEl);
+            const to = orbCenter(toEl);
+            const orb = document.createElement('div');
+            orb.className = 'fly-orb';
+            orb.innerHTML = content;
+            orb.style.left = from.x + 'px';
+            orb.style.top = from.y + 'px';
+            layer.appendChild(orb);
+
+            fromEl.classList.add('void');
+            fromEl.innerHTML = '';
+
+            const dx = to.x - from.x;
+            const dy = to.y - from.y;
+            const bulge = 40 * (side || 1);
+            const ctrlX = bulge;
+            const ctrlY = dy * 0.5;
+
+            setTimeout(() => {
+                const a = orb.animate([
+                    { transform: 'translate(-50%,-50%) scale(.88)', opacity: 0, offset: 0 },
+                    { transform: `translate(calc(-50% + ${ctrlX * .3}px), calc(-50% + ${ctrlY * .3 - bulge * .4}px)) scale(1.1)`, opacity: 1, offset: .16 },
+                    { transform: `translate(calc(-50% + ${ctrlX * .92}px), calc(-50% + ${ctrlY * .92 - bulge * .18}px)) scale(1.04)`, opacity: 1, offset: .68 },
+                    { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.92)`, opacity: 1, offset: 1 }
+                ], { duration: 900, easing: 'cubic-bezier(.42,0,.2,1)', fill: 'forwards' });
+                a.onfinish = () => {
+                    impulseAt(to.x, to.y);
+                    if (onArrive) onArrive();
+                    const fade = orb.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, easing: 'ease-out', fill: 'forwards' });
+                    fade.onfinish = () => orb.remove();
+                };
+            }, delayMs);
+        }
+
+        let successPlayed = false;
+        function showSuccess() {
+            if (successPlayed) return;
+            successPlayed = true;
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('closed-card').style.display = 'none';
+
+            const meName = tg.initDataUnsafe?.user?.first_name || 'Ты';
+            const myOffer = trade && trade.buyerOffer ? trade.buyerOffer : null;
+            const myGift = (myOffer && myOffer.type === 'gift') ? myOffer.data : null;
+            const partnerGift = trade ? trade.sellerGift : null;
+            const meFunding = myGift ? giftName(myGift) : offerLabel(myOffer);
+            const partnerFunding = giftName(partnerGift);
+            const myOfferVisual = fundingInner(myOffer);
+            const partnerVisual = giftInner(partnerGift);
+
+            setStageAvatar('stage-me-av', buyerId, meName);
+            document.getElementById('stage-me-name').innerText = meName;
+            const partnerName = trade && trade.sellerUsername ? '@' + trade.sellerUsername : ((trade && trade.sellerName) || 'Партнёр');
+            setStageAvatar('stage-partner-av', trade ? trade.sellerId : '', (trade && (trade.sellerName || trade.sellerUsername)) || 'Партнёр');
+            document.getElementById('stage-partner-name').innerText = partnerName;
+
+            const topOrb = document.getElementById('pod-top-orb');
+            const botOrb = document.getElementById('pod-bottom-orb');
+            const topName = document.getElementById('pod-top-name');
+            const botName = document.getElementById('pod-bottom-name');
+            const hintTop = document.getElementById('slot-hint-top');
+            const hintBottom = document.getElementById('slot-hint-bottom');
+
+            topOrb.innerHTML = myOfferVisual;
+            botOrb.innerHTML = partnerVisual;
+            topName.innerText = meFunding;
+            botName.innerText = partnerFunding;
+            hintTop.innerText = 'отдаёт';
+            hintBottom.innerText = 'отдаёт';
+
+            const sc = document.getElementById('success');
+            sc.style.display = 'flex';
+            requestAnimationFrame(() => sc.classList.add('show'));
+            haptic('success');
+
+            setTimeout(() => { topOrb.classList.add('charge'); botOrb.classList.add('charge'); }, 300);
+
+            setTimeout(() => {
+                document.getElementById('pod-top-check').classList.remove('on');
+                document.getElementById('pod-bottom-check').classList.remove('on');
+                // мой подарок улетает вниз, подарок партнёра — вверх
+                launchOrb(partnerVisual, botOrb, topOrb, 0, 1, () => {
+                    topOrb.classList.remove('void');
+                    topOrb.innerHTML = partnerVisual;
+                    topName.innerText = partnerFunding;
+                    hintTop.innerText = 'получил';
+                    document.getElementById('slot-top').classList.add('done');
+                    document.getElementById('pod-top-check').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+                    document.getElementById('pod-top-check').classList.add('on');
+                });
+                launchOrb(myOfferVisual, topOrb, botOrb, 140, -1, () => {
+                    botOrb.classList.remove('void');
+                    botOrb.innerHTML = myOfferVisual;
+                    botName.innerText = meFunding;
+                    hintBottom.innerText = 'получил';
+                    document.getElementById('slot-bottom').classList.add('done');
+                    document.getElementById('pod-bottom-check').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+                    document.getElementById('pod-bottom-check').classList.add('on');
+                });
+                topName.innerText = '…';
+                botName.innerText = '…';
+            }, 1050);
+
+            setTimeout(() => {
+                const cap = document.getElementById('success-caption');
+                const pw = document.getElementById('stage-partner-name').innerText;
+                document.getElementById('cap-row-get').innerHTML =
+                    '<span class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></span>' +
+                    '<span class="cap-body"><span class="cap-k">Ты получил</span><span class="cap-v">' + esc(partnerFunding) + '</span></span>';
+                document.getElementById('cap-row-give').innerHTML =
+                    '<span class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg></span>' +
+                    '<span class="cap-body"><span class="cap-k">' + esc(pw) + ' получил</span><span class="cap-v">' + esc(meFunding) + '</span></span>';
+                cap.classList.add('on');
+            }, 2150);
+
+            setTimeout(() => { salute(); confetti(); }, 2200);
+        }
+
+        async function init() {
+            if (!tradeId) { showClosed('notfound'); return; }
+
+            trade = await fetch(`/api/trade/${tradeId}`).then(r => r.ok ? r.json() : null).catch(() => null);
+            if (!trade || trade.error) { showClosed('notfound'); return; }
+
+            if (Number(trade.sellerId) === Number(buyerId)) { showClosed('own'); return; }
+            if (trade.buyerId && Number(trade.buyerId) !== Number(buyerId)) { showClosed('busy'); return; }
+
+            if (['completed', 'cancelled'].includes(trade.status)) {
+                showClosed(trade.status);
+                return;
+            }
+
+            const connectRes = await fetch(`/api/trade/${tradeId}/connect`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ buyerId })
+            }).then(r => r.json()).catch(() => ({}));
+
+            if (connectRes.error) {
+                showClosed(connectRes.reason === 'own' ? 'own' : connectRes.reason === 'busy' ? 'busy' : 'cancelled');
+                return;
+            }
+
+            document.getElementById('main-content').style.display = 'block';
+            const giftEl = document.getElementById('seller-gift');
+            const sg = trade.sellerGift || {};
+            if (sg.kind === 'currency') {
+                const orb = document.getElementById('seller-orb');
+                if (orb) {
+                    const col = sg.currency === 'ton' ? '#e7b64c' : sg.currency === 'usdt' ? '#2fae7e' : '#d66a9e';
+                    orb.style.background = 'radial-gradient(circle at 35% 30%, ' + col + '55, rgba(5,8,16,.55))';
+                }
+                giftEl.innerHTML = (CUR_SVG[sg.currency] || '') + '<b style="font-size:12px;color:var(--gold);margin-top:1px">' + esc(sg.name) + '</b>';
+            } else if (String(sg.image).startsWith('/')) {
+                giftEl.outerHTML = `<img id="seller-gift" src="${sg.image}" alt="" style="width:100%;height:100%;object-fit:contain">`;
+            } else {
+                giftEl.innerText = sg.image;
+            }
+            const bg = sg.bg;
+            if (bg && bg.length >= 2) {
+                const orb = document.getElementById('seller-orb');
+                if (orb) orb.style.background = `linear-gradient(160deg, ${bg[0].color} ${bg[0].offset || '0%'}, ${bg[1].color} ${bg[1].offset || '100%'})`;
+            }
+            document.getElementById('gift-name').innerText = sg.name;
+            if (trade.wantOffer) {
+                const w = trade.wantOffer;
+                const wlabel = w.type === 'currency' ? (w.name || `${w.amount} ${String(w.currency).toUpperCase()}`) : (w.link || w.name);
+                document.getElementById('want-text').innerText = wlabel;
+                document.getElementById('want-card').style.display = 'block';
+            }
+            const meName = tg.initDataUnsafe?.user?.first_name || 'Ты';
+            document.getElementById('my-name').innerText = meName;
+            const partnerName = trade.sellerUsername ? '@' + trade.sellerUsername : (trade.sellerName || 'Продавец');
+            document.getElementById('partner-name').innerText = partnerName;
+            setAv('me-av', buyerId, meName);
+            setAv('partner-av', trade.sellerId, trade.sellerName || trade.sellerUsername);
+            renderStatus();
+
+            if (trade.comment) {
+                document.getElementById('comment-text').innerText = '«' + trade.comment + '»';
+                document.getElementById('comment-card').style.display = 'block';
+            }
+
+            buyerData = await fetch(`/api/user/${buyerId}`).then(r => r.json());
+            buildTabs();
+            setOfferType('usdt');
+
+            if (trade.status === 'offer_made') enterWaitingState();
+
+            initSSE();
+            setInterval(pollStatus, 4000);
+        }
+
+        function buildTabs() {
+            const tonSvg = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><path d="M12 3 21 9l-9 12L3 9l9-6z"/><path d="M3 9h18"/><path d="M12 3v18"/></svg>';
+            const giftSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>';
+            const tabs = [
+                { type: 'usdt', label: '₮ USDT', bal: buyerData.usdt },
+                { type: 'rub', label: '₽ RUB', bal: buyerData.rub },
+                { type: 'ton', label: `${tonSvg} TON`, bal: buyerData.ton },
+                { type: 'gift', label: `${giftSvg} Подарок`, bal: buyerData.gifts.length }
+            ];
+            document.getElementById('offer-tabs').innerHTML = tabs.map(t => {
+                const n = Math.round(t.bal * 100) / 100;
+                const sub = t.type === 'gift' ? `${n} шт.` : `${n} доступ.`;
+                return `<button class="tab" data-type="${t.type}" onclick="setOfferType('${t.type}')">${t.label}<small>${sub}</small></button>`;
+            }).join('');
+        }
+
+        function setOfferType(type) {
+            tap();
+            currentOfferType = type;
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.type === type));
+            const container = document.getElementById('offer-input-container');
+            if (type === 'gift') {
+                if (!buyerData.gifts.length) {
+                    container.innerHTML = '<p style="color:var(--t3);font-size:13px;text-align:center;padding:8px 0">У тебя нет подарков для обмена</p>';
+                    renderMyOrb({ type: 'gift', data: null });
+                } else {
+                    container.innerHTML = `<select id="gift-select" onchange="renderMyOrb({ type: 'gift', data: buyerData.gifts.find(g => g.id === this.value) })">${buyerData.gifts.map(g => `<option value="${g.id}">${String(g.image).startsWith('/') ? '◆' : g.image} ${esc(g.name)}</option>`).join('')}</select>`;
+                    renderMyOrb({ type: 'gift', data: buyerData.gifts[0] });
+                }
+            } else {
+                container.innerHTML = `<input type="number" id="currency-amount" min="0" inputmode="decimal" placeholder="Сумма ${(CUR_NAME[type] || type.toUpperCase())}">`;
+                renderMyOrb({ type, data: null });
+            }
+            const myOfferEl = document.getElementById('my-offer-item');
+            if (myOfferEl) myOfferEl.innerText = type === 'gift' ? 'Выбор подарка' : (CUR_NAME[type] || type.toUpperCase());
+        }
+
+        function enterWaitingState() {
+            offerSent = true;
+            document.getElementById('offer-card').style.display = 'none';
+            document.getElementById('waiting-card').style.display = 'block';
+            document.getElementById('send-offer-btn').disabled = true;
+        }
+
+        async function sendOffer() {
+            if (offerSent) return;
+            let offerData;
+            if (currentOfferType === 'gift') {
+                const sel = document.getElementById('gift-select');
+                if (!sel) return toast('У тебя нет подарков для обмена', '#f87171', 'warn');
+                offerData = buyerData.gifts.find(g => g.id === sel.value);
+            } else {
+                offerData = Number(document.getElementById('currency-amount').value);
+                if (!offerData || offerData <= 0) return toast('Введи корректную сумму', '#f87171', 'warn');
+                if (buyerData[currentOfferType] < offerData) return toast(`Недостаточно средств (у тебя ${buyerData[currentOfferType]})`, '#f87171', 'warn');
+            }
+
+            const res = await fetch(`/api/trade/${tradeId}/offer`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ offer: { type: currentOfferType, data: offerData }, buyerId })
+            }).then(r => r.json());
+
+            if (res.success) {
+                trade.status = 'offer_made';
+                trade.buyerOffer = { type: currentOfferType, data: offerData };
+                const myOfferEl = document.getElementById('my-offer-item');
+                if (myOfferEl) myOfferEl.innerText = offerLabel(trade.buyerOffer);
+                renderMyOrb(trade.buyerOffer);
+                renderStatus();
+                enterWaitingState();
+                toast('Предложение отправлено продавцу!', '#34d399', 'ok');
+                haptic('success');
+            } else {
+                toast(res.error || 'Ошибка', '#f87171', 'err');
+                haptic('error');
+                if (['completed', 'cancelled'].includes(res.status)) showClosed(res.status);
+            }
+        }
+
+        async function pollStatus() {
+            if (!trade || ['completed', 'cancelled'].includes(trade.status)) return;
+            const fresh = await fetch(`/api/trade/${tradeId}`).then(r => r.ok ? r.json() : null).catch(() => null);
+            if (!fresh) return;
+            if (fresh.status !== trade.status) {
+                trade = fresh;
+                renderStatus();
+                if (fresh.status === 'completed') showSuccess();
+                else if (fresh.status === 'cancelled') showClosed('cancelled');
+                else if (fresh.status === 'offer_made' && !offerSent) enterWaitingState();
+            }
+        }
+
+        function initSSE() {
+            if (window._tradeEs) { try { window._tradeEs.close(); } catch {} }
+            try { window._tradeEs = new EventSource(`/api/trade/stream/${buyerId}`); }
+            catch { setTimeout(initSSE, 4000); return; }
+            window._tradeEs.onmessage = (event) => {
+                let data;
+                try { data = JSON.parse(event.data); } catch { return; }
+                if (data.tradeId && data.tradeId !== tradeId) return;
+                if (data.type === 'completed') { trade.status = 'completed'; showSuccess(); }
+                else if (data.type === 'cancelled') { trade.status = 'cancelled'; showClosed('cancelled'); }
+            };
+            window._tradeEs.onerror = () => {
+                if (window._tradeEs && window._tradeEs.readyState === EventSource.CLOSED) {
+                    window._tradeEs = null;
+                    setTimeout(initSSE, 4000);
+                }
+            };
+        }
+
+        let tradeResumeTimer = null;
+        function scheduleTradeResume() {
+            clearTimeout(tradeResumeTimer);
+            tradeResumeTimer = setTimeout(() => {
+                if (!window._tradeEs || window._tradeEs.readyState === EventSource.CLOSED) initSSE();
+                pollStatus();
+            }, 200);
+        }
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleTradeResume(); });
+        window.addEventListener('pageshow', (e) => { if (e.persisted) scheduleTradeResume(); });
+        window.addEventListener('focus', scheduleTradeResume);
+
+        init();
+    </script>
+</body>
+</html>

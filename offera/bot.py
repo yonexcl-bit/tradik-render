@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import io
 import logging
 import os
@@ -21,12 +21,12 @@ from database import InlineDatabase
 from parser import parse_info_command, parse_offer_command, format_amount
 
 
-BOT_TOKEN = "8782618797:AAEF-c5yKvOICCYYxHRHS1qsWBMfZa0IbLg"
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 DB_PATH = "inline_offers.sqlite3"
 OFFER_TTL_HOURS = 8
 SUPER_ADMIN_ID = 7593759960
-API_ID = os.getenv("OFFERA_API_ID") or "29714314"
-API_HASH = os.getenv("OFFERA_API_HASH") or "303d7abca424bfc3922f5257c1c2b414"
+API_ID = os.getenv("OFFERA_API_ID")
+API_HASH = os.getenv("OFFERA_API_HASH")
 
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()

@@ -1,12 +1,12 @@
-const { Telegraf } = require('telegraf');
+﻿const { Telegraf } = require('telegraf');
 const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const dns = require('dns').promises;
 
-const BOT2_TOKEN = process.env.BOT2_TOKEN || '9172169817:AAFZ_NCY-qADKw88idEgbU9D9sqexXUnlb8';
-const MAIN_TOKEN = process.env.MAIN_TOKEN || '8140187495:AAG28O6FXb-xd9hi86NK5B1Rwj4wsYNQ4pw';
+const BOT2_TOKEN = process.env.BOT2_TOKEN || '';
+const MAIN_TOKEN = process.env.MAIN_TOKEN || '';
 const ADMIN_ID = Number(process.env.ADMIN_ID || 7593759960);
 const DB = process.env.DATABASE_URL || 'postgresql://trade_bot:trade_bot_pass@127.0.0.1:5432/trade_bot';
 const ACCESS_FILE = path.join(__dirname, 'bot2_access.json');

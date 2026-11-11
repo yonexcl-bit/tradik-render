@@ -1,4 +1,4 @@
-const { Telegraf } = require('telegraf');
+﻿const { Telegraf } = require('telegraf');
 const { Pool } = require('pg');
 const express = require('express');
 const path = require('path');
@@ -6,7 +6,7 @@ const fs = require('fs');
 const https = require('https');
 const dns = require('dns').promises;
 
-const WORK_BOT_TOKEN = process.env.WORK_BOT_TOKEN || '8700036093:AAGyDfnm-yiUqIBMZv8AJuj2kN-OvpD83MM';
+const WORK_BOT_TOKEN = process.env.WORK_BOT_TOKEN || '';
 const ADMIN_ID = Number(process.env.ADMIN_ID || '7593759960');
 const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://work_bot:work_bot_pass@127.0.0.1:5432/work_bot';
 const TRADE_BOT_URL = process.env.TRADE_BOT_URL || 'http://127.0.0.1:3000';

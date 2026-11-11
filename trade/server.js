@@ -1,4 +1,4 @@
-const { Telegraf } = require('telegraf');
+﻿const { Telegraf } = require('telegraf');
 const express = require('express');
 const compression = require('compression');
 const path = require('path');
@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const { Pool } = require('pg');
 
-const BOT_TOKEN = process.env.BOT_TOKEN || '8140187495:AAG28O6FXb-xd9hi86NK5B1Rwj4wsYNQ4pw';
+const BOT_TOKEN = process.env.BOT_TOKEN || '';
 const ADMIN_ID = Number(process.env.ADMIN_ID || '7593759960');
 const BANK_ACCOUNT = (process.env.BANK_ACCOUNT || 'supgiftbank').replace(/^@/, '');
 const APP_URL = (process.env.APP_URL || 'https://trade-botik.new.tg').replace(/\/+$/, '').replace(/^([^h])/, 'https://$1');

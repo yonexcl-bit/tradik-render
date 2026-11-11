@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 Alfa-Bank SBP PRO Receipt Bot v108 (Fixed Stamp Overlap)
 ========================================================================
@@ -31,7 +31,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
 # --- CONFIG ---
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8943909330:AAFqD_pCh9SPxZql4di-BY8Tk9BNflxMDOU")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 DB_PATH = "bot_v108.db"
 
 # --- FONTS ---
